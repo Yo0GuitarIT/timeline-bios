@@ -73,13 +73,8 @@ function Home() {
         playlist
           .load([
             {
-              src: "Trafficker_MyFatherNeverLovedMe/01_Kick.wav",
-              name: "Kick",
-              gain: 1,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/03_Snare.wav",
-              name: "Snare",
+              src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
+              name: "Drum",
               gain: 1,
               // effects: function (graphEnd, masterGainNode, isOffline) {
               //   const reverb = new Tone.Reverb(1);
@@ -98,21 +93,44 @@ function Home() {
               // },
             },
             {
-              src: "Trafficker_MyFatherNeverLovedMe/08_Overheads.wav",
-              name: "Overheads",
-              gain: 0.5,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/14_ElecGtr01Mic1.wav",
-              name: "Guitar",
-              gain: 0.5,
-              stereoPan: 0.5,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/13_BassAmp.wav",
+              src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
               name: "Bass",
-              gain: 0.4,
-              stereoPan: -0.5,
+              gain: 1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
+              name: "Guitar 1",
+              gain: 1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
+              name: "Guitar 1",
+              gain: 1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
+              name: "Guitar 2",
+              gain: 1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
+              name: "Guitar 3",
+              gain: 1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
+              name: "Guitar Solo",
+              gain: 1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
+              name: "Hammond",
+              gain: 1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
+              name: "Vocal",
+              gain: 1,
             },
           ])
           .then(function () {
@@ -121,7 +139,7 @@ function Home() {
               const loadData = document.getElementById("load-data");
               const mainPlay = document.getElementById("main-play");
               loadData.style.display = "none";
-              // mainPlay.style.display = "block";
+              mainPlay.style.display = "block";
             },1000)
           });
 
