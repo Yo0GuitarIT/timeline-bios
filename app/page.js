@@ -6,10 +6,18 @@ import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
 import { saveAs } from "file-saver";
 
-export default function Home() {
+function Home() {
   const [ee] = useState(new EventEmitter());
   const [toneCtx, setToneCtx] = useState(null);
   const setUpChain = useRef();
+
+  const [masterVolume, setMasterVolume] = useState(90);
+
+  const handleMasterVolChange = (event) => {
+    const newVolume = parseInt(event.target.value, 10);
+    setMasterVolume(newVolume);
+    ee.emit("mastervolumechange", newVolume);
+  };
 
   const container = useCallback(
     (node) => {
@@ -17,16 +25,16 @@ export default function Home() {
         const playlist = WaveformPlaylist(
           {
             ac: toneCtx.rawContext,
-            samplesPerPixel: 1024,
+            samplesPerPixel: 4096,
             mono: true,
             waveHeight: 100,
             container: node,
-            state: "cursor",
             isAutomaticScroll: true,
             isContinuousPlay: true,
             linkEndpoints: true,
             timescale: true,
-            seekStyle: "cursor",
+            state: "cursor",
+            seekStyle: "fill",
             colors: {
               waveOutlineColor: "#E0EFF1",
               timeColor: "grey",
@@ -85,51 +93,24 @@ export default function Home() {
           {
             src: "Trafficker_MyFatherNeverLovedMe/08_Overheads.wav",
             name: "Overheads",
-            gain: 0.8,
+            gain: 0.5,
           },
           {
             src: "Trafficker_MyFatherNeverLovedMe/14_ElecGtr01Mic1.wav",
-            name: "Guitar 1",
-            gain: 1,
-            stereoPan: -0.5,
-          },
-          {
-            src: "Trafficker_MyFatherNeverLovedMe/18_ElecGtr02Mic1.wav",
-            name: "Guitar 2",
-            gain: 1,
-            stereoPan: -1,
-          },
-          {
-            src: "Trafficker_MyFatherNeverLovedMe/23_ElecGtr03Mic1.wav",
-            name: "Guitar 3",
-            gain: 1,
-            stereoPan: 1,
-          },
-          {
-            src: "Trafficker_MyFatherNeverLovedMe/25_ElecGtr04Mic1.wav",
-            name: "Guitar 4",
-            gain: 1,
-            stereoPan: 0,
+            name: "Guitar",
+            gain: 0.5,
+            stereoPan: 0.5,
           },
           {
             src: "Trafficker_MyFatherNeverLovedMe/13_BassAmp.wav",
             name: "Bass",
-            gain: 1,
-          },
-          {
-            src: "Trafficker_MyFatherNeverLovedMe/32_LeadVox.wav",
-            name: "Vocal",
-            gain: 1,
-          },
-          {
-            src: "Trafficker_MyFatherNeverLovedMe/31_Hammond.wav",
-            name: "Hamond",
-            gain: 1,
+            gain: 0.4,
+            stereoPan: -0.5,
           },
         ]);
 
-        //initialize the WAV exporter.
         playlist.initExporter();
+
       }
     },
     [ee, toneCtx]
@@ -146,56 +127,70 @@ export default function Home() {
         onLoad={handleLoad}
       />
       <main>
-        <div className={"flex gap-1 p-3"}>
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("play");
-            }}
-          >
-            Play
-          </button>
-
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("pause");
-            }}
-          >
+        <div className={"flex flex-wrap justify-center gap-7 mt-2"}>
+          <button className={"border"} onClick={() => { ee.emit("pause"); }}   >
             Pause
           </button>
 
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("startaudiorendering", "wav");
-            }}
-          >
-            Download
+          <button className={"border"} onClick={() => { ee.emit("play"); }}    >
+            Play
           </button>
 
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("zoomin");
-            }}
-          >
+          <button className={"border"} onClick={() => { ee.emit("stop"); }}  >
+            Stop
+          </button>
+
+          <button className={"border"} onClick={() => { ee.emit("rewind"); }}  >
+            Backward
+          </button>
+
+          <button className={"border"} onClick={() => { ee.emit("fastforward"); }}>
+            Forward
+          </button>
+
+          <button className={"border"} onClick={() => { ee.emit("record"); }}  >
+            Record
+          </button>
+
+          <button className={"border"} onClick={() => { ee.emit("zoomin"); }} >
             Zoom In
           </button>
 
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("zoomout");
-            }}
-          >
+          <button className={"border"} onClick={() => { ee.emit("zoomout"); }}>
             Zoom Out
           </button>
 
-          <div className={"track-drop border"}> Drop file</div>
+
         </div>
-        <div className="p-5" ref={container}></div>
+
+
+        <div className="px-1 border" ref={container}></div>
+
+        <div className="flex justify-center gap-1">
+
+          <div className="flex border ">
+            <label className="w-40" htmlFor="masterVolume">Master Volume: {masterVolume} </label>
+            <input
+              type="range"
+              id="masterVolume"
+              name="masterVolume"
+              min="0"
+              max="100"
+              value={masterVolume}
+              onChange={handleMasterVolChange}
+            />
+          </div>
+
+          <button className={"border"} onClick={() => { ee.emit("startaudiorendering", "wav") }}>
+            Download
+          </button>
+
+          
+        </div>
+
       </main>
     </>
   );
 }
+
+export default Home;
