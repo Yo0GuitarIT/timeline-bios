@@ -339,13 +339,13 @@ function Home() {
         ></div>
 
         <div
-          className={"track-drop w-96 h-20 border-2 box-border"}
+          className={"track-drop w-96 h-20 border-2 box-border border-dashed border-yellow-500 text-center mx-40"}
           onDragEnter={(e) => handleDragEnter(e)}
           onDragOver={(e) => handleDragOver(e)}
           onDragLeave={(e) => handleDragLeave(e)}
           onDrop={(e) => handleDrop(e)}
         >
-          Drag Audio
+          Drag Audio here
         </div>
       </main>
     </>
