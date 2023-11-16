@@ -25,3 +25,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.drag-enter {
+  border-color: red; /* 你可以根據需要調整樣式 */
+}
+

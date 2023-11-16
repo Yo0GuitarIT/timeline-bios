@@ -21,6 +21,31 @@ function Home() {
     ee.emit("mastervolumechange", newVolume);
   };
 
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.target.classList.add("drag-enter");
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+  
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.target.classList.remove("drag-enter");
+  };
+  
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.target.classList.remove("drag-enter");
+  
+    let dropEvent = e.dataTransfer;
+  
+    for (let i = 0; i < dropEvent.files.length; i++) {
+      ee.emit("newtrack", dropEvent.files[i]);
+    }
+  };
+
   const container = useCallback(
     (node) => {
       if (node !== null && toneCtx !== null) {
@@ -53,8 +78,9 @@ function Home() {
 
         ee.on("loadprogress", function (percent, src) {
           const progress = percent.toFixed(2);
+          console.log(src);
           setLoadProgress(progress);
-          setLoadInfo(src)
+          setLoadInfo(src);
         });
 
         ee.on("audiorenderingstarting", function (offlineCtx, a) {
@@ -154,14 +180,23 @@ function Home() {
             const loadData = document.getElementById("load-data");
             const mainPlay = document.getElementById("main-play");
 
-            loadData.classList.add("opacity-0", "transition-opacity", "ease-out", "duration-1000");
+            loadData.classList.add(
+              "opacity-0",
+              "transition-opacity",
+              "ease-out",
+              "duration-1000"
+            );
             mainPlay.classList.remove("hidden");
 
             setTimeout(() => {
               loadData.classList.add("hidden");
-              mainPlay.classList.add("opacity-100", "transition-opacity", "ease-in", "duration-1000");
-
-            }, 1000)
+              mainPlay.classList.add(
+                "opacity-100",
+                "transition-opacity",
+                "ease-in",
+                "duration-1000"
+              );
+            }, 1000);
           });
 
         playlist.initExporter();
@@ -181,30 +216,97 @@ function Home() {
         onLoad={handleLoad}
       />
       <div id="load-data" className="w-screen h-screen absolute">
-
         <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full p-4">
           <div className="flex items-center">
-            <Image src={"Pulse-1s-200px.svg"} alt="loading" width={30} height={30} ></Image>
+            <Image
+              src={"Pulse-1s-200px.svg"}
+              alt="loading"
+              width={30}
+              height={30}
+            ></Image>
             Loaded{loadProgress}%
           </div>
           <p>{`=> Loading ${loadInfo}`}</p>
           <div className="border-2 border-dashed rounded border-blue-900">
-            <div className="bg-yellow-500 h-5 rounded" style={{ width: `${loadProgress}%` }}></div>
+            <div
+              className="bg-yellow-500 h-5 rounded"
+              style={{ width: `${loadProgress}%` }}
+            ></div>
           </div>
         </div>
-
       </div>
 
       <main id="main-play" className={"hidden absolute opacity-0"}>
-        <div id="navbar" className={"bg-gray-300 w-screen h-12 flex justify-center items-center gap-7 box-border sticky top-0 z-20"}>
-          <button className={"border"} onClick={() => { ee.emit("pause"); }}>Pause</button>
-          <button className={"border"} onClick={() => { ee.emit("play"); }}>Play</button>
-          <button className={"border"} onClick={() => { ee.emit("stop"); }}>Stop</button>
-          <button className={"border"} onClick={() => { ee.emit("rewind"); }}>Backward</button>
-          <button className={"border"} onClick={() => { ee.emit("fastforward"); }}>Forward</button>
-          <button className={"border"} onClick={() => { ee.emit("record"); }}>Record</button>
-          <button className={"border"} onClick={() => { ee.emit("zoomin"); }}>Zoom In</button>
-          <button className={"border"} onClick={() => { ee.emit("zoomout"); }}>Zoom Out</button>
+        <div
+          id="navbar"
+          className={
+            "bg-gray-300 w-screen h-12 flex justify-center items-center gap-7 box-border sticky top-0 z-20"
+          }
+        >
+          <button
+            className={"border"}
+            onClick={() => {
+              ee.emit("pause");
+            }}
+          >
+            Pause
+          </button>
+          <button
+            className={"border"}
+            onClick={() => {
+              ee.emit("play");
+            }}
+          >
+            Play
+          </button>
+          <button
+            className={"border"}
+            onClick={() => {
+              ee.emit("stop");
+            }}
+          >
+            Stop
+          </button>
+          <button
+            className={"border"}
+            onClick={() => {
+              ee.emit("rewind");
+            }}
+          >
+            Backward
+          </button>
+          <button
+            className={"border"}
+            onClick={() => {
+              ee.emit("fastforward");
+            }}
+          >
+            Forward
+          </button>
+          <button
+            className={"border"}
+            onClick={() => {
+              ee.emit("record");
+            }}
+          >
+            Record
+          </button>
+          <button
+            className={"border"}
+            onClick={() => {
+              ee.emit("zoomin");
+            }}
+          >
+            Zoom In
+          </button>
+          <button
+            className={"border"}
+            onClick={() => {
+              ee.emit("zoomout");
+            }}
+          >
+            Zoom Out
+          </button>
 
           <div className="flex border ">
             <label className="w-40" htmlFor="masterVolume">
@@ -221,10 +323,30 @@ function Home() {
             />
           </div>
 
-          <button className={"border"} onClick={() => { ee.emit("startaudiorendering", "wav"); }}>Download</button>
+          <button
+            className={"border"}
+            onClick={() => {
+              ee.emit("startaudiorendering", "wav");
+            }}
+          >
+            Download
+          </button>
         </div>
 
-        <div className={"px-2 border w-screen relative -top-7"} ref={container}></div>
+        <div
+          className={"px-2 border w-screen relative -top-7"}
+          ref={container}
+        ></div>
+
+        <div
+          className={"track-drop w-96 h-20 border-2 box-border"}
+          onDragEnter={(e) => handleDragEnter(e)}
+          onDragOver={(e) => handleDragOver(e)}
+          onDragLeave={(e) => handleDragLeave(e)}
+          onDrop={(e) => handleDrop(e)}
+        >
+          Drag Audio
+        </div>
       </main>
     </>
   );
