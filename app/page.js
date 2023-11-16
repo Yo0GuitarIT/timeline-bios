@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useState, useRef } from "react";
+import Image from "next/image";
 import Script from "next/script";
 import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
@@ -10,7 +11,9 @@ function Home() {
   const [ee] = useState(new EventEmitter());
   const [toneCtx, setToneCtx] = useState(null);
   const setUpChain = useRef();
-  const [masterVolume, setMasterVolume] = useState(90);
+  const [masterVolume, setMasterVolume] = useState(95);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [loadInfo, setLoadInfo] = useState("");
 
   const handleMasterVolChange = (event) => {
     const newVolume = parseInt(event.target.value, 10);
@@ -24,7 +27,7 @@ function Home() {
         const playlist = WaveformPlaylist(
           {
             ac: toneCtx.rawContext,
-            samplesPerPixel: 4096,
+            samplesPerPixel: 8192,
             mono: true,
             waveHeight: 100,
             container: node,
@@ -32,27 +35,26 @@ function Home() {
             isContinuousPlay: true,
             linkEndpoints: true,
             timescale: true,
-            state: "cursor",
+            state: "select",
             seekStyle: "fill",
             colors: {
               waveOutlineColor: "#E0EFF1",
-              timeColor: "grey",
+              timeColor: "gray",
               fadeColor: "black",
             },
             controls: {
               show: true,
               width: 200,
             },
-            zoomLevels: [128, 256, 512, 1024, 2048, 4096],
+            zoomLevels: [256, 512, 1024, 2048, 4096, 8192],
           },
           ee
         );
 
         ee.on("loadprogress", function (percent, src) {
-          const loadInfo = document.createElement("p");
-          loadInfo.textContent = `Loading ${src}: ${percent}% loaded`;
-          document.getElementById("load-data").appendChild(loadInfo);
-          window.scrollTo(0, document.body.scrollHeight);
+          const progress = percent.toFixed(2);
+          setLoadProgress(progress);
+          setLoadInfo(src)
         });
 
         ee.on("audiorenderingstarting", function (offlineCtx, a) {
@@ -76,6 +78,7 @@ function Home() {
               src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
               name: "Drum",
               gain: 1,
+              waveOutlineColor: "#F6BD60",
               // effects: function (graphEnd, masterGainNode, isOffline) {
               //   const reverb = new Tone.Reverb(1);
 
@@ -96,51 +99,69 @@ function Home() {
               src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
               name: "Bass",
               gain: 1,
+              waveOutlineColor: "#F7EDE2",
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
               name: "Guitar 1",
-              gain: 1,
+              gain: 0.5,
+              waveOutlineColor: "#F5CAC3",
+              stereoPan: 0.5,
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
               name: "Guitar 1",
-              gain: 1,
+              gain: 0.5,
+              waveOutlineColor: "#F5CAC3",
+              stereoPan: 1,
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
               name: "Guitar 2",
-              gain: 1,
+              gain: 0.5,
+              waveOutlineColor: "#F5CAC3",
+
+              stereoPan: -0.5,
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
               name: "Guitar 3",
-              gain: 1,
+              gain: 0.5,
+              waveOutlineColor: "#F5CAC3",
+              stereoPan: -1,
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
               name: "Guitar Solo",
               gain: 1,
+              waveOutlineColor: "#F5CAC3",
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
               name: "Hammond",
               gain: 1,
+              waveOutlineColor: "#84A59D",
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
               name: "Vocal",
               gain: 1,
+              waveOutlineColor: "#F28482",
             },
           ])
           .then(function () {
-            ee.emit("loadprogress", 100, "all songs");
+            ee.emit("loadprogress", 100, "all tracks ; )");
+            const loadData = document.getElementById("load-data");
+            const mainPlay = document.getElementById("main-play");
+
+            loadData.classList.add("opacity-0", "transition-opacity", "ease-out", "duration-1000");
+            mainPlay.classList.remove("hidden");
+
             setTimeout(() => {
-              const loadData = document.getElementById("load-data");
-              const mainPlay = document.getElementById("main-play");
-              loadData.style.display = "none";
-              mainPlay.style.display = "block";
-            },1000)
+              loadData.classList.add("hidden");
+              mainPlay.classList.add("opacity-100", "transition-opacity", "ease-in", "duration-1000");
+
+            }, 1000)
           });
 
         playlist.initExporter();
@@ -159,85 +180,32 @@ function Home() {
         src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.37/Tone.js"
         onLoad={handleLoad}
       />
-      <div id="load-data"></div>
-      <main id="main-play" className={"hidden"}>
-        <div className={"flex flex-wrap justify-center gap-7 mt-2"}>
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("pause");
-            }}
-          >
-            Pause
-          </button>
+      <div id="load-data" className="w-screen h-screen absolute">
 
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("play");
-            }}
-          >
-            Play
-          </button>
-
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("stop");
-            }}
-          >
-            Stop
-          </button>
-
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("rewind");
-            }}
-          >
-            Backward
-          </button>
-
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("fastforward");
-            }}
-          >
-            Forward
-          </button>
-
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("record");
-            }}
-          >
-            Record
-          </button>
-
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("zoomin");
-            }}
-          >
-            Zoom In
-          </button>
-
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("zoomout");
-            }}
-          >
-            Zoom Out
-          </button>
+        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full p-4">
+          <div className="flex items-center">
+            <Image src={"Pulse-1s-200px.svg"} alt="loading" width={30} height={30} ></Image>
+            Loaded{loadProgress}%
+          </div>
+          <p>{`=> Loading ${loadInfo}`}</p>
+          <div className="border-2 border-dashed rounded border-blue-900">
+            <div className="bg-yellow-500 h-5 rounded" style={{ width: `${loadProgress}%` }}></div>
+          </div>
         </div>
 
-        <div className="px-1 border" ref={container}></div>
+      </div>
 
-        <div className="flex justify-center gap-1">
+      <main id="main-play" className={"hidden absolute opacity-0"}>
+        <div id="navbar" className={"bg-gray-300 w-screen h-12 flex justify-center items-center gap-7 box-border sticky top-0 z-20"}>
+          <button className={"border"} onClick={() => { ee.emit("pause"); }}>Pause</button>
+          <button className={"border"} onClick={() => { ee.emit("play"); }}>Play</button>
+          <button className={"border"} onClick={() => { ee.emit("stop"); }}>Stop</button>
+          <button className={"border"} onClick={() => { ee.emit("rewind"); }}>Backward</button>
+          <button className={"border"} onClick={() => { ee.emit("fastforward"); }}>Forward</button>
+          <button className={"border"} onClick={() => { ee.emit("record"); }}>Record</button>
+          <button className={"border"} onClick={() => { ee.emit("zoomin"); }}>Zoom In</button>
+          <button className={"border"} onClick={() => { ee.emit("zoomout"); }}>Zoom Out</button>
+
           <div className="flex border ">
             <label className="w-40" htmlFor="masterVolume">
               Master Volume: {masterVolume}{" "}
@@ -253,17 +221,10 @@ function Home() {
             />
           </div>
 
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("startaudiorendering", "wav");
-            }}
-          >
-            Download
-          </button>
+          <button className={"border"} onClick={() => { ee.emit("startaudiorendering", "wav"); }}>Download</button>
         </div>
 
-        <div id="load-data"></div>
+        <div className={"px-2 border w-screen relative -top-7"} ref={container}></div>
       </main>
     </>
   );
