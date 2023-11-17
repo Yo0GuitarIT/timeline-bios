@@ -14,9 +14,10 @@ function Home() {
   const [masterVolume, setMasterVolume] = useState(95);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
-
-  const handleMasterVolChange = (event) => {
-    const newVolume = parseInt(event.target.value, 10);
+  const [isRecording, setIsRecording] = useState(false);
+  
+  const handleMasterVolChange = (e) => {
+    const newVolume = parseInt(e.target.value, 10);
     setMasterVolume(newVolume);
     ee.emit("mastervolumechange", newVolume);
   };
@@ -24,31 +25,107 @@ function Home() {
   const handleDragEnter = (e) => {
     e.preventDefault();
     e.target.classList.add("drag-enter");
+    setLoadProgress(0);
+    setLoadInfo("Now");
+
+    const loadData = document.getElementById("load-data");
+    loadData.classList.remove(
+      "opacity-0",
+      "duration-1000"
+    );
+    loadData.classList.add(
+      "opacity-50",
+      "duration-500"
+    );
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
   };
-  
+
   const handleDragLeave = (e) => {
     e.preventDefault();
     e.target.classList.remove("drag-enter");
+
+    const loadData = document.getElementById("load-data");
+    loadData.classList.remove(
+      "opacity-50",
+    );
+
+    loadData.classList.add(
+      "opacity-0",
+    );
   };
-  
+
   const handleDrop = (e) => {
     e.preventDefault();
     e.target.classList.remove("drag-enter");
-  
+
     let dropEvent = e.dataTransfer;
-  
     for (let i = 0; i < dropEvent.files.length; i++) {
       ee.emit("newtrack", dropEvent.files[i]);
-    }
+    };
+
+    const loadData = document.getElementById("load-data");
+   
+    setTimeout(() => {
+      loadData.classList.remove(
+        "opacity-50",
+      );
+
+      loadData.classList.add(
+        "opacity-0",
+      );
+    },5000)
   };
+
+  const handleRecord = () => {
+    setIsRecording(true);
+    ee.emit("record");
+  }
+
+  const handleStop = () => {
+    setIsRecording(false);
+    ee.emit("stop");
+  }
+
+  const handleLoad = () => {
+    setToneCtx(Tone.getContext());
+  }
 
   const container = useCallback(
     (node) => {
       if (node !== null && toneCtx !== null) {
+
+        const gotStream = (stream) => {
+          userMediaStream = stream;
+          playlist.initRecorder(userMediaStream);
+        }
+
+        const logError = (err) => {
+          console.error(err);
+        }
+
+        let userMediaStream;
+        let constraints = { audio: true };
+
+        navigator.getUserMedia = (navigator.getUserMedia ||
+          navigator.webkitGetUserMedia ||
+          navigator.mozGetUserMedia ||
+          navigator.msGetUserMedia);
+
+        if (navigator.mediaDevices) {
+          navigator.mediaDevices.getUserMedia(constraints)
+            .then(gotStream)
+            .catch(logError);
+        } else if (navigator.getUserMedia && 'MediaRecorder' in window) {
+          navigator.getUserMedia(
+            constraints,
+            gotStream,
+            logError
+          );
+        }
+
         const playlist = WaveformPlaylist(
           {
             ac: toneCtx.rawContext,
@@ -78,7 +155,6 @@ function Home() {
 
         ee.on("loadprogress", function (percent, src) {
           const progress = percent.toFixed(2);
-          console.log(src);
           setLoadProgress(progress);
           setLoadInfo(src);
         });
@@ -127,53 +203,53 @@ function Home() {
               gain: 1,
               waveOutlineColor: "#F7EDE2",
             },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
-              name: "Guitar 1",
-              gain: 0.5,
-              waveOutlineColor: "#F5CAC3",
-              stereoPan: 0.5,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
-              name: "Guitar 1",
-              gain: 0.5,
-              waveOutlineColor: "#F5CAC3",
-              stereoPan: 1,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
-              name: "Guitar 2",
-              gain: 0.5,
-              waveOutlineColor: "#F5CAC3",
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
+            //   name: "Guitar 1",
+            //   gain: 0.5,
+            //   waveOutlineColor: "#F5CAC3",
+            //   stereoPan: 0.5,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
+            //   name: "Guitar 1",
+            //   gain: 0.5,
+            //   waveOutlineColor: "#F5CAC3",
+            //   stereoPan: 1,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
+            //   name: "Guitar 2",
+            //   gain: 0.5,
+            //   waveOutlineColor: "#F5CAC3",
 
-              stereoPan: -0.5,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
-              name: "Guitar 3",
-              gain: 0.5,
-              waveOutlineColor: "#F5CAC3",
-              stereoPan: -1,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
-              name: "Guitar Solo",
-              gain: 1,
-              waveOutlineColor: "#F5CAC3",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
-              name: "Hammond",
-              gain: 1,
-              waveOutlineColor: "#84A59D",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
-              name: "Vocal",
-              gain: 1,
-              waveOutlineColor: "#F28482",
-            },
+            //   stereoPan: -0.5,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
+            //   name: "Guitar 3",
+            //   gain: 0.5,
+            //   waveOutlineColor: "#F5CAC3",
+            //   stereoPan: -1,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
+            //   name: "Guitar Solo",
+            //   gain: 1,
+            //   waveOutlineColor: "#F5CAC3",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
+            //   name: "Hammond",
+            //   gain: 1,
+            //   waveOutlineColor: "#84A59D",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
+            //   name: "Vocal",
+            //   gain: 1,
+            //   waveOutlineColor: "#F28482",
+            // },
           ])
           .then(function () {
             ee.emit("loadprogress", 100, "all tracks ; )");
@@ -183,13 +259,13 @@ function Home() {
             loadData.classList.add(
               "opacity-0",
               "transition-opacity",
-              "ease-out",
+              "ease-in",
               "duration-1000"
             );
+
             mainPlay.classList.remove("hidden");
 
             setTimeout(() => {
-              loadData.classList.add("hidden");
               mainPlay.classList.add(
                 "opacity-100",
                 "transition-opacity",
@@ -204,10 +280,6 @@ function Home() {
     },
     [ee, toneCtx]
   );
-
-  function handleLoad() {
-    setToneCtx(Tone.getContext());
-  }
 
   return (
     <>
@@ -243,70 +315,14 @@ function Home() {
             "bg-gray-300 w-screen h-12 flex justify-center items-center gap-7 box-border sticky top-0 z-20"
           }
         >
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("pause");
-            }}
-          >
-            Pause
-          </button>
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("play");
-            }}
-          >
-            Play
-          </button>
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("stop");
-            }}
-          >
-            Stop
-          </button>
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("rewind");
-            }}
-          >
-            Backward
-          </button>
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("fastforward");
-            }}
-          >
-            Forward
-          </button>
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("record");
-            }}
-          >
-            Record
-          </button>
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("zoomin");
-            }}
-          >
-            Zoom In
-          </button>
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("zoomout");
-            }}
-          >
-            Zoom Out
-          </button>
+          <button className={"border"} onClick={() => { ee.emit("pause"); }}>Pause</button>
+          <button className={"border"} onClick={() => { ee.emit("play"); }}>Play</button>
+          <button className={"border"} onClick={handleStop}>Stop</button>
+          <button className={"border"} onClick={() => { ee.emit("rewind"); }}>Backward</button>
+          <button className={"border"} onClick={() => { ee.emit("fastforward"); }}>Forward</button>
+          <button className={"border btn-record"} onClick={handleRecord} disabled={isRecording}>Record</button>
+          <button className={"border"} onClick={() => { ee.emit("zoomin"); }}>Zoom In</button>
+          <button className={"border"} onClick={() => { ee.emit("zoomout"); }}>Zoom Out</button>
 
           <div className="flex border ">
             <label className="w-40" htmlFor="masterVolume">
@@ -323,12 +339,7 @@ function Home() {
             />
           </div>
 
-          <button
-            className={"border"}
-            onClick={() => {
-              ee.emit("startaudiorendering", "wav");
-            }}
-          >
+          <button className={"border"} onClick={() => { ee.emit("startaudiorendering", "wav"); }}>
             Download
           </button>
         </div>
