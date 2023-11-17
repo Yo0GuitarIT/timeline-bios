@@ -34,7 +34,7 @@ function Home() {
       "duration-1000"
     );
     loadData.classList.add(
-      "opacity-50",
+      "opacity-70",
       "duration-500"
     );
   };
@@ -49,7 +49,7 @@ function Home() {
 
     const loadData = document.getElementById("load-data");
     loadData.classList.remove(
-      "opacity-50",
+      "opacity-70",
     );
 
     loadData.classList.add(
@@ -70,7 +70,7 @@ function Home() {
    
     setTimeout(() => {
       loadData.classList.remove(
-        "opacity-50",
+        "opacity-70",
       );
 
       loadData.classList.add(
@@ -129,7 +129,7 @@ function Home() {
         const playlist = WaveformPlaylist(
           {
             ac: toneCtx.rawContext,
-            samplesPerPixel: 8192,
+            samplesPerPixel: 4096,
             mono: true,
             waveHeight: 100,
             container: node,
@@ -288,7 +288,7 @@ function Home() {
         onLoad={handleLoad}
       />
       <div id="load-data" className="w-screen h-screen absolute">
-        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full p-4">
+        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full p-4 z-30">
           <div className="flex items-center">
             <Image
               src={"Pulse-1s-200px.svg"}
@@ -345,12 +345,12 @@ function Home() {
         </div>
 
         <div
-          className={"px-2 border w-screen relative -top-7"}
+          className={"border w-screen relative -top-7 p-4"}
           ref={container}
         ></div>
 
         <div
-          className={"track-drop w-96 h-20 border-2 box-border border-dashed border-yellow-500 text-center mx-40"}
+          className={"track-drop w-96 h-20 border-2 box-border border-dashed border-yellow-500 text-center absolute right-0 m-4"}
           onDragEnter={(e) => handleDragEnter(e)}
           onDragOver={(e) => handleDragOver(e)}
           onDragLeave={(e) => handleDragLeave(e)}
