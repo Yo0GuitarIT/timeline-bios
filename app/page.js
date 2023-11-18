@@ -15,7 +15,7 @@ function Home() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  
+
   const handleMasterVolChange = (e) => {
     const newVolume = parseInt(e.target.value, 10);
     setMasterVolume(newVolume);
@@ -31,7 +31,8 @@ function Home() {
     const loadData = document.getElementById("load-data");
     loadData.classList.remove(
       "opacity-0",
-      "duration-1000"
+      "duration-1000",
+      "hidden"
     );
     loadData.classList.add(
       "opacity-70",
@@ -67,7 +68,7 @@ function Home() {
     };
 
     const loadData = document.getElementById("load-data");
-   
+
     setTimeout(() => {
       loadData.classList.remove(
         "opacity-70",
@@ -76,7 +77,10 @@ function Home() {
       loadData.classList.add(
         "opacity-0",
       );
-    },5000)
+      setTimeout(() => {
+        loadData.classList.add("hidden");
+      }, 500);
+    }, 2000)
   };
 
   const handleRecord = () => {
@@ -176,11 +180,11 @@ function Home() {
 
         playlist
           .load([
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
-              name: "Drum",
-              gain: 1,
-              waveOutlineColor: "#F6BD60",
+            // {
+              // src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
+              // name: "Drum",
+              // gain: 1,
+              // waveOutlineColor: "#F6BD60",
               // effects: function (graphEnd, masterGainNode, isOffline) {
               //   const reverb = new Tone.Reverb(1);
 
@@ -196,13 +200,13 @@ function Home() {
               //     reverb.dispose();
               //   };
               // },
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
-              name: "Bass",
-              gain: 1,
-              waveOutlineColor: "#F7EDE2",
-            },
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
+            //   name: "Bass",
+            //   gain: 1,
+            //   waveOutlineColor: "#F7EDE2",
+            // },
             // {
             //   src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
             //   name: "Guitar 1",
@@ -272,6 +276,9 @@ function Home() {
                 "ease-in",
                 "duration-1000"
               );
+              loadData.classList.add(
+                "hidden",
+              )
             }, 1000);
           });
 
@@ -345,12 +352,13 @@ function Home() {
         </div>
 
         <div
-          className={"border w-screen relative -top-7 p-4"}
+          className={"border w-screen box-border relative -top-7 px-4"}
           ref={container}
         ></div>
 
         <div
-          className={"track-drop w-96 h-20 border-2 box-border border-dashed border-yellow-500 text-center absolute right-0 m-4"}
+          className={
+            "track-drop w-72 h-20 box-border border-2 border-dashed border-yellow-500 text-center relative left-1/2 -translate-x-1/2 mb-8"}
           onDragEnter={(e) => handleDragEnter(e)}
           onDragOver={(e) => handleDragOver(e)}
           onDragLeave={(e) => handleDragLeave(e)}
