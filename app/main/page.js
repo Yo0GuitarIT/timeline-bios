@@ -144,7 +144,7 @@ function Home() {
             state: "select",
             seekStyle: "fill",
             colors: {
-              waveOutlineColor: "#E0EFF1",
+              waveOutlineColor: "#c5baaf",
               timeColor: "gray",
               fadeColor: "black",
             },
@@ -180,80 +180,81 @@ function Home() {
 
         playlist
           .load([
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
-            //   name: "Drum",
-            //   gain: 1,
-            //   waveOutlineColor: "#F28482",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
-            //   name: "Bass",
-            //   gain: 1,
-            //   waveOutlineColor: "#F7EDE2",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
-            //   name: "Guitar 1",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#F5CAC3",
-            //   stereoPan: 0.5,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
-            //   name: "Guitar 1",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#F5CAC3",
-            //   stereoPan: 1,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
-            //   name: "Guitar 2",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#F5CAC3",
-            //   stereoPan: -0.5,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
-            //   name: "Guitar 3",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#F5CAC3",
-            //   stereoPan: -1,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
-            //   name: "Guitar Solo",
-            //   gain: 1,
-            //   waveOutlineColor: "#F5CAC3",
-            //   effects: function (graphEnd, masterGainNode, isOffline) {
-            //     const gain = new Tone.Gain(1.5);
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
+              name: "Drum",
+              gain: 1,
+              waveOutlineColor: "#44AF69",
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
+              name: "Bass",
+              gain: 1,
+              waveOutlineColor: "#F8333C",
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
+              name: "Guitar 1",
+              gain: 0.5,
+              waveOutlineColor: "#FCAB10",
+              stereoPan: 0.5,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
+              name: "Guitar 1",
+              gain: 0.5,
+              waveOutlineColor: "#FCAB10",
+              stereoPan: 1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
+              name: "Guitar 2",
+              gain: 0.5,
+              // waveOutlineColor: "#FCAB10",
+              stereoPan: -0.5,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
+              name: "Guitar 3",
+              gain: 0.5,
+              // waveOutlineColor: "#FCAB10",
+              stereoPan: -1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
+              name: "Guitar Solo",
+              gain: 0.6,
+              stereoPan:-0.5,
+              waveOutlineColor: "#F5CAC3",
+              // effects: function (graphEnd, masterGainNode, isOffline) {
+              //   const gain = new Tone.Gain(1.2);
                 
-            //     if (isOffline) {
-            //       setUpChain.current.push(gain.ready);
-            //     }
+              //   if (isOffline) {
+              //     setUpChain.current.push(gain.ready);
+              //   }
 
-            //     Tone.connect(graphEnd, gain);
-            //     Tone.connect(gain, masterGainNode);
+              //   Tone.connect(graphEnd, gain);
+              //   Tone.connect(gain, masterGainNode);
                 
-            //     return function cleanup() {
-            //       gain.disconnect();
-            //       gain.dispose();
+              //   return function cleanup() {
+              //     gain.disconnect();
+              //     gain.dispose();
 
-            //     };
-            //   },
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
-            //   name: "Hammond",
-            //   gain: 1,
-            //   waveOutlineColor: "#84A59D",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
-            //   name: "Vocal",
-            //   gain: 1,
-            //   waveOutlineColor: "#F28482",
-            // },
+              //   };
+              // },
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
+              name: "Hammond",
+              gain: 1,
+              waveOutlineColor: "#2B9EB3",
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
+              name: "Vocal",
+              gain: 1,
+              waveOutlineColor: "#DBD5B5",
+            },
           ])
           .then(function () {
             ee.emit("loadprogress", 100, "all tracks ; )");
