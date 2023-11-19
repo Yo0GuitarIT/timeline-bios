@@ -27,6 +27,5 @@ body {
 }
 
 .drag-enter {
-  border-color: red; /* 你可以根據需要調整樣式 */
+  border-color: red; 
 }
-

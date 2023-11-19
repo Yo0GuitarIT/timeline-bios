@@ -181,25 +181,10 @@ function Home() {
         playlist
           .load([
             // {
-            // src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
-            // name: "Drum",
-            // gain: 1,
-            // waveOutlineColor: "#F6BD60",
-            // effects: function (graphEnd, masterGainNode, isOffline) {
-            //   const reverb = new Tone.Reverb(1);
-
-            //   if (isOffline) {
-            //     setUpChain.current.push(reverb.ready);
-            //   }
-
-            //   Tone.connect(graphEnd, reverb);
-            //   Tone.connect(reverb, masterGainNode);
-
-            //   return function cleanup() {
-            //     reverb.disconnect();
-            //     reverb.dispose();
-            //   };
-            // },
+            //   src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
+            //   name: "Drum",
+            //   gain: 1,
+            //   waveOutlineColor: "#F28482",
             // },
             // {
             //   src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
@@ -226,7 +211,6 @@ function Home() {
             //   name: "Guitar 2",
             //   gain: 0.5,
             //   waveOutlineColor: "#F5CAC3",
-
             //   stereoPan: -0.5,
             // },
             // {
@@ -241,6 +225,22 @@ function Home() {
             //   name: "Guitar Solo",
             //   gain: 1,
             //   waveOutlineColor: "#F5CAC3",
+            //   effects: function (graphEnd, masterGainNode, isOffline) {
+            //     const gain = new Tone.Gain(1.5);
+                
+            //     if (isOffline) {
+            //       setUpChain.current.push(gain.ready);
+            //     }
+
+            //     Tone.connect(graphEnd, gain);
+            //     Tone.connect(gain, masterGainNode);
+                
+            //     return function cleanup() {
+            //       gain.disconnect();
+            //       gain.dispose();
+
+            //     };
+            //   },
             // },
             // {
             //   src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
