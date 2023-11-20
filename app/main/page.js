@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useCallback, useState, useRef } from "react";
+import React, { useCallback, useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import Script from "next/script";
 import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
+import * as Tone from "tone";
 import { saveAs } from "file-saver";
 
 function Home() {
@@ -15,6 +15,11 @@ function Home() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const meterRef = useRef(null);
+
+  useEffect(() => {
+    setToneCtx(Tone.getContext());
+  }, []);
 
   const handleMasterVolChange = (e) => {
     const newVolume = parseInt(e.target.value, 10);
@@ -29,15 +34,8 @@ function Home() {
     setLoadInfo("Now");
 
     const loadData = document.getElementById("load-data");
-    loadData.classList.remove(
-      "opacity-0",
-      "duration-1000",
-      "hidden"
-    );
-    loadData.classList.add(
-      "opacity-70",
-      "duration-500"
-    );
+    loadData.classList.remove("opacity-0", "duration-1000", "hidden");
+    loadData.classList.add("opacity-70", "duration-500");
   };
 
   const handleDragOver = (e) => {
@@ -49,13 +47,9 @@ function Home() {
     e.target.classList.remove("drag-enter");
 
     const loadData = document.getElementById("load-data");
-    loadData.classList.remove(
-      "opacity-70",
-    );
+    loadData.classList.remove("opacity-70");
 
-    loadData.classList.add(
-      "opacity-0",
-    );
+    loadData.classList.add("opacity-0");
   };
 
   const handleDrop = (e) => {
@@ -65,72 +59,63 @@ function Home() {
     let dropEvent = e.dataTransfer;
     for (let i = 0; i < dropEvent.files.length; i++) {
       ee.emit("newtrack", dropEvent.files[i]);
-    };
+    }
 
     const loadData = document.getElementById("load-data");
 
     setTimeout(() => {
-      loadData.classList.remove(
-        "opacity-70",
-      );
+      loadData.classList.remove("opacity-70");
 
-      loadData.classList.add(
-        "opacity-0",
-      );
+      loadData.classList.add("opacity-0");
       setTimeout(() => {
         loadData.classList.add("hidden");
       }, 500);
-    }, 2000)
+    }, 2000);
   };
 
   const handleRecord = () => {
     setIsRecording(true);
     ee.emit("record");
-  }
+  };
+
+  const handlePlay = () => {
+    console.log("playing");
+    ee.emit("play");
+  };
 
   const handleStop = () => {
     setIsRecording(false);
     ee.emit("stop");
-  }
-
-  const handleLoad = () => {
-    setToneCtx(Tone.getContext());
-
-
-    
-  }
+  };
 
   const container = useCallback(
     (node) => {
       if (node !== null && toneCtx !== null) {
-
         const gotStream = (stream) => {
           userMediaStream = stream;
           playlist.initRecorder(userMediaStream);
-        }
+        };
 
         const logError = (err) => {
           console.error(err);
-        }
+        };
 
         let userMediaStream;
         let constraints = { audio: true };
 
-        navigator.getUserMedia = (navigator.getUserMedia ||
+        navigator.getUserMedia =
+          navigator.getUserMedia ||
           navigator.webkitGetUserMedia ||
           navigator.mozGetUserMedia ||
-          navigator.msGetUserMedia);
+          navigator.msGetUserMedia;
 
         if (navigator.mediaDevices) {
-          navigator.mediaDevices.getUserMedia(constraints)
+          navigator.mediaDevices
+            .getUserMedia(constraints)
             .then(gotStream)
             .catch(logError);
-        } else if (navigator.getUserMedia && 'MediaRecorder' in window) {
-          navigator.getUserMedia(
-            constraints,
-            gotStream,
-            logError
-          );
+        } else if (navigator.getUserMedia && "MediaRecorder" in window) {
+          navigator.getUserMedia(constraints, gotStream, logError);
         }
 
         const playlist = WaveformPlaylist(
@@ -280,9 +265,7 @@ function Home() {
                 "ease-in",
                 "duration-1000"
               );
-              loadData.classList.add(
-                "hidden",
-              )
+              loadData.classList.add("hidden");
             }, 1000);
           });
 
@@ -294,10 +277,6 @@ function Home() {
 
   return (
     <>
-      <Script
-        src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.37/Tone.js"
-        onLoad={handleLoad}
-      />
       <div id="load-data" className="w-screen h-screen absolute">
         <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full p-4 z-30">
           <div className="flex items-center">
@@ -326,28 +305,63 @@ function Home() {
             "bg-gray-300 w-screen h-12 flex justify-center items-center gap-7 box-border sticky top-0 z-20"
           }
         >
-          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("pause"); }}>
-            <i className="fa-solid fa-pause " ></i>
+          <button
+            className={"border border-black w-8 h-8"}
+            onClick={() => {
+              ee.emit("pause");
+            }}
+          >
+            <i className="fa-solid fa-pause "></i>
           </button>
-          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("play"); }}>
-            <i className={"fa-solid fa-play "} ></i>
+          <button
+            className={"border border-black w-8 h-8"}
+            onClick={handlePlay}
+          >
+            <i className={"fa-solid fa-play "}></i>
           </button>
-          <button className={"border border-black w-8 h-8"} onClick={handleStop}>
+          <button
+            className={"border border-black w-8 h-8"}
+            onClick={handleStop}
+          >
             <i className="fa-solid fa-stop "></i>
           </button>
-          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("rewind"); }}>
+          <button
+            className={"border border-black w-8 h-8"}
+            onClick={() => {
+              ee.emit("rewind");
+            }}
+          >
             <i className="fa-solid fa-backward "></i>
           </button>
-          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("fastforward"); }}>
+          <button
+            className={"border border-black w-8 h-8"}
+            onClick={() => {
+              ee.emit("fastforward");
+            }}
+          >
             <i className="fa-solid fa-forward "></i>
           </button>
-          <button className={"border btn-record border-black w-8 h-8"} onClick={handleRecord} disabled={isRecording}>
+          <button
+            className={"border btn-record border-black w-8 h-8"}
+            onClick={handleRecord}
+            disabled={isRecording}
+          >
             <i className="fa-solid fa-microphone "></i>
           </button>
-          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("zoomin"); }}>
+          <button
+            className={"border border-black w-8 h-8"}
+            onClick={() => {
+              ee.emit("zoomin");
+            }}
+          >
             <i className="fa-solid fa-magnifying-glass-plus "></i>
           </button>
-          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("zoomout"); }}>
+          <button
+            className={"border border-black w-8 h-8"}
+            onClick={() => {
+              ee.emit("zoomout");
+            }}
+          >
             <i className="fa-solid fa-magnifying-glass-minus "></i>
           </button>
 
@@ -364,7 +378,12 @@ function Home() {
             />
           </div>
 
-          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("startaudiorendering", "wav"); }}>
+          <button
+            className={"border border-black w-8 h-8"}
+            onClick={() => {
+              ee.emit("startaudiorendering", "wav");
+            }}
+          >
             <i className="fa-solid fa-cloud-arrow-down "></i>
           </button>
         </div>
@@ -376,7 +395,8 @@ function Home() {
 
         <div
           className={
-            "track-drop w-72 h-20 box-border border-2 border-dashed border-yellow-500 text-center relative left-1/2 -translate-x-1/2 mb-8"}
+            "track-drop w-72 h-20 box-border border-2 border-dashed border-yellow-500 text-center relative left-1/2 -translate-x-1/2 mb-8"
+          }
           onDragEnter={(e) => handleDragEnter(e)}
           onDragOver={(e) => handleDragOver(e)}
           onDragLeave={(e) => handleDragLeave(e)}
