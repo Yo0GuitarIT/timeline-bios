@@ -202,6 +202,10 @@
   font-size: 0.75rem;
 }
 
+.track-header{
+  border: 1px soild black;
+}
+
 .playlist .controls .track-header button {
   width: 20px;
   height: 20px;
@@ -238,7 +242,7 @@
 }
 
 .playlist .controls label.volume:before {
-  content: "\f027";
+  content: "\f026";
 }
 
 .playlist .controls label.volume:after {

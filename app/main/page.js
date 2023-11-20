@@ -95,6 +95,9 @@ function Home() {
 
   const handleLoad = () => {
     setToneCtx(Tone.getContext());
+
+
+    
   }
 
   const container = useCallback(
@@ -133,7 +136,7 @@ function Home() {
         const playlist = WaveformPlaylist(
           {
             ac: toneCtx.rawContext,
-            samplesPerPixel: 4096,
+            samplesPerPixel: 2048,
             mono: true,
             waveHeight: 100,
             container: node,
@@ -180,75 +183,75 @@ function Home() {
 
         playlist
           .load([
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
-            //   name: "Drum",
-            //   gain: 1,
-            //   waveOutlineColor: "#44AF69",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
-            //   name: "Bass",
-            //   gain: 1,
-            //   waveOutlineColor: "#F8333C",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
-            //   name: "Guitar 1",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#FCAB10",
-            //   stereoPan: 0.5,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
-            //   name: "Guitar 1",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#FCAB10",
-            //   stereoPan: 1,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
-            //   name: "Guitar 2",
-            //   gain: 0.5,
-            //   // waveOutlineColor: "#FCAB10",
-            //   stereoPan: -0.5,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
-            //   name: "Guitar 3",
-            //   gain: 0.5,
-            //   // waveOutlineColor: "#FCAB10",
-            //   stereoPan: -1,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
-            //   name: "Guitar Solo",
-            //   gain: 0.6,
-            //   stereoPan:-0.5,
-            //   waveOutlineColor: "#F5CAC3",
-            //   // effects: function (graphEnd, masterGainNode, isOffline) {
-            //   //   const gain = new Tone.Gain(1.2);
-                
-            //   //   if (isOffline) {
-            //   //     setUpChain.current.push(gain.ready);
-            //   //   }
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
+              name: "Drum",
+              gain: 1,
+              waveOutlineColor: "#44AF69",
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
+              name: "Bass",
+              gain: 1,
+              waveOutlineColor: "#F8333C",
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
+              name: "Guitar 1",
+              gain: 0.5,
+              waveOutlineColor: "#FCAB10",
+              stereoPan: 0.5,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
+              name: "Guitar 1",
+              gain: 0.5,
+              waveOutlineColor: "#FCAB10",
+              stereoPan: 1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
+              name: "Guitar 2",
+              gain: 0.5,
+              // waveOutlineColor: "#FCAB10",
+              stereoPan: -0.5,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
+              name: "Guitar 3",
+              gain: 0.5,
+              // waveOutlineColor: "#FCAB10",
+              stereoPan: -1,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
+              name: "Guitar Solo",
+              gain: 0.6,
+              stereoPan: -0.5,
+              waveOutlineColor: "#F5CAC3",
+              // effects: function (graphEnd, masterGainNode, isOffline) {
+              //   const gain = new Tone.Gain(1.2);
 
-            //   //   Tone.connect(graphEnd, gain);
-            //   //   Tone.connect(gain, masterGainNode);
-                
-            //   //   return function cleanup() {
-            //   //     gain.disconnect();
-            //   //     gain.dispose();
+              //   if (isOffline) {
+              //     setUpChain.current.push(gain.ready);
+              //   }
 
-            //   //   };
-            //   // },
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
-            //   name: "Hammond",
-            //   gain: 1,
-            //   waveOutlineColor: "#2B9EB3",
-            // },
+              //   Tone.connect(graphEnd, gain);
+              //   Tone.connect(gain, masterGainNode);
+
+              //   return function cleanup() {
+              //     gain.disconnect();
+              //     gain.dispose();
+
+              //   };
+              // },
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
+              name: "Hammond",
+              gain: 1,
+              waveOutlineColor: "#2B9EB3",
+            },
             // {
             //   src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
             //   name: "Vocal",
@@ -323,19 +326,33 @@ function Home() {
             "bg-gray-300 w-screen h-12 flex justify-center items-center gap-7 box-border sticky top-0 z-20"
           }
         >
-          <button className={"border"} onClick={() => { ee.emit("pause"); }}>Pause</button>
-          <button className={"border"} onClick={() => { ee.emit("play"); }}>Play</button>
-          <button className={"border"} onClick={handleStop}>Stop</button>
-          <button className={"border"} onClick={() => { ee.emit("rewind"); }}>Backward</button>
-          <button className={"border"} onClick={() => { ee.emit("fastforward"); }}>Forward</button>
-          <button className={"border btn-record"} onClick={handleRecord} disabled={isRecording}>Record</button>
-          <button className={"border"} onClick={() => { ee.emit("zoomin"); }}>Zoom In</button>
-          <button className={"border"} onClick={() => { ee.emit("zoomout"); }}>Zoom Out</button>
+          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("pause"); }}>
+            <i className="fa-solid fa-pause " ></i>
+          </button>
+          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("play"); }}>
+            <i className={"fa-solid fa-play "} ></i>
+          </button>
+          <button className={"border border-black w-8 h-8"} onClick={handleStop}>
+            <i className="fa-solid fa-stop "></i>
+          </button>
+          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("rewind"); }}>
+            <i className="fa-solid fa-backward "></i>
+          </button>
+          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("fastforward"); }}>
+            <i className="fa-solid fa-forward "></i>
+          </button>
+          <button className={"border btn-record border-black w-8 h-8"} onClick={handleRecord} disabled={isRecording}>
+            <i className="fa-solid fa-microphone "></i>
+          </button>
+          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("zoomin"); }}>
+            <i className="fa-solid fa-magnifying-glass-plus "></i>
+          </button>
+          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("zoomout"); }}>
+            <i className="fa-solid fa-magnifying-glass-minus "></i>
+          </button>
 
-          <div className="flex border ">
-            <label className="w-40" htmlFor="masterVolume">
-              Master Volume: {masterVolume}{" "}
-            </label>
+          <div className="flex border border-black gap-1 h-8 items-center px-1">
+            <i className="fa-solid fa-sliders fa-lg"></i>
             <input
               type="range"
               id="masterVolume"
@@ -347,8 +364,8 @@ function Home() {
             />
           </div>
 
-          <button className={"border"} onClick={() => { ee.emit("startaudiorendering", "wav"); }}>
-            Download
+          <button className={"border border-black w-8 h-8"} onClick={() => { ee.emit("startaudiorendering", "wav"); }}>
+            <i className="fa-solid fa-cloud-arrow-down "></i>
           </button>
         </div>
 
