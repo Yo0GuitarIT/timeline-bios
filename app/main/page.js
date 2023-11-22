@@ -15,16 +15,24 @@ function Home() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  const [meterRender, setMeterRender] = useState(0);
-
-
-
-
+  
   const clamp = (value, min, max) => {
     return Math.min(max, Math.max(min, value));
   };
 
   const startVolumeMonitoring = () => {
+    const meterCanvas = document.getElementById("meterCanvas");
+    const meterCtx = meterCanvas.getContext("2d");
+
+    const meterWidth = meterCanvas.width;
+    const meterHeight = meterCanvas.height;
+
+    const meterGradient = meterCtx.createLinearGradient(0, 0, meterWidth, 0);
+    meterGradient.addColorStop(0, "#44AF69");
+    meterGradient.addColorStop(0.5, "#FCAB10");
+    meterGradient.addColorStop(1, "#F8333C");
+
+
     const meter = new Tone.Meter();
     Tone.getDestination().connect(meter);
 
@@ -35,15 +43,20 @@ function Home() {
       const dBu = dBFS + 18;
       const clamped = clamp(dBu, lowerBound, upperBound);
 
-      const proportion = (clamped - lowerBound) / (upperBound - lowerBound);
-      const graphWidth = (proportion * 100).toFixed(0);
-      console.log(graphWidth);
-      setMeterRender(graphWidth);
+      const mappedValue = (clamped - lowerBound) / (upperBound - lowerBound) * 300;
+      const Width = Math.max(0, Math.min(300, mappedValue)).toFixed(1);
+
+      console.log(Width);
+
+      meterCtx.clearRect(0, 0, meterWidth, meterHeight);
+      meterCtx.fillStyle = meterGradient;
+      meterCtx.fillRect(0, 0, Width, meterHeight);
 
       requestAnimationFrame(logMasterVolume);
     };
     requestAnimationFrame(logMasterVolume);
   };
+
 
   useEffect(() => {
     setToneCtx(Tone.getContext());
@@ -201,8 +214,6 @@ function Home() {
             saveAs(data, "test.wav");
           }
         });
-
-        const sentsignal = Tone.getDestination();
 
         playlist
           .load([
@@ -533,7 +544,7 @@ function Home() {
           </div>
 
           <div className="w-40 h-4 border border-black">
-            <div id="meter" className="h-full bg-slate-400" style={{ width: `${meterRender}%` }}></div>
+            <canvas id="meterCanvas" className="w-40 h-4 border border-black"></canvas>
           </div>
 
           <button
