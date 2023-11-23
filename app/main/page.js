@@ -7,15 +7,15 @@ import WaveformPlaylist from "waveform-playlist";
 import * as Tone from "tone";
 import { saveAs } from "file-saver";
 
-function Home() {
+function MainPage() {
   const [ee] = useState(new EventEmitter());
   const [toneCtx, setToneCtx] = useState(null);
   const setUpChain = useRef();
-  const [masterVolume, setMasterVolume] = useState(95);
+  const [masterVolume, setMasterVolume] = useState(60);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  
+
   const clamp = (value, min, max) => {
     return Math.min(max, Math.max(min, value));
   };
@@ -28,25 +28,23 @@ function Home() {
     const meterHeight = meterCanvas.height;
 
     const meterGradient = meterCtx.createLinearGradient(0, 0, meterWidth, 0);
-    meterGradient.addColorStop(0, "#44AF69");
-    meterGradient.addColorStop(0.5, "#FCAB10");
-    meterGradient.addColorStop(1, "#F8333C");
-
+    meterGradient.addColorStop(0, "#a6a6a6");
+    meterGradient.addColorStop(1, "#5a5a5a");
 
     const meter = new Tone.Meter();
     Tone.getDestination().connect(meter);
 
     const logMasterVolume = () => {
-      const lowerBound = -20;
+      const lowerBound = -30;
       const upperBound = 3;
       const dBFS = meter.getValue();
       const dBu = dBFS + 18;
-      const clamped = clamp(dBu, lowerBound, upperBound);
+      const clamped = clamp(dBu, lowerBound, upperBound).toFixed(1);
 
       const mappedValue = (clamped - lowerBound) / (upperBound - lowerBound) * 300;
       const Width = Math.max(0, Math.min(300, mappedValue)).toFixed(1);
 
-      console.log(Width);
+      console.log(clamped,Width);
 
       meterCtx.clearRect(0, 0, meterWidth, meterHeight);
       meterCtx.fillStyle = meterGradient;
@@ -190,6 +188,21 @@ function Home() {
               width: 200,
             },
             zoomLevels: [256, 512, 1024, 2048, 4096, 8192],
+            effects: function (graphEnd, masterGainNode, isOffline) {
+              const volume = new Tone.Volume(0).toDestination();
+
+              if (isOffline) {
+                setUpChain.current.push(volume.ready);
+              }
+
+              Tone.connect(graphEnd, volume);
+              Tone.connect(volume, masterGainNode);
+
+              return function cleanup() {
+                volume.disconnect();
+                volume.dispose();
+              };
+            },
           },
           ee
         );
@@ -220,196 +233,60 @@ function Home() {
             {
               src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
               name: "Drum",
-              gain: 1,
-              waveOutlineColor: "#44AF69",
-              effects: function (graphEnd, masterGainNode, isOffline) {
-                const gain = new Tone.Gain(1).toDestination();
-
-                if (isOffline) {
-                  setUpChain.current.push(gain.ready);
-                }
-
-                Tone.connect(graphEnd, gain);
-                Tone.connect(gain, masterGainNode);
-
-                return function cleanup() {
-                  gain.disconnect();
-                  gain.dispose();
-                };
-              },
+              gain: 0.5,
+              waveOutlineColor: "#44AF69",       
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
               name: "Bass",
               gain: 1,
-              waveOutlineColor: "#F8333C",
-              effects: function (graphEnd, masterGainNode, isOffline) {
-                const gain = new Tone.Gain(1).toDestination();
-
-                if (isOffline) {
-                  setUpChain.current.push(gain.ready);
-                }
-
-                Tone.connect(graphEnd, gain);
-                Tone.connect(gain, masterGainNode);
-
-                return function cleanup() {
-                  gain.disconnect();
-                  gain.dispose();
-                };
-              },
+              waveOutlineColor: "#F8333C",           
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
-              name: "Guitar 1",
-              gain: 0.5,
-              waveOutlineColor: "#FCAB10",
-              stereoPan: 0.5,
-              effects: function (graphEnd, masterGainNode, isOffline) {
-                const gain = new Tone.Gain(1).toDestination();
-
-                if (isOffline) {
-                  setUpChain.current.push(gain.ready);
-                }
-
-                Tone.connect(graphEnd, gain);
-                Tone.connect(gain, masterGainNode);
-
-                return function cleanup() {
-                  gain.disconnect();
-                  gain.dispose();
-                };
-              },
+              name: "GT Rhythm (Strero)",
+              gain: 0.3,
+              waveOutlineColor: "#FCAB10", 
             },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
-            //   name: "Guitar 2",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#FCAB10",
-            //   stereoPan: 1,
-            //   effects: function (graphEnd, masterGainNode, isOffline) {
-            //     const gain = new Tone.Gain(1).toDestination();
-
-            //     if (isOffline) {
-            //       setUpChain.current.push(gain.ready);
-            //     }
-
-            //     Tone.connect(graphEnd, gain);
-            //     Tone.connect(gain, masterGainNode);
-
-            //     return function cleanup() {
-            //       gain.disconnect();
-            //       gain.dispose();
-            //     };
-            //   },
-            // },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
+              name: "GT Rhythm (Mono)",
+              gain: 0.3,
+              // waveOutlineColor: "#FCAB10",
+              stereoPan:0.7
+            },
             {
               src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
-              name: "Guitar 2",
+              name: "GT 2",
               gain: 0.5,
               // waveOutlineColor: "#FCAB10",
-              stereoPan: -0.5,
-              effects: function (graphEnd, masterGainNode, isOffline) {
-                const gain = new Tone.Gain(1).toDestination();
-
-                if (isOffline) {
-                  setUpChain.current.push(gain.ready);
-                }
-
-                Tone.connect(graphEnd, gain);
-                Tone.connect(gain, masterGainNode);
-
-                return function cleanup() {
-                  gain.disconnect();
-                  gain.dispose();
-                };
-              },
+              stereoPan: -0.8,
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
-              name: "Guitar 4",
-              gain: 0.5,
+              name: "GT 3",
+              gain: 0.4,
               // waveOutlineColor: "#FCAB10",
-              stereoPan: -1,
-              effects: function (graphEnd, masterGainNode, isOffline) {
-                const gain = new Tone.Gain(1).toDestination();
-
-                if (isOffline) {
-                  setUpChain.current.push(gain.ready);
-                }
-
-                Tone.connect(graphEnd, gain);
-                Tone.connect(gain, masterGainNode);
-
-                return function cleanup() {
-                  gain.disconnect();
-                  gain.dispose();
-                };
-              },
+              stereoPan: -0.7,            
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
               name: "Guitar Solo",
-              gain: 0.6,
-              stereoPan: 0,
+              gain: 0.3,
               waveOutlineColor: "#F5CAC3",
-              effects: function (graphEnd, masterGainNode, isOffline) {
-                const gain = new Tone.Gain(1).toDestination();
-
-                if (isOffline) {
-                  setUpChain.current.push(gain.ready);
-                }
-
-                Tone.connect(graphEnd, gain);
-                Tone.connect(gain, masterGainNode);
-
-                return function cleanup() {
-                  gain.disconnect();
-                  gain.dispose();
-                };
-              },
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
               name: "Hammond",
               gain: 1,
               waveOutlineColor: "#2B9EB3",
-              effects: function (graphEnd, masterGainNode, isOffline) {
-                const gain = new Tone.Gain(1).toDestination();
-
-                if (isOffline) {
-                  setUpChain.current.push(gain.ready);
-                }
-
-                Tone.connect(graphEnd, gain);
-                Tone.connect(gain, masterGainNode);
-
-                return function cleanup() {
-                  gain.disconnect();
-                  gain.dispose();
-                };
-              },
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
               name: "Vocal",
-              gain: 1,
+              gain: 0.5,
               waveOutlineColor: "#DBD5B5",
-              effects: function (graphEnd, masterGainNode, isOffline) {
-                const gain = new Tone.Gain(1).toDestination();
-
-                if (isOffline) {
-                  setUpChain.current.push(gain.ready);
-                }
-
-                Tone.connect(graphEnd, gain);
-                Tone.connect(gain, masterGainNode);
-
-                return function cleanup() {
-                  gain.disconnect();
-                  gain.dispose();
-                };
-              },
+             
             },
           ])
           .then(function () {
@@ -543,8 +420,8 @@ function Home() {
             />
           </div>
 
-          <div className="w-40 h-4 border border-black">
-            <canvas id="meterCanvas" className="w-40 h-4 border border-black"></canvas>
+          <div id="meterConatiner">
+            <canvas id="meterCanvas" className="w-40 h-4 border-2 border-dashed"></canvas>
           </div>
 
           <button
@@ -579,4 +456,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default MainPage;
