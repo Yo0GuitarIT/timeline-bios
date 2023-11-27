@@ -7,14 +7,19 @@ import WaveformPlaylist from "waveform-playlist";
 import * as Tone from "tone";
 import { saveAs } from "file-saver";
 
+import {
+  Pause, Play, Square, Circle, ZoomIn, ZoomOut, SlidersHorizontal, TriangleRight, Download, Rewind, FastForward, MousePointer2, Brackets, MoveHorizontal,Spline
+} from "lucide-react";
+
 function MainPage() {
   const [ee] = useState(new EventEmitter());
   const [toneCtx, setToneCtx] = useState(null);
-  const setUpChain = useRef();
-  const [masterVolume, setMasterVolume] = useState(60);
+  const [masterVolume, setMasterVolume] = useState(100);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+
+  const setUpChain = useRef();
 
   const clamp = (value, min, max) => {
     return Math.min(max, Math.max(min, value));
@@ -44,17 +49,17 @@ function MainPage() {
       const mappedValue = (clamped - lowerBound) / (upperBound - lowerBound) * 300;
       const Width = Math.max(0, Math.min(300, mappedValue)).toFixed(1);
 
-      console.log(clamped,Width);
+      console.log(clamped);
 
       meterCtx.clearRect(0, 0, meterWidth, meterHeight);
       meterCtx.fillStyle = meterGradient;
       meterCtx.fillRect(0, 0, Width, meterHeight);
-
       requestAnimationFrame(logMasterVolume);
+
     };
     requestAnimationFrame(logMasterVolume);
-  };
 
+  };
 
   useEffect(() => {
     setToneCtx(Tone.getContext());
@@ -120,7 +125,6 @@ function MainPage() {
   const handlePlay = () => {
     console.log("playing");
     ee.emit("play");
-
     startVolumeMonitoring();
   };
 
@@ -134,6 +138,16 @@ function MainPage() {
     setIsRecording(false);
     ee.emit("stop");
   };
+
+  const handleZoomIn = () => ee.emit("zoomin");
+  const handleZoomOut = () => ee.emit("zoomout");
+  const handleRewind = () => ee.emit("rewind");
+  const handleFastforward = () => ee.emit("fastforward");
+  const stateCursor = () => ee.emit("statechange", "cursor");
+  const stateSelect = () => ee.emit("statechange", "select");
+  const stateFadeIn = () => ee.emit("statechange","fadein")
+  const stateFadeOut = () => ee.emit("statechange", "fadeout")
+  const stateShift = () => ee.emit("statechange", "shift")
 
   const container = useCallback(
     (node) => {
@@ -176,7 +190,7 @@ function MainPage() {
             isContinuousPlay: true,
             linkEndpoints: true,
             timescale: true,
-            state: "select",
+            state: "cursor",
             seekStyle: "fill",
             colors: {
               waveOutlineColor: "#c5baaf",
@@ -234,26 +248,26 @@ function MainPage() {
               src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
               name: "Drum",
               gain: 0.5,
-              waveOutlineColor: "#44AF69",       
+              waveOutlineColor: "#44AF69",
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
               name: "Bass",
               gain: 1,
-              waveOutlineColor: "#F8333C",           
+              waveOutlineColor: "#F8333C",
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
               name: "GT Rhythm (Strero)",
               gain: 0.3,
-              waveOutlineColor: "#FCAB10", 
+              waveOutlineColor: "#FCAB10",
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
               name: "GT Rhythm (Mono)",
               gain: 0.3,
               // waveOutlineColor: "#FCAB10",
-              stereoPan:0.7
+              stereoPan: 0.7
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
@@ -267,7 +281,7 @@ function MainPage() {
               name: "GT 3",
               gain: 0.4,
               // waveOutlineColor: "#FCAB10",
-              stereoPan: -0.7,            
+              stereoPan: -0.7,
             },
             {
               src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
@@ -286,7 +300,7 @@ function MainPage() {
               name: "Vocal",
               gain: 0.5,
               waveOutlineColor: "#DBD5B5",
-             
+
             },
           ])
           .then(function () {
@@ -349,88 +363,90 @@ function MainPage() {
             "bg-white bg-opacity-50 backdrop-blur-md w-screen h-14 flex justify-center items-center gap-7 box-border border-b sticky top-0 z-20 "
           }
         >
-          <button
-            className={"border border-black w-8 h-8"}
-            onClick={handlePause}
-          >
-            <i className="fa-solid fa-pause "></i>
-          </button>
-          <button
-            className={"border border-black w-8 h-8"}
-            onClick={handlePlay}
-          >
-            <i className={"fa-solid fa-play "}></i>
-          </button>
-          <button
-            className={"border border-black w-8 h-8"}
-            onClick={handleStop}
-          >
-            <i className="fa-solid fa-stop "></i>
-          </button>
-          <button
-            className={"border border-black w-8 h-8"}
-            onClick={() => {
-              ee.emit("rewind");
-            }}
-          >
-            <i className="fa-solid fa-backward "></i>
-          </button>
-          <button
-            className={"border border-black w-8 h-8"}
-            onClick={() => {
-              ee.emit("fastforward");
-            }}
-          >
-            <i className="fa-solid fa-forward "></i>
-          </button>
-          <button
-            className={"border btn-record border-black w-8 h-8"}
-            onClick={handleRecord}
-            disabled={isRecording}
-          >
-            <i className="fa-solid fa-microphone "></i>
-          </button>
-          <button
-            className={"border border-black w-8 h-8"}
-            onClick={() => {
-              ee.emit("zoomin");
-            }}
-          >
-            <i className="fa-solid fa-magnifying-glass-plus "></i>
-          </button>
-          <button
-            className={"border border-black w-8 h-8"}
-            onClick={() => {
-              ee.emit("zoomout");
-            }}
-          >
-            <i className="fa-solid fa-magnifying-glass-minus "></i>
-          </button>
 
-          <div className="flex border border-black gap-1 h-8 items-center px-1">
-            <i className="fa-solid fa-sliders fa-lg"></i>
+          <div className="flex gap-2">
+            <button onClick={handlePause} >
+              <Pause />
+            </button>
+            <button onClick={handlePlay}>
+              <Play />
+            </button>
+            <button onClick={handleStop} >
+              <Square />
+            </button>
+            <button onClick={handleRewind}>
+              <Rewind />
+            </button>
+            <button onClick={handleFastforward}>
+              <FastForward />
+            </button>
+            <button
+              id="record-button"
+              onClick={handleRecord}
+              disabled={isRecording}
+            >
+              <Circle color="red" fill="red" />
+            </button>
+            <button onClick={handleZoomIn}>
+              < ZoomIn />
+            </button>
+            <button onClick={handleZoomOut}>
+              <ZoomOut />
+            </button>
+          </div>
+
+          <div className="flex gap-2">
+            <button onClick={stateCursor} > 
+              <MousePointer2 />
+              <p>Cursor</p>
+            </button>
+
+            <button onClick={stateSelect}>
+              <Brackets />
+              <p>Select</p>
+            </button>
+
+            <button onClick={stateShift}>
+              <MoveHorizontal />
+              <p>Shift</p>
+            </button>
+
+            <button onClick={stateFadeIn}>
+              <Spline />
+              <p>Fade-In</p>
+            </button>
+            
+            <button onClick={stateFadeOut}>
+              <Spline /> 
+              <p>Fade-Out</p>
+            </button>
+
+          </div>
+
+          <div className="flex gap-1 h-8 items-center px-1">
+            <SlidersHorizontal />
             <input
               type="range"
               id="masterVolume"
               name="masterVolume"
-              min="-100"
+              min="0"
               max="100"
               value={masterVolume}
               onChange={handleMasterVolChange}
             />
           </div>
 
-          <div id="meterConatiner">
+          <div id="meterConatiner" className=" flex gap-1 items-center">
+            <TriangleRight />
             <canvas id="meterCanvas" className="w-40 h-4 border-2 border-dashed"></canvas>
           </div>
 
           <button
-            className={"border border-black w-8 h-8"}
             onClick={() => {
               ee.emit("startaudiorendering", "wav");
             }}
           >
-            <i className="fa-solid fa-cloud-arrow-down "></i>
+            <Download />
           </button>
 
         </div>
