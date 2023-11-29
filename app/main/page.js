@@ -8,7 +8,7 @@ import * as Tone from "tone";
 import { saveAs } from "file-saver";
 
 import {
-  Pause, Play, Square, Circle, ZoomIn, ZoomOut, SlidersHorizontal, TriangleRight, Download, Rewind, FastForward, MousePointer2, Brackets, MoveHorizontal,Spline
+  Pause, Play, Square, Circle, ZoomIn, ZoomOut, SlidersHorizontal, TriangleRight, Download, Rewind, FastForward, MousePointer2, Brackets, MoveHorizontal, Spline
 } from "lucide-react";
 
 function MainPage() {
@@ -49,22 +49,21 @@ function MainPage() {
       const mappedValue = (clamped - lowerBound) / (upperBound - lowerBound) * 300;
       const Width = Math.max(0, Math.min(300, mappedValue)).toFixed(1);
 
-      console.log(clamped);
-
       meterCtx.clearRect(0, 0, meterWidth, meterHeight);
       meterCtx.fillStyle = meterGradient;
       meterCtx.fillRect(0, 0, Width, meterHeight);
       requestAnimationFrame(logMasterVolume);
-
     };
     requestAnimationFrame(logMasterVolume);
-
   };
 
   useEffect(() => {
     setToneCtx(Tone.getContext());
-  }, []);
+    startVolumeMonitoring();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
+  
   const handleMasterVolChange = (e) => {
     const newVolume = parseInt(e.target.value, 10);
     setMasterVolume(newVolume);
@@ -125,7 +124,6 @@ function MainPage() {
   const handlePlay = () => {
     console.log("playing");
     ee.emit("play");
-    startVolumeMonitoring();
   };
 
   const handlePause = () => {
@@ -145,7 +143,7 @@ function MainPage() {
   const handleFastforward = () => ee.emit("fastforward");
   const stateCursor = () => ee.emit("statechange", "cursor");
   const stateSelect = () => ee.emit("statechange", "select");
-  const stateFadeIn = () => ee.emit("statechange","fadein")
+  const stateFadeIn = () => ee.emit("statechange", "fadein")
   const stateFadeOut = () => ee.emit("statechange", "fadeout")
   const stateShift = () => ee.emit("statechange", "shift")
 
@@ -190,6 +188,7 @@ function MainPage() {
             isContinuousPlay: true,
             linkEndpoints: true,
             timescale: true,
+            exclSolo: true,
             state: "cursor",
             seekStyle: "fill",
             colors: {
@@ -396,7 +395,7 @@ function MainPage() {
           </div>
 
           <div className="flex gap-2">
-            <button onClick={stateCursor} > 
+            <button onClick={stateCursor} >
               <MousePointer2 />
               <p>Cursor</p>
             </button>
@@ -415,9 +414,9 @@ function MainPage() {
               <Spline />
               <p>Fade-In</p>
             </button>
-            
+
             <button onClick={stateFadeOut}>
-              <Spline /> 
+              <Spline />
               <p>Fade-Out</p>
             </button>
 

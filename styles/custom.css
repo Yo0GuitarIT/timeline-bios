@@ -7,15 +7,15 @@
   --wp-btn-danger-background-hover-color: #c82333;
   --wp-btn-danger-border-hover-color: #bd2130;
   --wp-btn-danger-background-color: #fff;
-  --wp-btn-danger-border-color: #dc3545;
+  --wp-btn-danger-border-color: gray;
   --wp-btn-danger-focus-color: rgba(225, 83, 97, 0.5);
-  --wp-btn-danger-color: #dc3545;
+  --wp-btn-danger-color: gray;
   --wp-btn-info-background-hover-color: #138496;
   --wp-btn-info-border-hover-color: #117a8b;
   --wp-btn-info-background-color: #fff;
-  --wp-btn-info-border-color: #17a2b8;
+  --wp-btn-info-border-color: gray;
   --wp-btn-info-focus-color: rgba(58, 176, 195, 0.5);
-  --wp-btn-info-color: #17a2b8;
+  --wp-btn-info-color: gray;
   --wp-fade-background-color: rgba(0, 0, 0, 0.1);
   --wp-channel-color: #424b54;
   --wp-channel-progress-color: lightgray;
@@ -24,13 +24,19 @@
   --wp-selection-point-color: red;
   --wp-tracks-container-background-color: #efefef;
   --wp-range-slider-label-color: black;
-  --wp-range-slider-color: goldenrod;
-  --wp-range-slider-focus-color: black;
+  --wp-range-slider-color: rgb(0, 0, 0);
+  --wp-range-slider-focus-color: rgb(0, 0, 0);
   --wp-range-slider-background-color: #ddd;
   --wp-range-slider-background-focus-color: #bbb;
   --wp-annotation-box-border-color: grey;
   --wp-annotation-current-background-color: #ebf4f6;
   --wp-annotation-icon-hover-color: orange;
+}
+
+@media (prefers-color-scheme: light){
+  :root{
+    --wp-controls-background-color: #ff7878;
+  }
 }
 
 .playlist {
@@ -217,7 +223,7 @@
 .playlist .controls label {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
   text-rendering: auto;
@@ -230,14 +236,14 @@
 
 .playlist .controls label:before {
   color: var(--wp-range-slider-label-color);
-  font-size: 18px;
+  /* font-size: 18px; */
   padding-right: 5px;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .playlist .controls label:after {
   color: var(--wp-range-slider-label-color);
-  font-size: 18px;
+  /* font-size: 18px; */
   padding-left: 5px;
 }
 
@@ -250,10 +256,12 @@
 }
 
 .playlist .controls label.stereopan:before {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   content: "L";
 }
 
 .playlist .controls label.stereopan:after {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   content: "R";
 }
 
