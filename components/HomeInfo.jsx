@@ -46,10 +46,10 @@ function HomeInfo() {
           </div>
         </div>
 
-        <div
+        {/* <div
           id="first-section"
           className=" h-screen bg-slate-300 flex items-center justify-center"
-        ></div>
+        ></div> */}
       </div>
     </div>
   );

@@ -1,10 +1,12 @@
 import { Inter } from 'next/font/google'
+import { ThemeProvider } from "@/components/theme-provider"
+
 import "@/styles/css/all.css"
 // import "waveform-playlist/styles/playlist.css"
 import './globals.css'
 import "@/styles/custom.css"
 
-const inter = Inter({ subsets: ['latin']})
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Timelineβios',
@@ -13,8 +15,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="!scroll-smooth">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className="!scroll-smooth" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider >
+      </body>
     </html>
   )
 }
