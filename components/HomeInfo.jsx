@@ -29,7 +29,7 @@ function HomeInfo() {
 
             <p className="text-2xl">
               Experience a powerful online Digital Audio Workstation (DAW) at
-              TimelineBios.
+              timelineβίος.
               <br />
               Elevate your music editing game with user-friendly tools designed
               to inspire creativity.

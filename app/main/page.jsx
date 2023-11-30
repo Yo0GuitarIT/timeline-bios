@@ -2,19 +2,41 @@
 
 import React, { useCallback, useState, useRef, useEffect } from "react";
 import Image from "next/image";
+
+import Timelinebios from "@/components/TittleTimelinebios";
+
 import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
 import * as Tone from "tone";
 import { saveAs } from "file-saver";
 
 import {
-  Pause, Play, Square, Circle, ZoomIn, ZoomOut, SlidersHorizontal, TriangleRight, Download, Rewind, FastForward, MousePointer2, Brackets, MoveHorizontal, Spline
+  ArrowBigRightDash, 
+  Pause,
+  Play,
+  Square,
+  Circle,
+  ZoomIn,
+  ZoomOut,
+  SlidersHorizontal,
+  TriangleRight,
+  Download,
+  Rewind,
+  FastForward,
+  MousePointer2,
+  Brackets,
+  MoveHorizontal,
+  Spline,
 } from "lucide-react";
+
+import loadImg from "@/public/Pulse-1s-200px.svg";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 
 function MainPage() {
   const [ee] = useState(new EventEmitter());
   const [toneCtx, setToneCtx] = useState(null);
-  const [masterVolume, setMasterVolume] = useState(100);
+  const [masterVolume, setMasterVolume] = useState([100]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
@@ -46,7 +68,8 @@ function MainPage() {
       const dBu = dBFS + 18;
       const clamped = clamp(dBu, lowerBound, upperBound).toFixed(1);
 
-      const mappedValue = (clamped - lowerBound) / (upperBound - lowerBound) * 300;
+      const mappedValue =
+        ((clamped - lowerBound) / (upperBound - lowerBound)) * 300;
       const Width = Math.max(0, Math.min(300, mappedValue)).toFixed(1);
 
       meterCtx.clearRect(0, 0, meterWidth, meterHeight);
@@ -60,12 +83,10 @@ function MainPage() {
   useEffect(() => {
     setToneCtx(Tone.getContext());
     startVolumeMonitoring();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  
-  const handleMasterVolChange = (e) => {
-    const newVolume = parseInt(e.target.value, 10);
+  const handleMasterVolChange = (newVolume) => {
     setMasterVolume(newVolume);
     ee.emit("mastervolumechange", newVolume);
   };
@@ -143,9 +164,9 @@ function MainPage() {
   const handleFastforward = () => ee.emit("fastforward");
   const stateCursor = () => ee.emit("statechange", "cursor");
   const stateSelect = () => ee.emit("statechange", "select");
-  const stateFadeIn = () => ee.emit("statechange", "fadein")
-  const stateFadeOut = () => ee.emit("statechange", "fadeout")
-  const stateShift = () => ee.emit("statechange", "shift")
+  const stateFadeIn = () => ee.emit("statechange", "fadein");
+  const stateFadeOut = () => ee.emit("statechange", "fadeout");
+  const stateShift = () => ee.emit("statechange", "shift");
 
   const container = useCallback(
     (node) => {
@@ -249,58 +270,57 @@ function MainPage() {
               gain: 0.5,
               waveOutlineColor: "#44AF69",
             },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
-              name: "Bass",
-              gain: 1,
-              waveOutlineColor: "#F8333C",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
-              name: "GT Rhythm (Strero)",
-              gain: 0.3,
-              waveOutlineColor: "#FCAB10",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
-              name: "GT Rhythm (Mono)",
-              gain: 0.3,
-              // waveOutlineColor: "#FCAB10",
-              stereoPan: 0.7
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
-              name: "GT 2",
-              gain: 0.5,
-              // waveOutlineColor: "#FCAB10",
-              stereoPan: -0.8,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
-              name: "GT 3",
-              gain: 0.4,
-              // waveOutlineColor: "#FCAB10",
-              stereoPan: -0.7,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
-              name: "Guitar Solo",
-              gain: 0.3,
-              waveOutlineColor: "#F5CAC3",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
-              name: "Hammond",
-              gain: 1,
-              waveOutlineColor: "#2B9EB3",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
-              name: "Vocal",
-              gain: 0.5,
-              waveOutlineColor: "#DBD5B5",
-
-            },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
+            //   name: "Bass",
+            //   gain: 1,
+            //   waveOutlineColor: "#F8333C",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
+            //   name: "GT Rhythm (Strero)",
+            //   gain: 0.3,
+            //   waveOutlineColor: "#FCAB10",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
+            //   name: "GT Rhythm (Mono)",
+            //   gain: 0.3,
+            //   // waveOutlineColor: "#FCAB10",
+            //   stereoPan: 0.7,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
+            //   name: "GT 2",
+            //   gain: 0.5,
+            //   // waveOutlineColor: "#FCAB10",
+            //   stereoPan: -0.8,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
+            //   name: "GT 3",
+            //   gain: 0.4,
+            //   // waveOutlineColor: "#FCAB10",
+            //   stereoPan: -0.7,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
+            //   name: "Guitar Solo",
+            //   gain: 0.3,
+            //   waveOutlineColor: "#F5CAC3",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
+            //   name: "Hammond",
+            //   gain: 1,
+            //   waveOutlineColor: "#2B9EB3",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
+            //   name: "Vocal",
+            //   gain: 0.5,
+            //   waveOutlineColor: "#DBD5B5",
+            // },
           ])
           .then(function () {
             ee.emit("loadprogress", 100, "all tracks ; )");
@@ -337,16 +357,16 @@ function MainPage() {
       <div id="load-data" className="w-screen h-screen absolute">
         <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full p-4 z-30">
           <div className="flex items-center">
-            <Image
-              src={"Pulse-1s-200px.svg"}
-              alt="loading"
-              width={30}
-              height={30}
-            ></Image>
+            <Image src={loadImg} alt="loading" width={20} height={20}></Image>
             Loaded{loadProgress}%
           </div>
-          <p>{`=> Loading ${loadInfo}`}</p>
-          <div className="border-2 border-dashed rounded border-blue-900">
+
+          <div className="flex items-center">
+            <ArrowBigRightDash strokeWidth={1} />
+            <p>{`Loading ${loadInfo}`}</p>
+          </div>
+
+          <div className="mt-1 rounded border-2 border-collapse">
             <div
               className="bg-yellow-500 h-5 rounded"
               style={{ width: `${loadProgress}%` }}
@@ -355,99 +375,115 @@ function MainPage() {
         </div>
       </div>
 
-      <main id="main-play" className={"hidden absolute opacity-0"}>
+      <main
+        id="main-play"
+        className={" opacity-0 flex flex-col relative min-h-screen"}
+      >
         <div
           id="navbar"
-          className={
-            "bg-white bg-opacity-50 backdrop-blur-md w-screen h-14 flex justify-center items-center gap-7 box-border border-b sticky top-0 z-20 "
-          }
+          className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
         >
+          <div className="container h-14 flex items-center justify-between gap-px">
+            <div className="hidden md:flex">
+              <Timelinebios/>
+            </div>
 
-          <div className="flex gap-2">
-            <button onClick={handlePause} >
-              <Pause />
-            </button>
-            <button onClick={handlePlay}>
-              <Play />
-            </button>
-            <button onClick={handleStop} >
-              <Square />
-            </button>
-            <button onClick={handleRewind}>
-              <Rewind />
-            </button>
-            <button onClick={handleFastforward}>
-              <FastForward />
-            </button>
-            <button
-              id="record-button"
-              onClick={handleRecord}
-              disabled={isRecording}
+            <div className="flex items-center justify-between">
+              <div className="flex gap-2 border rounded p-1">
+                <Button variant="outline" size="icon" onClick={handlePause}>
+                  <Pause />
+                </Button>
+                <Button variant="outline" size="icon" onClick={handlePlay}>
+                  <Play />
+                </Button>
+                <Button variant="outline" size="icon" onClick={handleStop}>
+                  <Square />
+                </Button>
+                <Button variant="outline" size="icon" onClick={handleRewind}>
+                  <Rewind />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handleFastforward}
+                >
+                  <FastForward />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  id="record-Button"
+                  onClick={handleRecord}
+                  disabled={isRecording}
+                >
+                  <Circle color="red" fill="red" />
+                </Button>
+                <Button variant="outline" size="icon" onClick={handleZoomIn}>
+                  <ZoomIn />
+                </Button>
+                <Button variant="outline" size="icon" onClick={handleZoomOut}>
+                  <ZoomOut />
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex gap-2 border rounded p-1">
+                <div className="flex gap-2">
+                  <Button variant="outline" size="icon" onClick={stateCursor}>
+                    <MousePointer2 />
+                  </Button>
+
+                  <Button variant="outline" size="icon" onClick={stateSelect}>
+                    <Brackets />
+                  </Button>
+
+                  <Button variant="outline" size="icon" onClick={stateShift}>
+                    <MoveHorizontal />
+                  </Button>
+
+                  <Button variant="outline" size="icon" onClick={stateFadeIn}>
+                    <Spline />
+                  </Button>
+
+                  <Button variant="outline" size="icon" onClick={stateFadeOut}>
+                    <Spline />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-2 h-8 items-center px-1">
+              <SlidersHorizontal />
+              <Slider
+                className="w-36"
+                id="masterVolume"
+                name="masterVolume"
+                defaultValue={masterVolume}
+                onValueChange={handleMasterVolChange}
+                max={100}
+                step={1}
+              />
+            </div>
+
+            <div id="meterConatiner" className=" flex gap-1 items-center">
+              <TriangleRight />
+              <canvas
+                id="meterCanvas"
+                className="w-40 h-4 border-2 border-dashed"
+              ></canvas>
+            </div>
+
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => {
+                ee.emit("startaudiorendering", "wav");
+              }}
             >
-              <Circle color="red" fill="red" />
-            </button>
-            <button onClick={handleZoomIn}>
-              < ZoomIn />
-            </button>
-            <button onClick={handleZoomOut}>
-              <ZoomOut />
-            </button>
+              <Download />
+            </Button>
           </div>
-
-          <div className="flex gap-2">
-            <button onClick={stateCursor} >
-              <MousePointer2 />
-              <p>Cursor</p>
-            </button>
-
-            <button onClick={stateSelect}>
-              <Brackets />
-              <p>Select</p>
-            </button>
-
-            <button onClick={stateShift}>
-              <MoveHorizontal />
-              <p>Shift</p>
-            </button>
-
-            <button onClick={stateFadeIn}>
-              <Spline />
-              <p>Fade-In</p>
-            </button>
-
-            <button onClick={stateFadeOut}>
-              <Spline />
-              <p>Fade-Out</p>
-            </button>
-
-          </div>
-
-          <div className="flex gap-1 h-8 items-center px-1">
-            <SlidersHorizontal />
-            <input
-              type="range"
-              id="masterVolume"
-              name="masterVolume"
-              min="0"
-              max="100"
-              value={masterVolume}
-              onChange={handleMasterVolChange}
-            />
-          </div>
-
-          <div id="meterConatiner" className=" flex gap-1 items-center">
-            <TriangleRight />
-            <canvas id="meterCanvas" className="w-40 h-4 border-2 border-dashed"></canvas>
-          </div>
-
-          <button
-            onClick={() => {
-              ee.emit("startaudiorendering", "wav");
-            }}
-          >
-            <Download />
-          </button>
-
         </div>
 
         <div
