@@ -2,9 +2,8 @@ import { Inter } from 'next/font/google'
 import { ThemeProvider } from "@/components/theme-provider"
 
 import "@/styles/css/all.css"
-// import "waveform-playlist/styles/playlist.css"
-import './globals.css'
 import "@/styles/custom.css"
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 

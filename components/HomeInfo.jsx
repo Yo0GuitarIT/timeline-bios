@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 function HomeInfo() {
   return (
     <div className="flex-1 ">
-      <div className="container relative">
+      <div className="relative">
         <div className="relative">
           <Image
             src={boyYell}
@@ -14,7 +14,7 @@ function HomeInfo() {
             placeholder="blur"
             quality={100}
             className="object-cover"
-            style={{ height: "calc(100vh - 56px)" }}
+            // style={{ height: "calc(100vh - 56px)" }}
           />
 
           <div

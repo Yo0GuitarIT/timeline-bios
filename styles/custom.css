@@ -1,7 +1,7 @@
 :root {
   --wp-controls-border-color: #000;
   --wp-controls-background-color: #fff;
-  --wp-mute-solo-color: #343a40;
+  --wp-mute-solo-color: darkgray;
   --wp-mute-solo-hover-color: #fff;
   --wp-mute-solo-focus-color: rgba(52, 58, 64, 0.5);
   --wp-btn-danger-background-hover-color: #c82333;
@@ -19,25 +19,20 @@
   --wp-fade-background-color: rgba(0, 0, 0, 0.1);
   --wp-channel-color: #424b54;
   --wp-channel-progress-color: lightgray;
-  --wp-cursor-color: rgb(255, 255, 255);
+  --wp-cursor-color: #fff;
   --wp-selection-background-color: rgba(0, 0, 0, 0.1);
   --wp-selection-point-color: red;
-  --wp-tracks-container-background-color: #efefef;
+  --wp-tracks-container-background-color: rgba(0, 0, 0, 0);
   --wp-range-slider-label-color: black;
   --wp-range-slider-color: rgb(0, 0, 0);
   --wp-range-slider-focus-color: rgb(0, 0, 0);
-  --wp-range-slider-background-color: #ddd;
+  --wp-range-slider-background-color: #aaa;
   --wp-range-slider-background-focus-color: #bbb;
   --wp-annotation-box-border-color: grey;
   --wp-annotation-current-background-color: #ebf4f6;
   --wp-annotation-icon-hover-color: orange;
 }
 
-@media (prefers-color-scheme: light){
-  :root{
-    --wp-controls-background-color: #ff7878;
-  }
-}
 
 .playlist {
   margin: 2em 0;
@@ -68,7 +63,7 @@
 }
 
 .playlist .btn-outline-dark {
-  color: var(--wp-mute-solo-color);
+  /* color: var(--wp-mute-solo-color); */
   border-color: var(--wp-mute-solo-color);
 }
 
@@ -192,11 +187,20 @@
 }
 
 .playlist .controls {
-  background: var(--wp-controls-background-color);
+  color:#343a40;
+  background: lightgray;
   text-align: center;
   border: 1px solid var(--wp-controls-border-color);
   border-radius: 0.2rem;
 }
+
+input.volume-slider {
+background-color: lightgray;
+}
+
+input.stereopan-slider {
+  background-color: lightgray;
+  }
 
 .playlist .controls .track-header {
   overflow: hidden;
@@ -422,4 +426,16 @@
 
 .playlist .annotations .current {
   background-color: var(--wp-annotation-current-background-color);
+}
+
+.track-header{
+  background-color: #747474;
+}
+
+.track-header span{
+color: rgb(226, 220, 181);
+}
+
+.playlist-overlay {
+  border: 1px solid rgb(113, 113, 113);
 }

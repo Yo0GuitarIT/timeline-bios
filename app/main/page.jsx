@@ -4,6 +4,7 @@ import React, { useCallback, useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
 import Timelinebios from "@/components/TittleTimelinebios";
+import { ModeToggle } from "@/components/ModeToggle";
 
 import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
@@ -222,6 +223,7 @@ function MainPage() {
               width: 200,
             },
             zoomLevels: [256, 512, 1024, 2048, 4096, 8192],
+            
             effects: function (graphEnd, masterGainNode, isOffline) {
               const volume = new Tone.Volume(0).toDestination();
 
@@ -270,57 +272,57 @@ function MainPage() {
               gain: 0.5,
               waveOutlineColor: "#44AF69",
             },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
-            //   name: "Bass",
-            //   gain: 1,
-            //   waveOutlineColor: "#F8333C",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
-            //   name: "GT Rhythm (Strero)",
-            //   gain: 0.3,
-            //   waveOutlineColor: "#FCAB10",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
-            //   name: "GT Rhythm (Mono)",
-            //   gain: 0.3,
-            //   // waveOutlineColor: "#FCAB10",
-            //   stereoPan: 0.7,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
-            //   name: "GT 2",
-            //   gain: 0.5,
-            //   // waveOutlineColor: "#FCAB10",
-            //   stereoPan: -0.8,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
-            //   name: "GT 3",
-            //   gain: 0.4,
-            //   // waveOutlineColor: "#FCAB10",
-            //   stereoPan: -0.7,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
-            //   name: "Guitar Solo",
-            //   gain: 0.3,
-            //   waveOutlineColor: "#F5CAC3",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
-            //   name: "Hammond",
-            //   gain: 1,
-            //   waveOutlineColor: "#2B9EB3",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
-            //   name: "Vocal",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#DBD5B5",
-            // },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
+              name: "Bass",
+              gain: 1,
+              waveOutlineColor: "#F8333C",
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
+              name: "GT Rhythm (Strero)",
+              gain: 0.3,
+              waveOutlineColor: "#FCAB10",
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
+              name: "GT Rhythm (Mono)",
+              gain: 0.3,
+              // waveOutlineColor: "#FCAB10",
+              stereoPan: 0.7,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
+              name: "GT 2",
+              gain: 0.5,
+              // waveOutlineColor: "#FCAB10",
+              stereoPan: -0.8,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
+              name: "GT 3",
+              gain: 0.4,
+              // waveOutlineColor: "#FCAB10",
+              stereoPan: -0.7,
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
+              name: "Guitar Solo",
+              gain: 0.3,
+              waveOutlineColor: "#F5CAC3",
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
+              name: "Hammond",
+              gain: 1,
+              waveOutlineColor: "#2B9EB3",
+            },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
+              name: "Vocal",
+              gain: 0.5,
+              waveOutlineColor: "#DBD5B5",
+            },
           ])
           .then(function () {
             ee.emit("loadprogress", 100, "all tracks ; )");
@@ -362,7 +364,7 @@ function MainPage() {
           </div>
 
           <div className="flex items-center">
-            <ArrowBigRightDash strokeWidth={1} />
+            <ArrowBigRightDash strokeWidth={1.5} />
             <p>{`Loading ${loadInfo}`}</p>
           </div>
 
@@ -377,11 +379,11 @@ function MainPage() {
 
       <main
         id="main-play"
-        className={" opacity-0 flex flex-col relative min-h-screen"}
+        className={"px-4 opacity-0 flex flex-col relative min-h-screen items-center"}
       >
         <div
           id="navbar"
-          className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+          className="w-full sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
         >
           <div className="container h-14 flex items-center justify-between gap-px">
             <div className="hidden md:flex">
@@ -391,23 +393,23 @@ function MainPage() {
             <div className="flex items-center justify-between">
               <div className="flex gap-2 border rounded p-1">
                 <Button variant="outline" size="icon" onClick={handlePause}>
-                  <Pause />
+                  <Pause strokeWidth={1.5} />
                 </Button>
                 <Button variant="outline" size="icon" onClick={handlePlay}>
-                  <Play />
+                  <Play strokeWidth={1.5} />
                 </Button>
                 <Button variant="outline" size="icon" onClick={handleStop}>
-                  <Square />
+                  <Square strokeWidth={1.5} />
                 </Button>
                 <Button variant="outline" size="icon" onClick={handleRewind}>
-                  <Rewind />
+                  <Rewind strokeWidth={1.5} />
                 </Button>
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={handleFastforward}
                 >
-                  <FastForward />
+                  <FastForward strokeWidth={1.5} />
                 </Button>
                 <Button
                   variant="outline"
@@ -419,10 +421,10 @@ function MainPage() {
                   <Circle color="red" fill="red" />
                 </Button>
                 <Button variant="outline" size="icon" onClick={handleZoomIn}>
-                  <ZoomIn />
+                  <ZoomIn  strokeWidth={1.5}/>
                 </Button>
                 <Button variant="outline" size="icon" onClick={handleZoomOut}>
-                  <ZoomOut />
+                  <ZoomOut strokeWidth={1.5} />
                 </Button>
               </div>
             </div>
@@ -483,17 +485,21 @@ function MainPage() {
             >
               <Download />
             </Button>
+
+            <ModeToggle/>
+
+            
           </div>
         </div>
 
         <div
-          className={"w-screen box-border relative -top-7 px-4"}
+          className={"w-full box-border relative -top-7"}
           ref={container}
         ></div>
 
         <div
           className={
-            "track-drop w-72 h-20 box-border border-2 border-dashed border-yellow-500 text-center relative left-1/2 -translate-x-1/2 mb-8"
+            "track-drop w-72 h-20 box-border border-2 border-dashed border-yellow-500 text-center mb-8"
           }
           onDragEnter={(e) => handleDragEnter(e)}
           onDragOver={(e) => handleDragOver(e)}
