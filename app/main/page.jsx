@@ -12,14 +12,13 @@ import * as Tone from "tone";
 import { saveAs } from "file-saver";
 
 import {
-  ArrowBigRightDash, 
+  ArrowBigRightDash,
   Pause,
   Play,
   Square,
   Circle,
   ZoomIn,
   ZoomOut,
-  SlidersHorizontal,
   TriangleRight,
   Download,
   Rewind,
@@ -28,6 +27,9 @@ import {
   Brackets,
   MoveHorizontal,
   Spline,
+  Volume2,
+  Repeat2,
+  ScissorsSquare,
 } from "lucide-react";
 
 import loadImg from "@/public/Pulse-1s-200px.svg";
@@ -37,12 +39,19 @@ import { Slider } from "@/components/ui/slider";
 function MainPage() {
   const [ee] = useState(new EventEmitter());
   const [toneCtx, setToneCtx] = useState(null);
-  const [masterVolume, setMasterVolume] = useState([100]);
+  const [masterVolume, setMasterVolume] = useState([80]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [isLoop, setIsLoop] = useState(false);
 
   const setUpChain = useRef();
+
+  useEffect(() => {
+    setToneCtx(Tone.getContext());
+    startVolumeMonitoring();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const clamp = (value, min, max) => {
     return Math.min(max, Math.max(min, value));
@@ -80,12 +89,6 @@ function MainPage() {
     };
     requestAnimationFrame(logMasterVolume);
   };
-
-  useEffect(() => {
-    setToneCtx(Tone.getContext());
-    startVolumeMonitoring();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleMasterVolChange = (newVolume) => {
     setMasterVolume(newVolume);
@@ -159,6 +162,20 @@ function MainPage() {
     ee.emit("stop");
   };
 
+  const handleTrim = () => {
+    ee.emit("trim");
+  };
+
+  const handleLoop = () => {
+    setIsLoop(!isLoop);
+    playoutPromises = playlist.play(startTime, endTime);
+    if (isLoop) {
+      console.log("looping");
+    } else {
+      console.log("Stop looping");
+    }
+  };
+
   const handleZoomIn = () => ee.emit("zoomin");
   const handleZoomOut = () => ee.emit("zoomout");
   const handleRewind = () => ee.emit("rewind");
@@ -223,7 +240,7 @@ function MainPage() {
               width: 200,
             },
             zoomLevels: [256, 512, 1024, 2048, 4096, 8192],
-            
+
             effects: function (graphEnd, masterGainNode, isOffline) {
               const volume = new Tone.Volume(0).toDestination();
 
@@ -379,86 +396,23 @@ function MainPage() {
 
       <main
         id="main-play"
-        className={"px-4 opacity-0 flex flex-col relative min-h-screen items-center"}
+        className={
+          "opacity-0 flex flex-col relative h-screen items-center"
+        }
       >
         <div
           id="navbar"
-          className="w-full sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+          className="w-full flex items-center sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
         >
           <div className="container h-14 flex items-center justify-between gap-px">
             <div className="hidden md:flex">
-              <Timelinebios/>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex gap-2 border rounded p-1">
-                <Button variant="outline" size="icon" onClick={handlePause}>
-                  <Pause strokeWidth={1.5} />
-                </Button>
-                <Button variant="outline" size="icon" onClick={handlePlay}>
-                  <Play strokeWidth={1.5} />
-                </Button>
-                <Button variant="outline" size="icon" onClick={handleStop}>
-                  <Square strokeWidth={1.5} />
-                </Button>
-                <Button variant="outline" size="icon" onClick={handleRewind}>
-                  <Rewind strokeWidth={1.5} />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleFastforward}
-                >
-                  <FastForward strokeWidth={1.5} />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  id="record-Button"
-                  onClick={handleRecord}
-                  disabled={isRecording}
-                >
-                  <Circle color="red" fill="red" />
-                </Button>
-                <Button variant="outline" size="icon" onClick={handleZoomIn}>
-                  <ZoomIn  strokeWidth={1.5}/>
-                </Button>
-                <Button variant="outline" size="icon" onClick={handleZoomOut}>
-                  <ZoomOut strokeWidth={1.5} />
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex gap-2 border rounded p-1">
-                <div className="flex gap-2">
-                  <Button variant="outline" size="icon" onClick={stateCursor}>
-                    <MousePointer2 />
-                  </Button>
-
-                  <Button variant="outline" size="icon" onClick={stateSelect}>
-                    <Brackets />
-                  </Button>
-
-                  <Button variant="outline" size="icon" onClick={stateShift}>
-                    <MoveHorizontal />
-                  </Button>
-
-                  <Button variant="outline" size="icon" onClick={stateFadeIn}>
-                    <Spline />
-                  </Button>
-
-                  <Button variant="outline" size="icon" onClick={stateFadeOut}>
-                    <Spline />
-                  </Button>
-                </div>
-              </div>
+              <Timelinebios />
             </div>
 
             <div className="flex gap-2 h-8 items-center px-1">
-              <SlidersHorizontal />
+              <Volume2 />
               <Slider
-                className="w-36"
+                className="w-32"
                 id="masterVolume"
                 name="masterVolume"
                 defaultValue={masterVolume}
@@ -472,9 +426,85 @@ function MainPage() {
               <TriangleRight />
               <canvas
                 id="meterCanvas"
-                className="w-40 h-4 border-2 border-dashed"
+                className="w-40 h-4 border-2 border-dashed border-yellow-400"
               ></canvas>
             </div>
+
+            <ModeToggle />
+          </div>
+        </div>
+
+        <div
+          className={" w-full box-border relative -top-7"}
+          // style={{ height: "calc(100vh - 60px)" }}
+          ref={container}
+        ></div>
+
+        <div
+          className="w-full h-14 flex justify-center border-t items-center sticky bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex gap-2 border rounded p-1">
+            <Button variant="outline" size="icon" onClick={handlePause}>
+              <Pause strokeWidth={1.5} />
+            </Button>
+            <Button variant="outline" size="icon" onClick={handlePlay}>
+              <Play strokeWidth={1.5} />
+            </Button>
+            <Button variant="outline" size="icon" onClick={handleStop}>
+              <Square strokeWidth={1.5} />
+            </Button>
+            <Button variant="outline" size="icon" onClick={handleRewind}>
+              <Rewind strokeWidth={1.5} />
+            </Button>
+            <Button variant="outline" size="icon" onClick={handleFastforward}>
+              <FastForward strokeWidth={1.5} />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              id="record-Button"
+              onClick={handleRecord}
+              disabled={isRecording}
+            >
+              <Circle color="red" fill="red" />
+            </Button>
+            <Button variant="outline" size="icon" onClick={handleZoomIn}>
+              <ZoomIn strokeWidth={1.5} />
+            </Button>
+            <Button variant="outline" size="icon" onClick={handleZoomOut}>
+              <ZoomOut strokeWidth={1.5} />
+            </Button>
+
+            <Button variant="outline" size="icon" onClick={stateCursor}>
+              <MousePointer2 />
+            </Button>
+
+            <Button variant="outline" size="icon" onClick={stateSelect}>
+              <Brackets />
+            </Button>
+
+            <Button variant="outline" size="icon" onClick={stateShift}>
+              <MoveHorizontal />
+            </Button>
+
+            <Button variant="outline" size="icon" onClick={stateFadeIn}>
+              <Spline />
+            </Button>
+
+            <Button variant="outline" size="icon" onClick={stateFadeOut}>
+              <Spline />
+            </Button>
+
+            <Button variant="outline" size="icon" onClick={handleTrim}>
+              <ScissorsSquare strokeWidth={1.5} />
+            </Button>
+
+            <Button
+              variant={isLoop ? "" : "outline"}
+              size="icon"
+              onClick={handleLoop}
+            >
+              <Repeat2 />
+            </Button>
 
             <Button
               variant="outline"
@@ -485,19 +515,10 @@ function MainPage() {
             >
               <Download />
             </Button>
-
-            <ModeToggle/>
-
-            
           </div>
         </div>
 
-        <div
-          className={"w-full box-border relative -top-7"}
-          ref={container}
-        ></div>
-
-        <div
+        {/* <div
           className={
             "track-drop w-72 h-20 box-border border-2 border-dashed border-yellow-500 text-center mb-8"
           }
@@ -507,7 +528,7 @@ function MainPage() {
           onDrop={(e) => handleDrop(e)}
         >
           Drag Audio here
-        </div>
+        </div> */}
       </main>
     </>
   );
