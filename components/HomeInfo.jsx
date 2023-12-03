@@ -7,14 +7,16 @@ function HomeInfo() {
   return (
     <div className="flex-1 ">
       <div className="relative">
-        <div className="relative">
+        <div
+          className="relative container overflow-hidden"
+          style={{ height: "calc(100vh - 56px)" }}
+        >
           <Image
             src={boyYell}
             alt="Picture of the background"
             placeholder="blur"
             quality={100}
             className="object-cover"
-            // style={{ height: "calc(100vh - 56px)" }}
           />
 
           <div

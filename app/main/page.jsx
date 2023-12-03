@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import Timelinebios from "@/components/TittleTimelinebios";
 import { ModeToggle } from "@/components/ModeToggle";
+import DragDropArea from "@/components/DragDropArea";
 
 import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
@@ -19,7 +20,7 @@ import {
   Circle,
   ZoomIn,
   ZoomOut,
-  TriangleRight,
+  Speaker,
   Download,
   Rewind,
   FastForward,
@@ -100,10 +101,6 @@ function MainPage() {
     e.target.classList.add("drag-enter");
     setLoadProgress(0);
     setLoadInfo("Now");
-
-    const loadData = document.getElementById("load-data");
-    loadData.classList.remove("opacity-0", "duration-1000", "hidden");
-    loadData.classList.add("opacity-70", "duration-500");
   };
 
   const handleDragOver = (e) => {
@@ -113,11 +110,6 @@ function MainPage() {
   const handleDragLeave = (e) => {
     e.preventDefault();
     e.target.classList.remove("drag-enter");
-
-    const loadData = document.getElementById("load-data");
-    loadData.classList.remove("opacity-70");
-
-    loadData.classList.add("opacity-0");
   };
 
   const handleDrop = (e) => {
@@ -128,17 +120,6 @@ function MainPage() {
     for (let i = 0; i < dropEvent.files.length; i++) {
       ee.emit("newtrack", dropEvent.files[i]);
     }
-
-    const loadData = document.getElementById("load-data");
-
-    setTimeout(() => {
-      loadData.classList.remove("opacity-70");
-
-      loadData.classList.add("opacity-0");
-      setTimeout(() => {
-        loadData.classList.add("hidden");
-      }, 500);
-    }, 2000);
   };
 
   const handleRecord = () => {
@@ -396,34 +377,16 @@ function MainPage() {
 
       <main
         id="main-play"
-        className={
-          "opacity-0 flex flex-col relative h-screen items-center"
-        }
+        className={"opacity-0 flex flex-col relative min-h-screen items-center"}
       >
-        <div
-          id="navbar"
-          className="w-full flex items-center sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-        >
-          <div className="container h-14 flex items-center justify-between gap-px">
+        <div className="w-full h-14 flex items-center sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container flex items-center justify-between gap-px">
             <div className="hidden md:flex">
               <Timelinebios />
             </div>
 
-            <div className="flex gap-2 h-8 items-center px-1">
-              <Volume2 />
-              <Slider
-                className="w-32"
-                id="masterVolume"
-                name="masterVolume"
-                defaultValue={masterVolume}
-                onValueChange={handleMasterVolChange}
-                max={100}
-                step={1}
-              />
-            </div>
-
             <div id="meterConatiner" className=" flex gap-1 items-center">
-              <TriangleRight />
+              <Speaker />
               <canvas
                 id="meterCanvas"
                 className="w-40 h-4 border-2 border-dashed border-yellow-400"
@@ -434,15 +397,25 @@ function MainPage() {
           </div>
         </div>
 
-        <div
-          className={" w-full box-border relative -top-7"}
-          // style={{ height: "calc(100vh - 60px)" }}
-          ref={container}
-        ></div>
+        <div className="absolute z-0 w-full h-full box-border py-8 overflow-y-auto">
+          <div className={"w-full box-border"} ref={container}></div>
+        </div>
 
-        <div
-          className="w-full h-14 flex justify-center border-t items-center sticky bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="flex gap-2 border rounded p-1">
+        <div className="w-full h-16 flex justify-around border-t items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex gap-2 h-8 items-center px-1">
+            <Volume2 />
+            <Slider
+              className="w-32"
+              id="masterVolume"
+              name="masterVolume"
+              defaultValue={masterVolume}
+              onValueChange={handleMasterVolChange}
+              max={100}
+              step={1}
+            />
+          </div>
+
+          <div className="flex gap-2 p-1">
             <Button variant="outline" size="icon" onClick={handlePause}>
               <Pause strokeWidth={1.5} />
             </Button>
@@ -516,19 +489,15 @@ function MainPage() {
               <Download />
             </Button>
           </div>
-        </div>
 
-        {/* <div
-          className={
-            "track-drop w-72 h-20 box-border border-2 border-dashed border-yellow-500 text-center mb-8"
-          }
-          onDragEnter={(e) => handleDragEnter(e)}
-          onDragOver={(e) => handleDragOver(e)}
-          onDragLeave={(e) => handleDragLeave(e)}
-          onDrop={(e) => handleDrop(e)}
-        >
-          Drag Audio here
-        </div> */}
+          <DragDropArea
+            handleDragEnter={handleDragEnter}
+            handleDragOver={handleDragOver}
+            handleDragLeave={handleDragLeave}
+            handleDrop={handleDrop}
+            loadProgress={loadProgress}
+          />
+        </div>
       </main>
     </>
   );
