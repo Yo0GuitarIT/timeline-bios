@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 
 function HomeInfo() {
   return (
-    <div className="flex-1 bg-yellow-700">
+    <div className="flex-1">
       <div className="relative ">
 
         <div

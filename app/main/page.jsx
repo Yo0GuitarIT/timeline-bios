@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import Timelinebios from "@/components/TittleTimelinebios";
 import { ModeToggle } from "@/components/ModeToggle";
+import { Input } from "@/components/ui/input";
 import DragDropArea from "@/components/DragDropArea";
 
 import EventEmitter from "events";
@@ -18,24 +19,19 @@ import {
   Play,
   Square,
   Circle,
-  ZoomIn,
-  ZoomOut,
   Speaker,
-  Download,
   Rewind,
   FastForward,
-  MousePointer2,
-  Brackets,
-  MoveHorizontal,
-  Spline,
   Volume2,
-  Repeat2,
-  ScissorsSquare,
+  Upload,
 } from "lucide-react";
 
 import loadImg from "@/public/Pulse-1s-200px.svg";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import ExportButton from "@/components/ExportButton";
+import ViewPannel from "@/components/pannels/ViewPannel";
+import EditPannel from "@/components/pannels/EditPannel";
 
 function MainPage() {
   const [ee] = useState(new EventEmitter());
@@ -44,7 +40,6 @@ function MainPage() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  const [isLoop, setIsLoop] = useState(false);
 
   const setUpChain = useRef();
 
@@ -122,41 +117,30 @@ function MainPage() {
     }
   };
 
+  const handleUploadFile = (e) => {
+    e.preventDefault();
+    const fileInput = document.getElementById("fileInput");
+    const files = fileInput.files;
+    console.log(files);
+    for (let i = 0; i < files.length; i++) {
+      ee.emit("newtrack", files[i]);
+    }
+  };
+
   const handleRecord = () => {
     setIsRecording(true);
     ee.emit("record");
   };
 
-  const handlePlay = () => {
-    console.log("playing");
-    ee.emit("play");
-  };
-
-  const handlePause = () => {
-    console.log("pause");
-    ee.emit("pause");
-  };
-
+  const handlePlay = () => ee.emit("play");
+  const handlePause = () => ee.emit("pause");
+  
   const handleStop = () => {
-    console.log("stoping");
     setIsRecording(false);
     ee.emit("stop");
   };
 
-  const handleTrim = () => {
-    ee.emit("trim");
-  };
-
-  const handleLoop = () => {
-    setIsLoop(!isLoop);
-    playoutPromises = playlist.play(startTime, endTime);
-    if (isLoop) {
-      console.log("looping");
-    } else {
-      console.log("Stop looping");
-    }
-  };
-
+  const handleTrim = () => ee.emit("trim");
   const handleZoomIn = () => ee.emit("zoomin");
   const handleZoomOut = () => ee.emit("zoomout");
   const handleRewind = () => ee.emit("rewind");
@@ -166,6 +150,7 @@ function MainPage() {
   const stateFadeIn = () => ee.emit("statechange", "fadein");
   const stateFadeOut = () => ee.emit("statechange", "fadeout");
   const stateShift = () => ee.emit("statechange", "shift");
+  const handleExport = () => ee.emit("startaudiorendering", "wav");
 
   const container = useCallback(
     (node) => {
@@ -385,6 +370,14 @@ function MainPage() {
               <Timelinebios />
             </div>
 
+            {/* <div className="w-60">
+              <Input
+                placeholder="Project Name"
+                defaultValue="My father Never Loves Me"
+                className="text-center text-md"
+              />
+            </div> */}
+
             <div id="meterConatiner" className=" flex gap-1 items-center">
               <Speaker />
               <canvas
@@ -440,63 +433,40 @@ function MainPage() {
             >
               <Circle color="red" fill="red" />
             </Button>
-            <Button variant="outline" size="icon" onClick={handleZoomIn}>
-              <ZoomIn strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleZoomOut}>
-              <ZoomOut strokeWidth={1.5} />
-            </Button>
-
-            <Button variant="outline" size="icon" onClick={stateCursor}>
-              <MousePointer2 />
-            </Button>
-
-            <Button variant="outline" size="icon" onClick={stateSelect}>
-              <Brackets />
-            </Button>
-
-            <Button variant="outline" size="icon" onClick={stateShift}>
-              <MoveHorizontal />
-            </Button>
-
-            <Button variant="outline" size="icon" onClick={stateFadeIn}>
-              <Spline />
-            </Button>
-
-            <Button variant="outline" size="icon" onClick={stateFadeOut}>
-              <Spline />
-            </Button>
-
-            <Button variant="outline" size="icon" onClick={handleTrim}>
-              <ScissorsSquare strokeWidth={1.5} />
-            </Button>
-
-            <Button
-              variant={isLoop ? "" : "outline"}
-              size="icon"
-              onClick={handleLoop}
-            >
-              <Repeat2 />
-            </Button>
-
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => {
-                ee.emit("startaudiorendering", "wav");
-              }}
-            >
-              <Download />
-            </Button>
           </div>
 
-          <DragDropArea
-            handleDragEnter={handleDragEnter}
-            handleDragOver={handleDragOver}
-            handleDragLeave={handleDragLeave}
-            handleDrop={handleDrop}
-            loadProgress={loadProgress}
+          <ViewPannel
+            handleZoomIn={handleZoomIn}
+            handleZoomOut={handleZoomOut}
           />
+
+          <EditPannel
+          stateCursor={stateCursor}
+          stateSelect={stateSelect}
+          stateShift={stateShift}
+          stateFadeIn={stateFadeIn}
+          stateFadeOut={stateFadeOut}
+          handleTrim={handleTrim}
+          />
+    
+          <div className="flex gap-2 p-1">
+            <div className="flex w-60">
+              <Input id="fileInput" type="file" multiple />
+              <Button size="icon" onClick={handleUploadFile}>
+                <Upload strokeWidth={1.5} />
+              </Button>
+            </div>
+
+            <DragDropArea
+              handleDragEnter={handleDragEnter}
+              handleDragOver={handleDragOver}
+              handleDragLeave={handleDragLeave}
+              handleDrop={handleDrop}
+              loadProgress={loadProgress}
+            />
+          </div>
+
+          <ExportButton handleExport={handleExport} />
         </div>
       </main>
     </>
