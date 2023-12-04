@@ -5,16 +5,20 @@ import { Button } from "./ui/button";
 
 function HomeInfo() {
   return (
-    <div className="flex-1 ">
-      <div className="container relative">
-        <div className="relative">
+    <div className="flex-1 bg-yellow-700">
+      <div className="relative ">
+
+        <div
+          className="relative overflow-hidden flex items-center"
+          style={{ height: "calc(100vh - 56px)" }}
+        >
           <Image
+            
             src={boyYell}
             alt="Picture of the background"
             placeholder="blur"
             quality={100}
-            className="object-cover"
-            style={{ height: "calc(100vh - 56px)" }}
+            className="object-cover w-full h-full"
           />
 
           <div
@@ -36,9 +40,8 @@ function HomeInfo() {
             </p>
             <div className="flex gap-3">
               <Button variant="secondary" asChild>
-                <Link href="#first-section">More Info</Link>
+                <Link href="/authentication">Sign Up</Link>
               </Button>
-
               <Button asChild>
                 <Link href="/main">Get Started</Link>
               </Button>
