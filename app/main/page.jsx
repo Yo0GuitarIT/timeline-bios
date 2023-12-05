@@ -38,6 +38,10 @@ function MainPage() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [uploadMessage, setUploadMessage] = useState(
+    "Click or Drag Audio File Here"
+  );
+  const [uploadButton, setUploadButton] = useState(false);
 
   const setUpChain = useRef();
 
@@ -108,21 +112,28 @@ function MainPage() {
   const handleDrop = (e) => {
     e.preventDefault();
     e.target.classList.remove("drag-enter");
-
     let dropEvent = e.dataTransfer;
     for (let i = 0; i < dropEvent.files.length; i++) {
       ee.emit("newtrack", dropEvent.files[i]);
     }
+    setUploadMessage("Click or Drag Audio File Here");
+    setUploadButton(false);
   };
 
   const handleUploadFile = (e) => {
     e.preventDefault();
     const fileInput = document.getElementById("fileInput");
     const files = fileInput.files;
-    console.log(files);
     for (let i = 0; i < files.length; i++) {
       ee.emit("newtrack", files[i]);
     }
+    setUploadMessage("Click or Drag Audio File Here");
+    setUploadButton(false);
+  };
+
+  const handleFileInputChange = () => {
+    setUploadMessage("Click Right =>");
+    setUploadButton(true);
   };
 
   const handleRecord = () => {
@@ -393,7 +404,6 @@ function MainPage() {
         </div>
 
         <div className="w-full h-16 flex justify-around border-t items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          
           <MasterVolController
             masterVolume={masterVolume}
             handleMasterVolChange={handleMasterVolChange}
@@ -441,12 +451,15 @@ function MainPage() {
           />
 
           <ImportArea
-            handleUploadFile={(e)=>handleUploadFile(e)}
+            handleUploadFile={(e) => handleUploadFile(e)}
             handleDragEnter={handleDragEnter}
             handleDragOver={handleDragOver}
             handleDragLeave={handleDragLeave}
             handleDrop={handleDrop}
             loadProgress={loadProgress}
+            handleFileInputChange={handleFileInputChange}
+            uploadMessage={uploadMessage}
+            uploadButton={uploadButton}
           />
 
           <ExportButton handleExport={handleExport} />
