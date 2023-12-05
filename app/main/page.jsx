@@ -6,7 +6,7 @@ import Image from "next/image";
 import Timelinebios from "@/components/TittleTimelinebios";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Input } from "@/components/ui/input";
-import DragDropArea from "@/components/DragDropArea";
+import ImportArea from "@/components/ImportArea";
 
 import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
@@ -22,16 +22,14 @@ import {
   Speaker,
   Rewind,
   FastForward,
-  Volume2,
-  Upload,
 } from "lucide-react";
 
 import loadImg from "@/public/Pulse-1s-200px.svg";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import ExportButton from "@/components/ExportButton";
 import ViewPannel from "@/components/pannels/ViewPannel";
 import EditPannel from "@/components/pannels/EditPannel";
+import MasterVolController from "@/components/MasterVolController";
 
 function MainPage() {
   const [ee] = useState(new EventEmitter());
@@ -134,7 +132,7 @@ function MainPage() {
 
   const handlePlay = () => ee.emit("play");
   const handlePause = () => ee.emit("pause");
-  
+
   const handleStop = () => {
     setIsRecording(false);
     ee.emit("stop");
@@ -395,18 +393,11 @@ function MainPage() {
         </div>
 
         <div className="w-full h-16 flex justify-around border-t items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="flex gap-2 h-8 items-center px-1">
-            <Volume2 />
-            <Slider
-              className="w-32"
-              id="masterVolume"
-              name="masterVolume"
-              defaultValue={masterVolume}
-              onValueChange={handleMasterVolChange}
-              max={100}
-              step={1}
-            />
-          </div>
+          
+          <MasterVolController
+            masterVolume={masterVolume}
+            handleMasterVolChange={handleMasterVolChange}
+          />
 
           <div className="flex gap-2 p-1">
             <Button variant="outline" size="icon" onClick={handlePause}>
@@ -441,30 +432,22 @@ function MainPage() {
           />
 
           <EditPannel
-          stateCursor={stateCursor}
-          stateSelect={stateSelect}
-          stateShift={stateShift}
-          stateFadeIn={stateFadeIn}
-          stateFadeOut={stateFadeOut}
-          handleTrim={handleTrim}
+            stateCursor={stateCursor}
+            stateSelect={stateSelect}
+            stateShift={stateShift}
+            stateFadeIn={stateFadeIn}
+            stateFadeOut={stateFadeOut}
+            handleTrim={handleTrim}
           />
-    
-          <div className="flex gap-2 p-1">
-            <div className="flex w-60">
-              <Input id="fileInput" type="file" multiple />
-              <Button size="icon" onClick={handleUploadFile}>
-                <Upload strokeWidth={1.5} />
-              </Button>
-            </div>
 
-            <DragDropArea
-              handleDragEnter={handleDragEnter}
-              handleDragOver={handleDragOver}
-              handleDragLeave={handleDragLeave}
-              handleDrop={handleDrop}
-              loadProgress={loadProgress}
-            />
-          </div>
+          <ImportArea
+            handleUploadFile={(e)=>handleUploadFile(e)}
+            handleDragEnter={handleDragEnter}
+            handleDragOver={handleDragOver}
+            handleDragLeave={handleDragLeave}
+            handleDrop={handleDrop}
+            loadProgress={loadProgress}
+          />
 
           <ExportButton handleExport={handleExport} />
         </div>

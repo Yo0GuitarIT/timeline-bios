@@ -25,13 +25,13 @@ function HomePageNavbar() {
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <nav className="flex items-center">
-            <Button variant="ghost" size="icon" asChild>
+            <Button variant="ghost" size="icon" >
               <Link href="https://github.com/Yo0GuitarIT">
                 <Github size={20} strokeWidth={1.5} />
               </Link>
             </Button>
 
-            <Button variant="ghost" size="icon" asChild>
+            <Button variant="ghost" size="icon" >
               <Link href="https://www.linkedin.com/in/yo036563/">
                 <Linkedin size={20} strokeWidth={1.5} />
               </Link>
