@@ -19,7 +19,6 @@ import {
   Play,
   Square,
   Circle,
-  Speaker,
   Rewind,
   FastForward,
 } from "lucide-react";
@@ -30,6 +29,8 @@ import ExportButton from "@/components/ExportButton";
 import ViewPannel from "@/components/pannels/ViewPannel";
 import EditPannel from "@/components/pannels/EditPannel";
 import MasterVolController from "@/components/MasterVolController";
+import MasterVolMonitor from "@/components/MasterVolMonitor";
+import PlayPannel from "@/components/pannels/PlayPannel";
 
 function MainPage() {
   const [ee] = useState(new EventEmitter());
@@ -387,14 +388,7 @@ function MainPage() {
               />
             </div> */}
 
-            <div id="meterConatiner" className=" flex gap-1 items-center">
-              <Speaker />
-              <canvas
-                id="meterCanvas"
-                className="w-40 h-4 border-2 border-dashed border-yellow-400"
-              ></canvas>
-            </div>
-
+            <MasterVolMonitor />
             <ModeToggle />
           </div>
         </div>
@@ -409,32 +403,15 @@ function MainPage() {
             handleMasterVolChange={handleMasterVolChange}
           />
 
-          <div className="flex gap-2 p-1">
-            <Button variant="outline" size="icon" onClick={handlePause}>
-              <Pause strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handlePlay}>
-              <Play strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleStop}>
-              <Square strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleRewind}>
-              <Rewind strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleFastforward}>
-              <FastForward strokeWidth={1.5} />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              id="record-Button"
-              onClick={handleRecord}
-              disabled={isRecording}
-            >
-              <Circle color="red" fill="red" />
-            </Button>
-          </div>
+          <PlayPannel
+            handlePause={handlePause}
+            handlePlay={handlePlay}
+            handleStop={handleStop}
+            handleRewind={handleRewind}
+            handleFastforward={handleFastforward}
+            handleRecord={handleRecord}
+            isRecording={isRecording}
+          />
 
           <ViewPannel
             handleZoomIn={handleZoomIn}

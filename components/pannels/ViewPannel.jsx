@@ -1,46 +1,47 @@
 import { Button } from "../ui/button";
+import { ZoomIn, ZoomOut } from "lucide-react";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { ZoomIn, ZoomOut } from "lucide-react";
 
 function ViewPannel({ handleZoomIn, handleZoomOut }) {
   return (
     <div className="flex gap-2 p-1">
-      <Button variant="outline" size="icon" onClick={() => handleZoomIn()}>
-        <HoverCard>
-          <HoverCardTrigger>
+      <HoverCard>
+        <HoverCardTrigger>
+          <Button variant="outline" size="icon" onClick={() => handleZoomIn()}>
             <ZoomIn strokeWidth={1.5} />
-          </HoverCardTrigger>
-          <HoverCardContent className="w-80 whitespace-normal">
-            <div className="space-y-1">
-              <h4 className="text-sm font-semibold">Zoom In</h4>
-              <p className="text-sm">
-                Magnify and focus for a closer view on hover.
-              </p>
-            </div>
-          </HoverCardContent>
-        </HoverCard>
-      </Button>
+          </Button>
+        </HoverCardTrigger>
+        <HoverCardContent className="w-60 whitespace-normal">
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold">Zoom In</h4>
+            <p className="text-sm text-justify">
+              Enables the user to zoom in for a closer view or magnification of
+              content, enhancing detailed examination.
+            </p>
+          </div>
+        </HoverCardContent>
+      </HoverCard>
 
-      <Button variant="outline" size="icon" onClick={() => handleZoomOut()}>
-        <HoverCard>
-          <HoverCardTrigger>
+      <HoverCard>
+        <HoverCardTrigger>
+          <Button variant="outline" size="icon" onClick={() => handleZoomOut()}>
             <ZoomOut strokeWidth={1.5} />
-          </HoverCardTrigger>
-          <HoverCardContent className="w-80 whitespace-normal">
-            <div className="space-y-1">
-              <h4 className="text-sm font-semibold">Zoom Out</h4>
-              <p className="text-sm">
-                Minimize and broaden the view on hover for an expanded
-                perspective.
-              </p>
-            </div>
-          </HoverCardContent>
-        </HoverCard>
-      </Button>
+          </Button>
+        </HoverCardTrigger>
+        <HoverCardContent className="w-80 whitespace-normal">
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold">Zoom Out</h4>
+            <p className="text-sm text-justify">
+              Facilitates a reduction in magnification, allowing users to zoom
+              out for a broader view of content.
+            </p>
+          </div>
+        </HoverCardContent>
+      </HoverCard>
     </div>
   );
 }
