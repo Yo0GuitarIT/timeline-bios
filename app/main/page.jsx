@@ -1,15 +1,10 @@
 "use client";
 
 import React, { useCallback, useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
 import * as Tone from "tone";
 import { saveAs } from "file-saver";
-import { motion, AnimatePresence } from "framer-motion";
-
-import { ArrowBigRightDash, Terminal } from "lucide-react";
-import loadImg from "@/public/Pulse-1s-200px.svg";
 import MasterVolController from "@/components/MasterVolController";
 import MasterVolMonitor from "@/components/MasterVolMonitor";
 import ExportButton from "@/components/ExportButton";
@@ -19,22 +14,22 @@ import EditPannel from "@/components/pannels/EditPannel";
 import ImportArea from "@/components/ImportArea";
 import Timelinebios from "@/components/TittleTimelinebios";
 import { ModeToggle } from "@/components/ModeToggle";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import AlertMessage from "@/components/AlertMessage";
+import InitialLoader from "@/components/InitialLoader";
 
 function MainPage() {
   const [ee] = useState(new EventEmitter());
+  const setUpChain = useRef();
   const [toneCtx, setToneCtx] = useState(null);
   const [masterVolume, setMasterVolume] = useState([80]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [isUpload, setIsUpload] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [uploadMessage, setUploadMessage] = useState(
     "Click or Drag Audio File Here"
   );
-  const [isVisible, setIsVisible] = useState(false);
-
-  const setUpChain = useRef();
 
   useEffect(() => {
     setToneCtx(Tone.getContext());
@@ -135,8 +130,8 @@ function MainPage() {
 
       setTimeout(() => {
         setIsVisible(false);
-      }, 2000);
-    }, 2000);
+      }, 1000);
+    }, 800);
   };
 
   const handleRecord = () => {
@@ -261,12 +256,12 @@ function MainPage() {
 
         playlist
           .load([
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
-            //   name: "Drum",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#44AF69",
-            // },
+            {
+              src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
+              name: "Drum",
+              gain: 0.5,
+              waveOutlineColor: "#44AF69",
+            },
             // {
             //   src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
             //   name: "Bass",
@@ -351,26 +346,7 @@ function MainPage() {
 
   return (
     <>
-      <div id="load-data" className="w-screen h-screen absolute">
-        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full p-4 z-30">
-          <div className="flex items-center">
-            <Image src={loadImg} alt="loading" width={20} height={20}></Image>
-            Loaded{loadProgress}%
-          </div>
-
-          <div className="flex items-center">
-            <ArrowBigRightDash strokeWidth={1.5} />
-            <p>{`Loading ${loadInfo}`}</p>
-          </div>
-
-          <div className="mt-1 rounded border-2 border-collapse">
-            <div
-              className="bg-yellow-500 h-5 rounded"
-              style={{ width: `${loadProgress}%` }}
-            ></div>
-          </div>
-        </div>
-      </div>
+      <InitialLoader loadProgress={loadProgress} loadInfo={loadInfo} />
 
       <main
         id="main-play"
@@ -444,24 +420,7 @@ function MainPage() {
           <ExportButton handleExport={handleExport} />
         </div>
 
-        <AnimatePresence>
-          {isVisible && (
-            <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5  }}
-            >
-              <Alert className="absolute right-0 z-50 w-72 m-4 bg-yellow-400">
-                <Terminal className="h-4 w-4" />
-                <AlertTitle>Done</AlertTitle>
-                <AlertDescription>
-                  The data has been uploaded successfully.
-                </AlertDescription>
-              </Alert>
-            </motion.h1>
-          )}
-        </AnimatePresence>
+        <AlertMessage isVisible={isVisible} />
       </main>
     </>
   );
