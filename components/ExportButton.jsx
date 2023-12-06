@@ -14,7 +14,7 @@ function ExportButton({ handleExport }) {
           <Download />
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent className="w-52 whitespace-normal">
+      <HoverCardContent className="w-60 whitespace-normal">
         <div className="space-y-1">
           <h4 className="text-sm font-semibold">Export File</h4>
           <p className="text-sm">

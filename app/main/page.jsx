@@ -2,35 +2,24 @@
 
 import React, { useCallback, useState, useRef, useEffect } from "react";
 import Image from "next/image";
-
-import Timelinebios from "@/components/TittleTimelinebios";
-import { ModeToggle } from "@/components/ModeToggle";
-import { Input } from "@/components/ui/input";
-import ImportArea from "@/components/ImportArea";
-
 import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
 import * as Tone from "tone";
 import { saveAs } from "file-saver";
+import { motion, AnimatePresence } from "framer-motion";
 
-import {
-  ArrowBigRightDash,
-  Pause,
-  Play,
-  Square,
-  Circle,
-  Rewind,
-  FastForward,
-} from "lucide-react";
-
+import { ArrowBigRightDash, Terminal } from "lucide-react";
 import loadImg from "@/public/Pulse-1s-200px.svg";
-import { Button } from "@/components/ui/button";
-import ExportButton from "@/components/ExportButton";
-import ViewPannel from "@/components/pannels/ViewPannel";
-import EditPannel from "@/components/pannels/EditPannel";
 import MasterVolController from "@/components/MasterVolController";
 import MasterVolMonitor from "@/components/MasterVolMonitor";
+import ExportButton from "@/components/ExportButton";
 import PlayPannel from "@/components/pannels/PlayPannel";
+import ViewPannel from "@/components/pannels/ViewPannel";
+import EditPannel from "@/components/pannels/EditPannel";
+import ImportArea from "@/components/ImportArea";
+import Timelinebios from "@/components/TittleTimelinebios";
+import { ModeToggle } from "@/components/ModeToggle";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 function MainPage() {
   const [ee] = useState(new EventEmitter());
@@ -39,10 +28,11 @@ function MainPage() {
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [isUpload, setIsUpload] = useState(false);
   const [uploadMessage, setUploadMessage] = useState(
     "Click or Drag Audio File Here"
   );
-  const [uploadButton, setUploadButton] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const setUpChain = useRef();
 
@@ -118,7 +108,8 @@ function MainPage() {
       ee.emit("newtrack", dropEvent.files[i]);
     }
     setUploadMessage("Click or Drag Audio File Here");
-    setUploadButton(false);
+    setIsUpload(false);
+    toggleVisibility();
   };
 
   const handleUploadFile = (e) => {
@@ -129,12 +120,23 @@ function MainPage() {
       ee.emit("newtrack", files[i]);
     }
     setUploadMessage("Click or Drag Audio File Here");
-    setUploadButton(false);
+    setIsUpload(false);
+    toggleVisibility();
   };
 
   const handleFileInputChange = () => {
     setUploadMessage("Click Right =>");
-    setUploadButton(true);
+    setIsUpload(true);
+  };
+
+  const toggleVisibility = () => {
+    setTimeout(() => {
+      setIsVisible(true);
+
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 2000);
+    }, 2000);
   };
 
   const handleRecord = () => {
@@ -259,63 +261,63 @@ function MainPage() {
 
         playlist
           .load([
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
-              name: "Drum",
-              gain: 0.5,
-              waveOutlineColor: "#44AF69",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
-              name: "Bass",
-              gain: 1,
-              waveOutlineColor: "#F8333C",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
-              name: "GT Rhythm (Strero)",
-              gain: 0.3,
-              waveOutlineColor: "#FCAB10",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
-              name: "GT Rhythm (Mono)",
-              gain: 0.3,
-              // waveOutlineColor: "#FCAB10",
-              stereoPan: 0.7,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
-              name: "GT 2",
-              gain: 0.5,
-              // waveOutlineColor: "#FCAB10",
-              stereoPan: -0.8,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
-              name: "GT 3",
-              gain: 0.4,
-              // waveOutlineColor: "#FCAB10",
-              stereoPan: -0.7,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
-              name: "Guitar Solo",
-              gain: 0.3,
-              waveOutlineColor: "#F5CAC3",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
-              name: "Hammond",
-              gain: 1,
-              waveOutlineColor: "#2B9EB3",
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
-              name: "Vocal",
-              gain: 0.5,
-              waveOutlineColor: "#DBD5B5",
-            },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
+            //   name: "Drum",
+            //   gain: 0.5,
+            //   waveOutlineColor: "#44AF69",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
+            //   name: "Bass",
+            //   gain: 1,
+            //   waveOutlineColor: "#F8333C",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
+            //   name: "GT Rhythm (Strero)",
+            //   gain: 0.3,
+            //   waveOutlineColor: "#FCAB10",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
+            //   name: "GT Rhythm (Mono)",
+            //   gain: 0.3,
+            //   // waveOutlineColor: "#FCAB10",
+            //   stereoPan: 0.7,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
+            //   name: "GT 2",
+            //   gain: 0.5,
+            //   // waveOutlineColor: "#FCAB10",
+            //   stereoPan: -0.8,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
+            //   name: "GT 3",
+            //   gain: 0.4,
+            //   // waveOutlineColor: "#FCAB10",
+            //   stereoPan: -0.7,
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
+            //   name: "Guitar Solo",
+            //   gain: 0.3,
+            //   waveOutlineColor: "#F5CAC3",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
+            //   name: "Hammond",
+            //   gain: 1,
+            //   waveOutlineColor: "#2B9EB3",
+            // },
+            // {
+            //   src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
+            //   name: "Vocal",
+            //   gain: 0.5,
+            //   waveOutlineColor: "#DBD5B5",
+            // },
           ])
           .then(function () {
             ee.emit("loadprogress", 100, "all tracks ; )");
@@ -397,7 +399,7 @@ function MainPage() {
           <div className={"w-full box-border"} ref={container}></div>
         </div>
 
-        <div className="w-full h-16 flex justify-around border-t items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <MasterVolController
             masterVolume={masterVolume}
             handleMasterVolChange={handleMasterVolChange}
@@ -436,11 +438,30 @@ function MainPage() {
             loadProgress={loadProgress}
             handleFileInputChange={handleFileInputChange}
             uploadMessage={uploadMessage}
-            uploadButton={uploadButton}
+            isUpload={isUpload}
           />
 
           <ExportButton handleExport={handleExport} />
         </div>
+
+        <AnimatePresence>
+          {isVisible && (
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5  }}
+            >
+              <Alert className="absolute right-0 z-50 w-72 m-4 bg-yellow-400">
+                <Terminal className="h-4 w-4" />
+                <AlertTitle>Done</AlertTitle>
+                <AlertDescription>
+                  The data has been uploaded successfully.
+                </AlertDescription>
+              </Alert>
+            </motion.h1>
+          )}
+        </AnimatePresence>
       </main>
     </>
   );

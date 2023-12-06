@@ -17,10 +17,10 @@ function MasterVolMonitor() {
           ></canvas>
         </div>
       </HoverCardTrigger>
-      <HoverCardContent className="w-72 whitespace-normal">
+      <HoverCardContent className="w-64 whitespace-normal">
         <div className="space-y-1">
           <h4 className="text-sm font-semibold">Master Volume Signal Meter</h4>
-          <p className="text-sm text-justify">
+          <p className="text-sm ">
             Provides a visual representation of the master volume signal
             strength for monitoring audio output levels.
           </p>

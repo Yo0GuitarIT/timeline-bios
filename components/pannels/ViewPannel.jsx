@@ -18,7 +18,7 @@ function ViewPannel({ handleZoomIn, handleZoomOut }) {
         <HoverCardContent className="w-60 whitespace-normal">
           <div className="space-y-1">
             <h4 className="text-sm font-semibold">Zoom In</h4>
-            <p className="text-sm text-justify">
+            <p className="text-sm">
               Enables the user to zoom in for a closer view or magnification of
               content, enhancing detailed examination.
             </p>
@@ -32,10 +32,10 @@ function ViewPannel({ handleZoomIn, handleZoomOut }) {
             <ZoomOut strokeWidth={1.5} />
           </Button>
         </HoverCardTrigger>
-        <HoverCardContent className="w-80 whitespace-normal">
+        <HoverCardContent className="w-60 whitespace-normal">
           <div className="space-y-1">
             <h4 className="text-sm font-semibold">Zoom Out</h4>
-            <p className="text-sm text-justify">
+            <p className="text-sm">
               Facilitates a reduction in magnification, allowing users to zoom
               out for a broader view of content.
             </p>

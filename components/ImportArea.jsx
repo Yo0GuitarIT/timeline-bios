@@ -12,9 +12,12 @@ function ImportArea({
   loadProgress,
   uploadMessage,
   handleFileInputChange,
-  uploadButton,
+  isUpload,
+  
 }) {
   const progressNumber = parseInt(loadProgress);
+
+  
 
   return (
     <div className="flex gap-2 content-center">
@@ -42,7 +45,7 @@ function ImportArea({
       </div>
 
       <Button
-        className={uploadButton ? "uploadButtonVisible" : "uploadButtonHidden"}
+        className={isUpload ? "uploadButtonVisible" : "uploadButtonHidden"}
         size="icon"
         onClick={(e) => handleUploadFile(e)}
       >
