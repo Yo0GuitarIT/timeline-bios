@@ -21,7 +21,7 @@ function MainPage() {
   const [ee] = useState(new EventEmitter());
   const setUpChain = useRef();
   const [toneCtx, setToneCtx] = useState(null);
-  const [masterVolume, setMasterVolume] = useState([50]);
+  const [masterVolume, setMasterVolume] = useState([30]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
@@ -49,8 +49,9 @@ function MainPage() {
     const meterHeight = meterCanvas.height;
 
     const meterGradient = meterCtx.createLinearGradient(0, 0, meterWidth, 0);
-    meterGradient.addColorStop(0, "#a6a6a6");
-    meterGradient.addColorStop(1, "#5a5a5a");
+     meterGradient.addColorStop(0, "rgb(52, 211, 153)");
+    meterGradient.addColorStop(0.5, "rgb(251, 191, 36)");
+    meterGradient.addColorStop(1, "rgb(239, 68, 68)");
 
     const meter = new Tone.Meter();
     Tone.getDestination().connect(meter);
@@ -215,7 +216,7 @@ function MainPage() {
             zoomLevels: [256, 512, 1024, 2048, 4096, 8192],
 
             effects: function (graphEnd, masterGainNode, isOffline) {
-              const volume = new Tone.Volume(-3).toDestination();
+              const volume = new Tone.Volume(-6).toDestination();
 
               if (isOffline) {
                 setUpChain.current.push(volume.ready);
@@ -257,46 +258,46 @@ function MainPage() {
         playlist
           .load([
             {
-              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F01.Drum.mp3?alt=media&token=27d8efc6-865e-4946-a557-9b2bb71bb2d0",
+              src: "soundTrack/01.Drum.mp3",
               name: "Drum",
               gain: 0.5,
-              waveOutlineColor: "#FF6663",
+              waveOutlineColor: "rgb(254, 202, 202)",
             },
             {
-              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F02.Bass.mp3?alt=media&token=7914a776-cc2e-49d1-9152-3353244e5713",
+              src: "soundTrack/02.Bass.mp3",
               name: "Bass",
               gain: 0.6,
-              waveOutlineColor: "#FEB144",
+              waveOutlineColor: "rgb(253, 230, 138)",
             },
             {
-              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F03.EG01(Stereo).mp3?alt=media&token=f2427663-e69c-4a82-b39d-cb03de6a4008",
+              src: "soundTrack/03.EG01(Stereo).mp3",
               name: "GT 1",
               gain: 0.3,
-              waveOutlineColor: "#FDFD97",
+              waveOutlineColor: "rgb(167, 243, 208)",
             },
             {
-              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F04.EG02(Stereo).mp3?alt=media&token=434d30dc-dac6-4068-abd7-5dfe5b6a04ff",
+              src: "soundTrack/04.EG02(Stereo).mp3",
               name: "GT 2",
               gain: 0.3,
-              waveOutlineColor: "#9EE09E",
+              waveOutlineColor: "rgb(191, 219, 254)",
             },
             {
-              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F05.EG%20Solo%20.mp3?alt=media&token=c3be22da-986d-403d-acae-b550d8729054",
+              src: "soundTrack/05.EG(Solo).mp3",
               name: "GT Solo",
               gain: 0.4,
-              waveOutlineColor: "#9EC1CF",
+              waveOutlineColor: "rgb(199, 210, 254)",
             },
             {
-              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F06.Hammond.mp3?alt=media&token=fe5464ef-6138-4fe5-9dc8-ddf813013062",
+              src: "soundTrack/06.Hammond.mp3",
               name: "Hammond",
               gain: 0.3,
-              waveOutlineColor: "#CC99C9",
+              waveOutlineColor: "rgb(221, 214, 254)",
             },
             {
-              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F07.Vocal.mp3?alt=media&token=171bacf7-6a07-479a-b4bc-f57d9c8a073b",
+              src: "soundTrack/07.Vocal.mp3",
               name: "Vocal",
               gain: 0.5,
-              waveOutlineColor: "#DBD5B5",
+              waveOutlineColor: "rgb(251, 207, 232)",
             },
           ])
           .then(function () {
