@@ -58,7 +58,16 @@
   }
 }
 
-.drag-enter{
-  color:red;
+.drag-enter {
+  color: red;
 }
 
+.uploadButtonVisible {
+  opacity: 1; 
+  transition: opacity 0.5s ease; 
+}
+
+.uploadButtonHidden {
+  opacity: 0; 
+  transition: opacity 0.5s ease; 
+}

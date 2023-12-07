@@ -1,52 +1,35 @@
 "use client";
 
 import React, { useCallback, useState, useRef, useEffect } from "react";
-import Image from "next/image";
-
-import Timelinebios from "@/components/TittleTimelinebios";
-import { ModeToggle } from "@/components/ModeToggle";
-import DragDropArea from "@/components/DragDropArea";
-
 import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
 import * as Tone from "tone";
 import { saveAs } from "file-saver";
-
-import {
-  ArrowBigRightDash,
-  Pause,
-  Play,
-  Square,
-  Circle,
-  ZoomIn,
-  ZoomOut,
-  Speaker,
-  Download,
-  Rewind,
-  FastForward,
-  MousePointer2,
-  Brackets,
-  MoveHorizontal,
-  Spline,
-  Volume2,
-  Repeat2,
-  ScissorsSquare,
-} from "lucide-react";
-
-import loadImg from "@/public/Pulse-1s-200px.svg";
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
+import MasterVolController from "@/components/MasterVolController";
+import MasterVolMonitor from "@/components/MasterVolMonitor";
+import ExportButton from "@/components/ExportButton";
+import PlayPannel from "@/components/pannels/PlayPannel";
+import ViewPannel from "@/components/pannels/ViewPannel";
+import EditPannel from "@/components/pannels/EditPannel";
+import ImportArea from "@/components/ImportArea";
+import Timelinebios from "@/components/TittleTimelinebios";
+import { ModeToggle } from "@/components/ModeToggle";
+import AlertMessage from "@/components/AlertMessage";
+import InitialLoader from "@/components/InitialLoader";
 
 function MainPage() {
   const [ee] = useState(new EventEmitter());
+  const setUpChain = useRef();
   const [toneCtx, setToneCtx] = useState(null);
-  const [masterVolume, setMasterVolume] = useState([80]);
+  const [masterVolume, setMasterVolume] = useState([50]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
-  const [isLoop, setIsLoop] = useState(false);
-
-  const setUpChain = useRef();
+  const [isUpload, setIsUpload] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [uploadMessage, setUploadMessage] = useState(
+    "Click or Drag Audio File Here"
+  );
 
   useEffect(() => {
     setToneCtx(Tone.getContext());
@@ -115,11 +98,40 @@ function MainPage() {
   const handleDrop = (e) => {
     e.preventDefault();
     e.target.classList.remove("drag-enter");
-
     let dropEvent = e.dataTransfer;
     for (let i = 0; i < dropEvent.files.length; i++) {
       ee.emit("newtrack", dropEvent.files[i]);
     }
+    setUploadMessage("Click or Drag Audio File Here");
+    setIsUpload(false);
+    toggleVisibility();
+  };
+
+  const handleUploadFile = (e) => {
+    e.preventDefault();
+    const fileInput = document.getElementById("fileInput");
+    const files = fileInput.files;
+    for (let i = 0; i < files.length; i++) {
+      ee.emit("newtrack", files[i]);
+    }
+    setUploadMessage("Click or Drag Audio File Here");
+    setIsUpload(false);
+    toggleVisibility();
+  };
+
+  const handleFileInputChange = () => {
+    setUploadMessage("Click Right =>");
+    setIsUpload(true);
+  };
+
+  const toggleVisibility = () => {
+    setTimeout(() => {
+      setIsVisible(true);
+
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 1000);
+    }, 800);
   };
 
   const handleRecord = () => {
@@ -127,36 +139,15 @@ function MainPage() {
     ee.emit("record");
   };
 
-  const handlePlay = () => {
-    console.log("playing");
-    ee.emit("play");
-  };
-
-  const handlePause = () => {
-    console.log("pause");
-    ee.emit("pause");
-  };
+  const handlePlay = () => ee.emit("play");
+  const handlePause = () => ee.emit("pause");
 
   const handleStop = () => {
-    console.log("stoping");
     setIsRecording(false);
     ee.emit("stop");
   };
 
-  const handleTrim = () => {
-    ee.emit("trim");
-  };
-
-  const handleLoop = () => {
-    setIsLoop(!isLoop);
-    playoutPromises = playlist.play(startTime, endTime);
-    if (isLoop) {
-      console.log("looping");
-    } else {
-      console.log("Stop looping");
-    }
-  };
-
+  const handleTrim = () => ee.emit("trim");
   const handleZoomIn = () => ee.emit("zoomin");
   const handleZoomOut = () => ee.emit("zoomout");
   const handleRewind = () => ee.emit("rewind");
@@ -166,6 +157,7 @@ function MainPage() {
   const stateFadeIn = () => ee.emit("statechange", "fadein");
   const stateFadeOut = () => ee.emit("statechange", "fadeout");
   const stateShift = () => ee.emit("statechange", "shift");
+  const handleExport = () => ee.emit("startaudiorendering", "wav");
 
   const container = useCallback(
     (node) => {
@@ -223,7 +215,7 @@ function MainPage() {
             zoomLevels: [256, 512, 1024, 2048, 4096, 8192],
 
             effects: function (graphEnd, masterGainNode, isOffline) {
-              const volume = new Tone.Volume(0).toDestination();
+              const volume = new Tone.Volume(-3).toDestination();
 
               if (isOffline) {
                 setUpChain.current.push(volume.ready);
@@ -265,58 +257,43 @@ function MainPage() {
         playlist
           .load([
             {
-              src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F01.Drum.mp3?alt=media&token=27d8efc6-865e-4946-a557-9b2bb71bb2d0",
               name: "Drum",
               gain: 0.5,
-              waveOutlineColor: "#44AF69",
+              waveOutlineColor: "#FF6663",
             },
             {
-              src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F02.Bass.mp3?alt=media&token=7914a776-cc2e-49d1-9152-3353244e5713",
               name: "Bass",
-              gain: 1,
-              waveOutlineColor: "#F8333C",
+              gain: 0.6,
+              waveOutlineColor: "#FEB144",
             },
             {
-              src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
-              name: "GT Rhythm (Strero)",
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F03.EG01(Stereo).mp3?alt=media&token=f2427663-e69c-4a82-b39d-cb03de6a4008",
+              name: "GT 1",
               gain: 0.3,
-              waveOutlineColor: "#FCAB10",
+              waveOutlineColor: "#FDFD97",
             },
             {
-              src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
-              name: "GT Rhythm (Mono)",
-              gain: 0.3,
-              // waveOutlineColor: "#FCAB10",
-              stereoPan: 0.7,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F04.EG02(Stereo).mp3?alt=media&token=434d30dc-dac6-4068-abd7-5dfe5b6a04ff",
               name: "GT 2",
-              gain: 0.5,
-              // waveOutlineColor: "#FCAB10",
-              stereoPan: -0.8,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
-              name: "GT 3",
-              gain: 0.4,
-              // waveOutlineColor: "#FCAB10",
-              stereoPan: -0.7,
-            },
-            {
-              src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
-              name: "Guitar Solo",
               gain: 0.3,
-              waveOutlineColor: "#F5CAC3",
+              waveOutlineColor: "#9EE09E",
             },
             {
-              src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F05.EG%20Solo%20.mp3?alt=media&token=c3be22da-986d-403d-acae-b550d8729054",
+              name: "GT Solo",
+              gain: 0.4,
+              waveOutlineColor: "#9EC1CF",
+            },
+            {
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F06.Hammond.mp3?alt=media&token=fe5464ef-6138-4fe5-9dc8-ddf813013062",
               name: "Hammond",
-              gain: 1,
-              waveOutlineColor: "#2B9EB3",
+              gain: 0.3,
+              waveOutlineColor: "#CC99C9",
             },
             {
-              src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F07.Vocal.mp3?alt=media&token=171bacf7-6a07-479a-b4bc-f57d9c8a073b",
               name: "Vocal",
               gain: 0.5,
               waveOutlineColor: "#DBD5B5",
@@ -354,26 +331,7 @@ function MainPage() {
 
   return (
     <>
-      <div id="load-data" className="w-screen h-screen absolute">
-        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full p-4 z-30">
-          <div className="flex items-center">
-            <Image src={loadImg} alt="loading" width={20} height={20}></Image>
-            Loaded{loadProgress}%
-          </div>
-
-          <div className="flex items-center">
-            <ArrowBigRightDash strokeWidth={1.5} />
-            <p>{`Loading ${loadInfo}`}</p>
-          </div>
-
-          <div className="mt-1 rounded border-2 border-collapse">
-            <div
-              className="bg-yellow-500 h-5 rounded"
-              style={{ width: `${loadProgress}%` }}
-            ></div>
-          </div>
-        </div>
-      </div>
+      <InitialLoader loadProgress={loadProgress} loadInfo={loadInfo} />
 
       <main
         id="main-play"
@@ -385,14 +343,15 @@ function MainPage() {
               <Timelinebios />
             </div>
 
-            <div id="meterConatiner" className=" flex gap-1 items-center">
-              <Speaker />
-              <canvas
-                id="meterCanvas"
-                className="w-40 h-4 border-2 border-dashed border-yellow-400"
-              ></canvas>
-            </div>
+            {/* <div className="w-60">
+              <Input
+                placeholder="Project Name"
+                defaultValue="My father Never Loves Me"
+                className="text-center text-md"
+              />
+            </div> */}
 
+            <MasterVolMonitor />
             <ModeToggle />
           </div>
         </div>
@@ -401,103 +360,52 @@ function MainPage() {
           <div className={"w-full box-border"} ref={container}></div>
         </div>
 
-        <div className="w-full h-16 flex justify-around border-t items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="flex gap-2 h-8 items-center px-1">
-            <Volume2 />
-            <Slider
-              className="w-32"
-              id="masterVolume"
-              name="masterVolume"
-              defaultValue={masterVolume}
-              onValueChange={handleMasterVolChange}
-              max={100}
-              step={1}
-            />
-          </div>
+        <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <MasterVolController
+            masterVolume={masterVolume}
+            handleMasterVolChange={handleMasterVolChange}
+          />
 
-          <div className="flex gap-2 p-1">
-            <Button variant="outline" size="icon" onClick={handlePause}>
-              <Pause strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handlePlay}>
-              <Play strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleStop}>
-              <Square strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleRewind}>
-              <Rewind strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleFastforward}>
-              <FastForward strokeWidth={1.5} />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              id="record-Button"
-              onClick={handleRecord}
-              disabled={isRecording}
-            >
-              <Circle color="red" fill="red" />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleZoomIn}>
-              <ZoomIn strokeWidth={1.5} />
-            </Button>
-            <Button variant="outline" size="icon" onClick={handleZoomOut}>
-              <ZoomOut strokeWidth={1.5} />
-            </Button>
+          <PlayPannel
+            handlePause={handlePause}
+            handlePlay={handlePlay}
+            handleStop={handleStop}
+            handleRewind={handleRewind}
+            handleFastforward={handleFastforward}
+            handleRecord={handleRecord}
+            isRecording={isRecording}
+          />
 
-            <Button variant="outline" size="icon" onClick={stateCursor}>
-              <MousePointer2 />
-            </Button>
+          <ViewPannel
+            handleZoomIn={handleZoomIn}
+            handleZoomOut={handleZoomOut}
+          />
 
-            <Button variant="outline" size="icon" onClick={stateSelect}>
-              <Brackets />
-            </Button>
+          <EditPannel
+            stateCursor={stateCursor}
+            stateSelect={stateSelect}
+            stateShift={stateShift}
+            stateFadeIn={stateFadeIn}
+            stateFadeOut={stateFadeOut}
+            handleTrim={handleTrim}
+          />
 
-            <Button variant="outline" size="icon" onClick={stateShift}>
-              <MoveHorizontal />
-            </Button>
-
-            <Button variant="outline" size="icon" onClick={stateFadeIn}>
-              <Spline />
-            </Button>
-
-            <Button variant="outline" size="icon" onClick={stateFadeOut}>
-              <Spline />
-            </Button>
-
-            <Button variant="outline" size="icon" onClick={handleTrim}>
-              <ScissorsSquare strokeWidth={1.5} />
-            </Button>
-
-            <Button
-              variant={isLoop ? "" : "outline"}
-              size="icon"
-              onClick={handleLoop}
-            >
-              <Repeat2 />
-            </Button>
-
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => {
-                ee.emit("startaudiorendering", "wav");
-              }}
-            >
-              <Download />
-            </Button>
-          </div>
-
-          <DragDropArea
+          <ImportArea
+            handleUploadFile={(e) => handleUploadFile(e)}
             handleDragEnter={handleDragEnter}
             handleDragOver={handleDragOver}
             handleDragLeave={handleDragLeave}
             handleDrop={handleDrop}
             loadProgress={loadProgress}
+            handleFileInputChange={handleFileInputChange}
+            uploadMessage={uploadMessage}
+            isUpload={isUpload}
           />
+
+          <ExportButton handleExport={handleExport} />
         </div>
+
+        <AlertMessage isVisible={isVisible} />
       </main>
     </>
   );
