@@ -21,7 +21,7 @@ function MainPage() {
   const [ee] = useState(new EventEmitter());
   const setUpChain = useRef();
   const [toneCtx, setToneCtx] = useState(null);
-  const [masterVolume, setMasterVolume] = useState([80]);
+  const [masterVolume, setMasterVolume] = useState([50]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
@@ -215,7 +215,7 @@ function MainPage() {
             zoomLevels: [256, 512, 1024, 2048, 4096, 8192],
 
             effects: function (graphEnd, masterGainNode, isOffline) {
-              const volume = new Tone.Volume(0).toDestination();
+              const volume = new Tone.Volume(-3).toDestination();
 
               if (isOffline) {
                 setUpChain.current.push(volume.ready);
@@ -257,62 +257,47 @@ function MainPage() {
         playlist
           .load([
             {
-              src: "Trafficker_MyFatherNeverLovedMe/01.Drum.wav",
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F01.Drum.mp3?alt=media&token=27d8efc6-865e-4946-a557-9b2bb71bb2d0",
               name: "Drum",
               gain: 0.5,
-              waveOutlineColor: "#44AF69",
+              waveOutlineColor: "#FF6663",
             },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/02.Bass.wav",
-            //   name: "Bass",
-            //   gain: 1,
-            //   waveOutlineColor: "#F8333C",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/03.EG01(Stereo).wav",
-            //   name: "GT Rhythm (Strero)",
-            //   gain: 0.3,
-            //   waveOutlineColor: "#FCAB10",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/04.EG01(Mono).wav",
-            //   name: "GT Rhythm (Mono)",
-            //   gain: 0.3,
-            //   // waveOutlineColor: "#FCAB10",
-            //   stereoPan: 0.7,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/05.EG02.wav",
-            //   name: "GT 2",
-            //   gain: 0.5,
-            //   // waveOutlineColor: "#FCAB10",
-            //   stereoPan: -0.8,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/06.EG03.wav",
-            //   name: "GT 3",
-            //   gain: 0.4,
-            //   // waveOutlineColor: "#FCAB10",
-            //   stereoPan: -0.7,
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/07.EG solo.wav",
-            //   name: "Guitar Solo",
-            //   gain: 0.3,
-            //   waveOutlineColor: "#F5CAC3",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/08.Hammond.wav",
-            //   name: "Hammond",
-            //   gain: 1,
-            //   waveOutlineColor: "#2B9EB3",
-            // },
-            // {
-            //   src: "Trafficker_MyFatherNeverLovedMe/09.Vocal.wav",
-            //   name: "Vocal",
-            //   gain: 0.5,
-            //   waveOutlineColor: "#DBD5B5",
-            // },
+            {
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F02.Bass.mp3?alt=media&token=7914a776-cc2e-49d1-9152-3353244e5713",
+              name: "Bass",
+              gain: 0.6,
+              waveOutlineColor: "#FEB144",
+            },
+            {
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F03.EG01(Stereo).mp3?alt=media&token=f2427663-e69c-4a82-b39d-cb03de6a4008",
+              name: "GT 1",
+              gain: 0.3,
+              waveOutlineColor: "#FDFD97",
+            },
+            {
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F04.EG02(Stereo).mp3?alt=media&token=434d30dc-dac6-4068-abd7-5dfe5b6a04ff",
+              name: "GT 2",
+              gain: 0.3,
+              waveOutlineColor: "#9EE09E",
+            },
+            {
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F05.EG%20Solo%20.mp3?alt=media&token=c3be22da-986d-403d-acae-b550d8729054",
+              name: "GT Solo",
+              gain: 0.4,
+              waveOutlineColor: "#9EC1CF",
+            },
+            {
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F06.Hammond.mp3?alt=media&token=fe5464ef-6138-4fe5-9dc8-ddf813013062",
+              name: "Hammond",
+              gain: 0.3,
+              waveOutlineColor: "#CC99C9",
+            },
+            {
+              src: "https://firebasestorage.googleapis.com/v0/b/timelinebios.appspot.com/o/soundTracks%2F07.Vocal.mp3?alt=media&token=171bacf7-6a07-479a-b4bc-f57d9c8a073b",
+              name: "Vocal",
+              gain: 0.5,
+              waveOutlineColor: "#DBD5B5",
+            },
           ])
           .then(function () {
             ee.emit("loadprogress", 100, "all tracks ; )");
