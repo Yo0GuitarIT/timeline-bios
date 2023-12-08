@@ -1,4 +1,4 @@
-import boyYell from "@/public/jason-rosewell-ASKeuOZqhYU-unsplash.jpg";
+import boyYell from "../public/jason-rosewell-ASKeuOZqhYU-unsplash.jpg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -38,9 +38,9 @@ function HomeInfo() {
               to inspire creativity.
             </p>
             <div className="flex gap-3">
-              <Button variant="secondary">
+              {/* <Button variant="secondary">
                 <Link href="/authentication">Sign Up</Link>
-              </Button>
+              </Button> */}
               <Button>
                 <Link href="/main">Get Started</Link>
               </Button>

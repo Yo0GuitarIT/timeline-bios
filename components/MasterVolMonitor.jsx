@@ -3,13 +3,13 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card";
+} from "../components/ui/hover-card";
 
 function MasterVolMonitor() {
   return (
     <HoverCard>
       <HoverCardTrigger>
-        <div id="meterConatiner" className=" flex gap-1 items-center">
+        <div id="meterConatiner" className="flex gap-1 items-center">
           <Speaker />
           <canvas
             id="meterCanvas"

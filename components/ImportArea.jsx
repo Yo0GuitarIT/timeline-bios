@@ -1,4 +1,4 @@
-import { Progress } from "@/components/ui/progress";
+import { Progress } from "../components/ui/progress";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Upload } from "lucide-react";
@@ -16,8 +16,6 @@ function ImportArea({
   
 }) {
   const progressNumber = parseInt(loadProgress);
-
-  
 
   return (
     <div className="flex gap-2 content-center">

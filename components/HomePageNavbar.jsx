@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Github, Linkedin, AudioWaveform } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ModeToggle";
-import Timelinebios from "@/components/TittleTimelinebios";
+import { Button } from "../components/ui/button";
+import { ModeToggle } from "../components/ModeToggle";
+import Timelinebios from "../components/TittleTimelinebios";
 
 
 function HomePageNavbar() {

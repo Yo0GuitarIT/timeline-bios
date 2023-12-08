@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ArrowBigRightDash } from "lucide-react";
-import loadImg from "@/public/Pulse-1s-200px.svg";
+import loadImg from "../public/Pulse-1s-200px.svg";
 
 function InitialLoader({loadProgress,loadInfo}) {
   return (
