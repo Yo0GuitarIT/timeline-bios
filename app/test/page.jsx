@@ -44,28 +44,28 @@
 
 // export default ToastSimple;
 
-// "use client";
+"use client";
 
-// import { useEffect } from "react";
+import { useEffect } from "react";
 
-// export default function MyPage() {
-//   const handleOnBeforeunload = (event) => {
-//     event.preventDefault();
-//     return (event.returnValue = "");
-//   };
+export default function MyPage() {
+  const handleOnBeforeunload = (event) => {
+    event.preventDefault();
+    return (event.returnValue = "");
+  };
 
-//   useEffect(() => {
-//     window.addEventListener("beforeunload", handleOnBeforeunload, {
-//       capture: true,
-//     });
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleOnBeforeunload, {
+      capture: true,
+    });
 
-//     return () => {
-//       window.removeEventListener("beforeunload", handleOnBeforeunload, {
-//         capture: true,
-//       });
-//     };
-//   }, []);
+    return () => {
+      window.removeEventListener("beforeunload", handleOnBeforeunload, {
+        capture: true,
+      });
+    };
+  }, []);
 
-//   return <>My Page</>;
-// }
+  return <>My Page</>;
+}
 

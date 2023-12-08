@@ -249,6 +249,8 @@ function MainPage() {
           }
         });
 
+        
+
         playlist
           .load([
             {
@@ -332,7 +334,8 @@ function MainPage() {
         id="main-play"
         className={"opacity-0 flex flex-col relative min-h-screen items-center"}
       >
-        <MainHeader/>
+        <MainHeader />
+        
         <DisplayContainer container={container} />
 
         <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
