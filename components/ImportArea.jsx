@@ -1,4 +1,4 @@
-import { Progress } from "@/components/ui/progress";
+import { Progress } from "../components/ui/progress";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Upload } from "lucide-react";

@@ -4,7 +4,7 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card";
+} from "../../components/ui/hover-card";
 
 function ViewPannel({ handleZoomIn, handleZoomOut }) {
   return (

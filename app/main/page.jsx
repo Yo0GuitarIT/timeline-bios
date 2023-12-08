@@ -5,16 +5,16 @@ import EventEmitter from "events";
 import WaveformPlaylist from "waveform-playlist";
 import * as Tone from "tone";
 import { saveAs } from "file-saver";
-import MasterVolController from "@/components/MasterVolController";
-import ExportButton from "@/components/ExportButton";
-import PlayPannel from "@/components/pannels/PlayPannel";
-import ViewPannel from "@/components/pannels/ViewPannel";
-import EditPannel from "@/components/pannels/EditPannel";
-import ImportArea from "@/components/ImportArea";
-import InitialLoader from "@/components/InitialLoader";
-import DisplayContainer from "@/components/DisplayContainer"; 
-import { useToast } from "@/components/ui/use-toast";
-import MainHeader from "@/components/MainHeader";
+import MasterVolController from "../../components/MasterVolController";
+import ExportButton from "../../components/ExportButton";
+import PlayPannel from "../../components/pannels/PlayPannel";
+import ViewPannel from "../../components/pannels/ViewPannel";
+import EditPannel from "../../components/pannels/EditPannel";
+import ImportArea from "../../components/ImportArea";
+import InitialLoader from "../../components/InitialLoader";
+import DisplayContainer from "../../components/DisplayContainer"; 
+import { useToast } from "../../components/ui/use-toast";
+import MainHeader from "../../components/MainHeader";
 
 function MainPage() {
   const [ee] = useState(new EventEmitter());

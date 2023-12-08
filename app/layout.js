@@ -1,9 +1,9 @@
 import { Inter } from 'next/font/google'
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
+import {ThemeProvider} from "../components/theme-provider"
+import { Toaster } from "../components/ui/toaster"
 
-import "@/styles/css/all.css"
-import "@/styles/custom.css"
+import "../styles/css/all.css"
+import "../styles/custom.css"
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })

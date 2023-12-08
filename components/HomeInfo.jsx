@@ -1,4 +1,4 @@
-import boyYell from "@/public/jason-rosewell-ASKeuOZqhYU-unsplash.jpg";
+import boyYell from "../public/jason-rosewell-ASKeuOZqhYU-unsplash.jpg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";

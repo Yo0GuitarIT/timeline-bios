@@ -4,8 +4,8 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { useToast } from "@/components/ui/use-toast";
+} from "../components/ui/hover-card";
+import { useToast } from "../components/ui/use-toast";
 
 function ExportButton({ handleExport }) {
 
