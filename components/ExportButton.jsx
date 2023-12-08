@@ -5,14 +5,30 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { useToast } from "@/components/ui/use-toast";
 
 function ExportButton({ handleExport }) {
+
+  const { toast } = useToast();
+  const triggerToast=() => {
+     toast({
+       title: "Exporting...",
+       description: "Please Wait for a few seconds...",
+     });
+  }
+
+  const AlertAndExport=() => {
+    handleExport();
+    triggerToast();
+  }
+
   return (
     <HoverCard>
       <HoverCardTrigger>
-        <Button variant="outline" size="icon" onClick={() => handleExport()}>
+        <Button variant="outline" size="icon" onClick={AlertAndExport}>
           <Download />
         </Button>
+
       </HoverCardTrigger>
       <HoverCardContent className="w-60 whitespace-normal">
         <div className="space-y-1">

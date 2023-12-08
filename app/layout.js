@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/toaster"
 
 import "@/styles/css/all.css"
 import "@/styles/custom.css"
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
         >
           {children}
         </ThemeProvider >
+        <Toaster />
       </body>
     </html>
   )

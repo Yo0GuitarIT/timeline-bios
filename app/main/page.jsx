@@ -6,27 +6,25 @@ import WaveformPlaylist from "waveform-playlist";
 import * as Tone from "tone";
 import { saveAs } from "file-saver";
 import MasterVolController from "@/components/MasterVolController";
-import MasterVolMonitor from "@/components/MasterVolMonitor";
 import ExportButton from "@/components/ExportButton";
 import PlayPannel from "@/components/pannels/PlayPannel";
 import ViewPannel from "@/components/pannels/ViewPannel";
 import EditPannel from "@/components/pannels/EditPannel";
 import ImportArea from "@/components/ImportArea";
-import Timelinebios from "@/components/TittleTimelinebios";
-import { ModeToggle } from "@/components/ModeToggle";
-import AlertMessage from "@/components/AlertMessage";
 import InitialLoader from "@/components/InitialLoader";
+import DisplayContainer from "@/components/DisplayContainer"; 
+import { useToast } from "@/components/ui/use-toast";
+import MainHeader from "@/components/MainHeader";
 
 function MainPage() {
   const [ee] = useState(new EventEmitter());
   const setUpChain = useRef();
   const [toneCtx, setToneCtx] = useState(null);
-  const [masterVolume, setMasterVolume] = useState([30]);
+  const [masterVolume, setMasterVolume] = useState([95]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [isUpload, setIsUpload] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const [uploadMessage, setUploadMessage] = useState(
     "Click or Drag Audio File Here"
   );
@@ -49,8 +47,8 @@ function MainPage() {
     const meterHeight = meterCanvas.height;
 
     const meterGradient = meterCtx.createLinearGradient(0, 0, meterWidth, 0);
-     meterGradient.addColorStop(0, "rgb(52, 211, 153)");
-    meterGradient.addColorStop(0.5, "rgb(251, 191, 36)");
+    meterGradient.addColorStop(0, "rgb(52, 211, 153)");
+    meterGradient.addColorStop(0.7, "rgb(251, 191, 36)");
     meterGradient.addColorStop(1, "rgb(239, 68, 68)");
 
     const meter = new Tone.Meter();
@@ -87,9 +85,7 @@ function MainPage() {
     setLoadInfo("Now");
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
+  const handleDragOver = (e) => e.preventDefault();
 
   const handleDragLeave = (e) => {
     e.preventDefault();
@@ -105,7 +101,7 @@ function MainPage() {
     }
     setUploadMessage("Click or Drag Audio File Here");
     setIsUpload(false);
-    toggleVisibility();
+    triggerToast();
   };
 
   const handleUploadFile = (e) => {
@@ -117,7 +113,7 @@ function MainPage() {
     }
     setUploadMessage("Click or Drag Audio File Here");
     setIsUpload(false);
-    toggleVisibility();
+    triggerToast();
   };
 
   const handleFileInputChange = () => {
@@ -125,14 +121,12 @@ function MainPage() {
     setIsUpload(true);
   };
 
-  const toggleVisibility = () => {
-    setTimeout(() => {
-      setIsVisible(true);
-
-      setTimeout(() => {
-        setIsVisible(false);
-      }, 1000);
-    }, 800);
+  const { toast } = useToast();
+  const triggerToast = () => {
+    toast({
+      title: "Upload...",
+      description: "Please Wait for a few seconds...",
+    });
   };
 
   const handleRecord = () => {
@@ -216,7 +210,7 @@ function MainPage() {
             zoomLevels: [256, 512, 1024, 2048, 4096, 8192],
 
             effects: function (graphEnd, masterGainNode, isOffline) {
-              const volume = new Tone.Volume(-6).toDestination();
+              const volume = new Tone.Volume(-12).toDestination();
 
               if (isOffline) {
                 setUpChain.current.push(volume.ready);
@@ -338,28 +332,8 @@ function MainPage() {
         id="main-play"
         className={"opacity-0 flex flex-col relative min-h-screen items-center"}
       >
-        <div className="w-full h-14 flex items-center sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container flex items-center justify-between gap-px">
-            <div className="hidden md:flex">
-              <Timelinebios />
-            </div>
-
-            {/* <div className="w-60">
-              <Input
-                placeholder="Project Name"
-                defaultValue="My father Never Loves Me"
-                className="text-center text-md"
-              />
-            </div> */}
-
-            <MasterVolMonitor />
-            <ModeToggle />
-          </div>
-        </div>
-
-        <div className="absolute z-0 w-full h-full box-border py-8 overflow-y-auto">
-          <div className={"w-full box-border"} ref={container}></div>
-        </div>
+        <MainHeader/>
+        <DisplayContainer container={container} />
 
         <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <MasterVolController
@@ -406,7 +380,6 @@ function MainPage() {
           <ExportButton handleExport={handleExport} />
         </div>
 
-        <AlertMessage isVisible={isVisible} />
       </main>
     </>
   );

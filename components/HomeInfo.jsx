@@ -38,9 +38,9 @@ function HomeInfo() {
               to inspire creativity.
             </p>
             <div className="flex gap-3">
-              <Button variant="secondary">
+              {/* <Button variant="secondary">
                 <Link href="/authentication">Sign Up</Link>
-              </Button>
+              </Button> */}
               <Button>
                 <Link href="/main">Get Started</Link>
               </Button>

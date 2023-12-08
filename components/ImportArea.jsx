@@ -17,8 +17,6 @@ function ImportArea({
 }) {
   const progressNumber = parseInt(loadProgress);
 
-  
-
   return (
     <div className="flex gap-2 content-center">
       <div
