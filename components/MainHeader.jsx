@@ -1,11 +1,14 @@
 import Timelinebios from "./TittleTimelinebios";
 import MasterVolMonitor from "./MasterVolMonitor";
+import ViewPannel from "../components/pannels/ViewPannel";
 import { ModeToggle } from "./ModeToggle";
 import { Input } from "../components/ui/input";
 import { useState } from "react";
 
-function MainHeader() {
-  const [songName, setSongName] = useState("My Father Never Loves me");
+function MainHeader({ handleZoomIn , handleZoomOut}) {
+  const [songName, setSongName] = useState(
+    "Trafficker - My Father Never Loved me"
+  );
 
   const handleSongNameChange = (e) => {
     setSongName(e.target.value);
@@ -17,9 +20,9 @@ function MainHeader() {
         <div className="hidden md:flex">
           <Timelinebios />
         </div>
-        
+
         <Input
-          className="text-center text-lg w-96"
+          className="text-center w-96 h-6 dark:bg-zinc-800 bg-transparent "
           type="text"
           placeholder="Write the Song Name"
           value={songName}
@@ -27,6 +30,9 @@ function MainHeader() {
         />
 
         <MasterVolMonitor />
+
+        <ViewPannel handleZoomIn={handleZoomIn} handleZoomOut={handleZoomOut} />
+
         <ModeToggle />
       </div>
     </div>

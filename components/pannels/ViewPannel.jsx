@@ -12,7 +12,7 @@ function ViewPannel({ handleZoomIn, handleZoomOut }) {
       <HoverCard>
         <HoverCardTrigger>
           <Button variant="outline" size="icon" onClick={() => handleZoomIn()}>
-            <ZoomIn strokeWidth={1.5} />
+            <ZoomIn strokeWidth={1.5} size={20} />
           </Button>
         </HoverCardTrigger>
         <HoverCardContent className="w-60 whitespace-normal">
@@ -29,7 +29,7 @@ function ViewPannel({ handleZoomIn, handleZoomOut }) {
       <HoverCard>
         <HoverCardTrigger>
           <Button variant="outline" size="icon" onClick={() => handleZoomOut()}>
-            <ZoomOut strokeWidth={1.5} />
+            <ZoomOut strokeWidth={1.5} size={20} />
           </Button>
         </HoverCardTrigger>
         <HoverCardContent className="w-60 whitespace-normal">

@@ -2,6 +2,7 @@
 
 import boyYell from "../public/jason-rosewell-ASKeuOZqhYU-unsplash.jpg";
 import loadingImg from "../public/Pulse-1s-200px.svg";
+import { ChevronsRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -13,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+
 
 function HomeInfo() {
   return (
@@ -47,11 +49,36 @@ function HomeInfo() {
               Elevate your music editing game with user-friendly tools designed
               to inspire creativity.
             </p>
+
             <div className="flex gap-3">
-              <Link href="/main">
+              <Link href="/demo">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button>Get Started</Button>
+                    <Button variant="secondary">
+                      View Demo <ChevronsRight strokeWidth={1} />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="flex">
+                        <Image src={loadingImg} alt="loadingImg" height={20} />
+                        Project Building...
+                      </DialogTitle>
+                      <DialogDescription>
+                        Relevant discourse about the ongoing construction of the
+                        project.
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </Link>
+
+              <Link href="/default">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button>
+                      Get Started <ChevronsRight strokeWidth={1} />
+                    </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>

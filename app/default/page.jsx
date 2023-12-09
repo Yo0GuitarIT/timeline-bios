@@ -12,11 +12,11 @@ import ViewPannel from "../../components/pannels/ViewPannel";
 import EditPannel from "../../components/pannels/EditPannel";
 import ImportArea from "../../components/ImportArea";
 import InitialLoader from "../../components/InitialLoader";
-import DisplayContainer from "../../components/DisplayContainer"; 
+import DisplayContainer from "../../components/DisplayContainer";
 import { useToast } from "../../components/ui/use-toast";
 import MainHeader from "../../components/MainHeader";
 
-function MainPage() {
+function DefaultPage() {
   const [ee] = useState(new EventEmitter());
   const setUpChain = useRef();
   const [toneCtx, setToneCtx] = useState(null);
@@ -47,8 +47,7 @@ function MainPage() {
     const meterHeight = meterCanvas.height;
 
     const meterGradient = meterCtx.createLinearGradient(0, 0, meterWidth, 0);
-    meterGradient.addColorStop(0, "rgb(52, 211, 153)");
-    meterGradient.addColorStop(0.7, "rgb(251, 191, 36)");
+    meterGradient.addColorStop(0, "rgb(251, 191, 36)");
     meterGradient.addColorStop(1, "rgb(239, 68, 68)");
 
     const meter = new Tone.Meter();
@@ -187,7 +186,7 @@ function MainPage() {
         const playlist = WaveformPlaylist(
           {
             ac: toneCtx.rawContext,
-            samplesPerPixel: 2048,
+            samplesPerPixel: 1024,
             mono: true,
             waveHeight: 100,
             container: node,
@@ -249,52 +248,50 @@ function MainPage() {
           }
         });
 
-        
-
         playlist
           .load([
-            {
-              src: "soundTrack/01.Drum.mp3",
-              name: "Drum",
-              gain: 0.5,
-              waveOutlineColor: "rgb(254, 202, 202)",
-            },
-            {
-              src: "soundTrack/02.Bass.mp3",
-              name: "Bass",
-              gain: 0.6,
-              waveOutlineColor: "rgb(253, 230, 138)",
-            },
-            {
-              src: "soundTrack/03.EG01(Stereo).mp3",
-              name: "GT 1",
-              gain: 0.3,
-              waveOutlineColor: "rgb(167, 243, 208)",
-            },
-            {
-              src: "soundTrack/04.EG02(Stereo).mp3",
-              name: "GT 2",
-              gain: 0.3,
-              waveOutlineColor: "rgb(191, 219, 254)",
-            },
-            {
-              src: "soundTrack/05.EG(Solo).mp3",
-              name: "GT Solo",
-              gain: 0.4,
-              waveOutlineColor: "rgb(199, 210, 254)",
-            },
-            {
-              src: "soundTrack/06.Hammond.mp3",
-              name: "Hammond",
-              gain: 0.3,
-              waveOutlineColor: "rgb(221, 214, 254)",
-            },
-            {
-              src: "soundTrack/07.Vocal.mp3",
-              name: "Vocal",
-              gain: 0.5,
-              waveOutlineColor: "rgb(251, 207, 232)",
-            },
+            // {
+            //   src: "soundTrack/01.Drum.mp3",
+            //   name: "Drum",
+            //   gain: 0.5,
+            //   waveOutlineColor: "rgb(254, 202, 202)",
+            // },
+            // {
+            //   src: "soundTrack/02.Bass.mp3",
+            //   name: "Bass",
+            //   gain: 0.6,
+            //   waveOutlineColor: "rgb(253, 230, 138)",
+            // },
+            // {
+            //   src: "soundTrack/03.EG01(Stereo).mp3",
+            //   name: "GT 1",
+            //   gain: 0.3,
+            //   waveOutlineColor: "rgb(167, 243, 208)",
+            // },
+            // {
+            //   src: "soundTrack/04.EG02(Stereo).mp3",
+            //   name: "GT 2",
+            //   gain: 0.3,
+            //   waveOutlineColor: "rgb(191, 219, 254)",
+            // },
+            // {
+            //   src: "soundTrack/05.EG(Solo).mp3",
+            //   name: "GT Solo",
+            //   gain: 0.4,
+            //   waveOutlineColor: "rgb(199, 210, 254)",
+            // },
+            // {
+            //   src: "soundTrack/06.Hammond.mp3",
+            //   name: "Hammond",
+            //   gain: 0.3,
+            //   waveOutlineColor: "rgb(221, 214, 254)",
+            // },
+            // {
+            //   src: "soundTrack/07.Vocal.mp3",
+            //   name: "Vocal",
+            //   gain: 0.5,
+            //   waveOutlineColor: "rgb(251, 207, 232)",
+            // },
           ])
           .then(function () {
             ee.emit("loadprogress", 100, "all tracks ; )");
@@ -334,40 +331,11 @@ function MainPage() {
         id="main-play"
         className={"opacity-0 flex flex-col relative min-h-screen items-center"}
       >
-        <MainHeader />
-        
+        <MainHeader handleZoomIn={handleZoomIn} handleZoomOut={handleZoomOut} />
+
         <DisplayContainer container={container} />
 
         <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <MasterVolController
-            masterVolume={masterVolume}
-            handleMasterVolChange={handleMasterVolChange}
-          />
-
-          <PlayPannel
-            handlePause={handlePause}
-            handlePlay={handlePlay}
-            handleStop={handleStop}
-            handleRewind={handleRewind}
-            handleFastforward={handleFastforward}
-            handleRecord={handleRecord}
-            isRecording={isRecording}
-          />
-
-          <ViewPannel
-            handleZoomIn={handleZoomIn}
-            handleZoomOut={handleZoomOut}
-          />
-
-          <EditPannel
-            stateCursor={stateCursor}
-            stateSelect={stateSelect}
-            stateShift={stateShift}
-            stateFadeIn={stateFadeIn}
-            stateFadeOut={stateFadeOut}
-            handleTrim={handleTrim}
-          />
-
           <ImportArea
             handleUploadFile={(e) => handleUploadFile(e)}
             handleDragEnter={handleDragEnter}
@@ -380,12 +348,34 @@ function MainPage() {
             isUpload={isUpload}
           />
 
+          <PlayPannel
+            handlePause={handlePause}
+            handlePlay={handlePlay}
+            handleStop={handleStop}
+            handleRewind={handleRewind}
+            handleFastforward={handleFastforward}
+            handleRecord={handleRecord}
+            isRecording={isRecording}
+          />
+
+          <EditPannel
+            stateCursor={stateCursor}
+            stateSelect={stateSelect}
+            stateShift={stateShift}
+            stateFadeIn={stateFadeIn}
+            stateFadeOut={stateFadeOut}
+            handleTrim={handleTrim}
+          />
+
+          <MasterVolController
+            masterVolume={masterVolume}
+            handleMasterVolChange={handleMasterVolChange}
+          />
           <ExportButton handleExport={handleExport} />
         </div>
-
       </main>
     </>
   );
 }
 
-export default MainPage;
+export default DefaultPage;

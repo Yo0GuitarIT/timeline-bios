@@ -9,8 +9,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  
 } from "../components/ui/dropdown-menu";
+
+import { Button } from "./ui/button";
 
 function HomePageNavbar() {
   return (
@@ -31,25 +32,11 @@ function HomePageNavbar() {
           </nav> */}
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          {/* <nav className="flex items-center">
-            <Button variant="ghost" size="icon" >
-              <Link href="https://github.com/Yo0GuitarIT">
-                <Github size={20} strokeWidth={1.5} />
-              </Link>
-            </Button>
-
-            <Button variant="ghost" size="icon" >
-              <Link href="https://www.linkedin.com/in/yo036563/">
-                <Linkedin size={20} strokeWidth={1.5} />
-              </Link>
-            </Button>
-
-            <ModeToggle />
-          </nav> */}
           <DropdownMenu>
             <DropdownMenuTrigger>
               <MenuSquare strokeWidth={1} />
             </DropdownMenuTrigger>
+
             <DropdownMenuContent>
               <DropdownMenuLabel>Welcome</DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -74,6 +61,7 @@ function HomePageNavbar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
           <ModeToggle />
         </div>
       </div>
