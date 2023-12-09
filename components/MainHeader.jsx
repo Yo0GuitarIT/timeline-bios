@@ -17,9 +17,7 @@ function MainHeader() {
         <div className="hidden md:flex">
           <Timelinebios />
         </div>
-
-        {/* <div className="audio-pos" aria-label="Audio positition"></div> */}
-
+        
         <Input
           className="text-center text-lg w-96"
           type="text"

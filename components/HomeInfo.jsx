@@ -1,13 +1,23 @@
+"use client";
+
 import boyYell from "../public/jason-rosewell-ASKeuOZqhYU-unsplash.jpg";
+import loadingImg from "../public/Pulse-1s-200px.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
 
 function HomeInfo() {
   return (
     <div className="flex-1">
       <div className="relative ">
-
         <div
           className="relative overflow-hidden flex items-center"
           style={{ height: "calc(100vh - 56px)" }}
@@ -38,12 +48,25 @@ function HomeInfo() {
               to inspire creativity.
             </p>
             <div className="flex gap-3">
-              {/* <Button variant="secondary">
-                <Link href="/authentication">Sign Up</Link>
-              </Button> */}
-              <Button>
-                <Link href="/main">Get Started</Link>
-              </Button>
+              <Link href="/main">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button>Get Started</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="flex">
+                        <Image src={loadingImg} alt="loadingImg" height={20} />
+                        Project Building...
+                      </DialogTitle>
+                      <DialogDescription>
+                        Relevant discourse about the ongoing construction of the
+                        project.
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </Link>
             </div>
           </div>
         </div>
