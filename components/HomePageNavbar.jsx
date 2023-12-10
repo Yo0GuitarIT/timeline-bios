@@ -1,9 +1,17 @@
+"use client"
+
 import Link from "next/link";
-import { Github, Linkedin, AudioWaveform } from "lucide-react";
-import { Button } from "../components/ui/button";
+import { Github, Linkedin, MenuSquare } from "lucide-react";
 import { ModeToggle } from "../components/ModeToggle";
 import Timelinebios from "../components/TittleTimelinebios";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
 
 function HomePageNavbar() {
   return (
@@ -13,32 +21,48 @@ function HomePageNavbar() {
     >
       <div className="container h-14 flex items-center">
         <div className="mr-4 hidden md:flex">
-          <Timelinebios/>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
+          <Timelinebios />
+          {/* <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link
               className="hidden text-foreground/60 transition-colors hover:text-foreground/80 lg:block"
               href="https://github.com/Yo0GuitarIT/waveform-playlist-test"
             >
               GitHub
             </Link>
-          </nav>
+          </nav> */}
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <nav className="flex items-center">
-            <Button variant="ghost" size="icon" >
-              <Link href="https://github.com/Yo0GuitarIT">
-                <Github size={20} strokeWidth={1.5} />
-              </Link>
-            </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger>  
+                <MenuSquare strokeWidth={1} />            
+            </DropdownMenuTrigger>
 
-            <Button variant="ghost" size="icon" >
-              <Link href="https://www.linkedin.com/in/yo036563/">
-                <Linkedin size={20} strokeWidth={1.5} />
-              </Link>
-            </Button>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Welcome</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link
+                  className="flex justify-around items-center "
+                  href="https://github.com/Yo0GuitarIT"
+                >
+                  <Github className="mr-2 h-4 w-4" />
+                  <span>Github</span>
+                </Link>
+              </DropdownMenuItem>
 
-            <ModeToggle />
-          </nav>
+              <DropdownMenuItem>
+                <Link
+                  className="flex justify-around items-center "
+                  href="https://www.linkedin.com/in/yo036563/"
+                >
+                  <Linkedin className="mr-2 h-4 w-4" />
+                  <span>Linkedin</span>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <ModeToggle />
         </div>
       </div>
     </header>

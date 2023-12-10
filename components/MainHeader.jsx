@@ -1,16 +1,16 @@
 import Timelinebios from "./TittleTimelinebios";
 import MasterVolMonitor from "./MasterVolMonitor";
+import ViewPannel from "../components/pannels/ViewPannel";
 import { ModeToggle } from "./ModeToggle";
 import { Input } from "../components/ui/input";
-import { useState } from "react";
 
-function MainHeader() {
-  const [songName, setSongName] = useState("My Father Never Loves me");
-
-  const handleSongNameChange = (e) => {
-    setSongName(e.target.value);
-  };
-
+function MainHeader({
+  handleZoomIn,
+  handleZoomOut,
+  songName,
+  handleSongNameChange,
+}) {
+  
   return (
     <div className="w-full h-14 flex items-center sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex items-center justify-between gap-px">
@@ -18,10 +18,8 @@ function MainHeader() {
           <Timelinebios />
         </div>
 
-        {/* <div className="audio-pos" aria-label="Audio positition"></div> */}
-
         <Input
-          className="text-center text-lg w-96"
+          className="text-center w-96 h-6 dark:bg-zinc-800 bg-transparent "
           type="text"
           placeholder="Write the Song Name"
           value={songName}
@@ -29,6 +27,9 @@ function MainHeader() {
         />
 
         <MasterVolMonitor />
+
+        <ViewPannel handleZoomIn={handleZoomIn} handleZoomOut={handleZoomOut} />
+
         <ModeToggle />
       </div>
     </div>

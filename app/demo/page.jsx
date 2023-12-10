@@ -8,27 +8,30 @@ import { saveAs } from "file-saver";
 import MasterVolController from "../../components/MasterVolController";
 import ExportButton from "../../components/ExportButton";
 import PlayPannel from "../../components/pannels/PlayPannel";
-import ViewPannel from "../../components/pannels/ViewPannel";
 import EditPannel from "../../components/pannels/EditPannel";
 import ImportArea from "../../components/ImportArea";
 import InitialLoader from "../../components/InitialLoader";
-import DisplayContainer from "../../components/DisplayContainer"; 
+import DisplayContainer from "../../components/DisplayContainer";
 import { useToast } from "../../components/ui/use-toast";
 import MainHeader from "../../components/MainHeader";
 
-function MainPage() {
+function DemoPage() {
   const [ee] = useState(new EventEmitter());
   const setUpChain = useRef();
   const [toneCtx, setToneCtx] = useState(null);
   const [masterVolume, setMasterVolume] = useState([95]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
   const [isUpload, setIsUpload] = useState(false);
   const [uploadMessage, setUploadMessage] = useState(
     "Click or Drag Audio File Here"
   );
+  const [songName, setSongName] = useState(
+    "Trafficker - My Father Never Loved me"
+  );
 
+  const { toast } = useToast();
+  
   useEffect(() => {
     setToneCtx(Tone.getContext());
     startVolumeMonitoring();
@@ -47,15 +50,14 @@ function MainPage() {
     const meterHeight = meterCanvas.height;
 
     const meterGradient = meterCtx.createLinearGradient(0, 0, meterWidth, 0);
-    meterGradient.addColorStop(0, "rgb(52, 211, 153)");
-    meterGradient.addColorStop(0.7, "rgb(251, 191, 36)");
+    meterGradient.addColorStop(0, "rgb(251, 191, 36)");
     meterGradient.addColorStop(1, "rgb(239, 68, 68)");
 
     const meter = new Tone.Meter();
     Tone.getDestination().connect(meter);
 
     const logMasterVolume = () => {
-      const lowerBound = -30;
+      const lowerBound = -40;
       const upperBound = 3;
       const dBFS = meter.getValue();
       const dBu = dBFS + 18;
@@ -121,7 +123,6 @@ function MainPage() {
     setIsUpload(true);
   };
 
-  const { toast } = useToast();
   const triggerToast = () => {
     toast({
       title: "Upload...",
@@ -129,30 +130,25 @@ function MainPage() {
     });
   };
 
-  const handleRecord = () => {
-    setIsRecording(true);
-    ee.emit("record");
-  };
-
-  const handlePlay = () => ee.emit("play");
   const handlePause = () => ee.emit("pause");
-
-  const handleStop = () => {
-    setIsRecording(false);
-    ee.emit("stop");
-  };
+  const handlePlay = () => ee.emit("play");
+  const handleStop = () => ee.emit("stop");
+  const handleRewind = () => ee.emit("rewind");
+  const handleFastforward = () => ee.emit("fastforward");
+  const handleRecord = () => ee.emit("record");
 
   const handleTrim = () => ee.emit("trim");
   const handleZoomIn = () => ee.emit("zoomin");
   const handleZoomOut = () => ee.emit("zoomout");
-  const handleRewind = () => ee.emit("rewind");
-  const handleFastforward = () => ee.emit("fastforward");
+
   const stateCursor = () => ee.emit("statechange", "cursor");
   const stateSelect = () => ee.emit("statechange", "select");
   const stateFadeIn = () => ee.emit("statechange", "fadein");
   const stateFadeOut = () => ee.emit("statechange", "fadeout");
   const stateShift = () => ee.emit("statechange", "shift");
+  
   const handleExport = () => ee.emit("startaudiorendering", "wav");
+  const handleSongNameChange = (e) => setSongName(e.target.value);
 
   const container = useCallback(
     (node) => {
@@ -187,7 +183,7 @@ function MainPage() {
         const playlist = WaveformPlaylist(
           {
             ac: toneCtx.rawContext,
-            samplesPerPixel: 2048,
+            samplesPerPixel: 1024,
             mono: true,
             waveHeight: 100,
             container: node,
@@ -245,11 +241,9 @@ function MainPage() {
           //restore original ctx for further use.
           Tone.setContext(toneCtx);
           if (type === "wav") {
-            saveAs(data, "test.wav");
+            saveAs(data, "My Father Never Loved Me.wav");
           }
         });
-
-        
 
         playlist
           .load([
@@ -334,40 +328,16 @@ function MainPage() {
         id="main-play"
         className={"opacity-0 flex flex-col relative min-h-screen items-center"}
       >
-        <MainHeader />
-        
+        <MainHeader
+          handleZoomIn={handleZoomIn}
+          handleZoomOut={handleZoomOut}
+          songName={songName}
+          handleSongNameChange={handleSongNameChange}
+        />
+
         <DisplayContainer container={container} />
 
         <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <MasterVolController
-            masterVolume={masterVolume}
-            handleMasterVolChange={handleMasterVolChange}
-          />
-
-          <PlayPannel
-            handlePause={handlePause}
-            handlePlay={handlePlay}
-            handleStop={handleStop}
-            handleRewind={handleRewind}
-            handleFastforward={handleFastforward}
-            handleRecord={handleRecord}
-            isRecording={isRecording}
-          />
-
-          <ViewPannel
-            handleZoomIn={handleZoomIn}
-            handleZoomOut={handleZoomOut}
-          />
-
-          <EditPannel
-            stateCursor={stateCursor}
-            stateSelect={stateSelect}
-            stateShift={stateShift}
-            stateFadeIn={stateFadeIn}
-            stateFadeOut={stateFadeOut}
-            handleTrim={handleTrim}
-          />
-
           <ImportArea
             handleUploadFile={(e) => handleUploadFile(e)}
             handleDragEnter={handleDragEnter}
@@ -380,12 +350,33 @@ function MainPage() {
             isUpload={isUpload}
           />
 
+          <PlayPannel
+            handlePause={handlePause}
+            handlePlay={handlePlay}
+            handleStop={handleStop}
+            handleRewind={handleRewind}
+            handleFastforward={handleFastforward}
+            handleRecord={handleRecord}
+          />
+
+          <EditPannel
+            stateCursor={stateCursor}
+            stateSelect={stateSelect}
+            stateShift={stateShift}
+            stateFadeIn={stateFadeIn}
+            stateFadeOut={stateFadeOut}
+            handleTrim={handleTrim}
+          />
+
+          <MasterVolController
+            masterVolume={masterVolume}
+            handleMasterVolChange={handleMasterVolChange}
+          />
           <ExportButton handleExport={handleExport} />
         </div>
-
       </main>
     </>
   );
 }
 
-export default MainPage;
+export default DemoPage;

@@ -10,10 +10,10 @@ function MasterVolMonitor() {
     <HoverCard>
       <HoverCardTrigger>
         <div id="meterConatiner" className="flex gap-1 items-center">
-          <Speaker />
+          <Speaker strokeWidth={1.5} size={20} />
           <canvas
             id="meterCanvas"
-            className="w-40 h-4 border-2 border-dashed border-yellow-400"
+            className="w-80 h-5 border-2 rounded border-dashed border-yellow-400"
           ></canvas>
         </div>
       </HoverCardTrigger>

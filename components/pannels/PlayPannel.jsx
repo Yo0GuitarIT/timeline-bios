@@ -1,5 +1,6 @@
 import { Button } from "../ui/button";
 import { Pause, Play, Square, Circle, Rewind, FastForward } from "lucide-react";
+import usePlaybackBtnStore from "../../stores/playbackButtonStrore";
 
 function PlayPannel({
   handlePause,
@@ -8,33 +9,89 @@ function PlayPannel({
   handleRewind,
   handleFastforward,
   handleRecord,
-  isRecording,
 }) {
+  const { isRecording,isPlaying, toggleRecording, toggleStop,togglePlay,togglePause } = usePlaybackBtnStore();
+
+  const onRecord = () => {
+    handleRecord();
+    toggleRecording();
+  };
+
+  const onStop = () => {
+    handleStop();
+    toggleStop();
+  };
+
+  const onPlay = () => {
+    handlePlay();
+    togglePlay();
+  }
+  
+  const onPause = () => {
+    handlePause();
+    togglePause();
+  }
+
   return (
     <div className="flex gap-2 p-1">
-      <Button variant="outline" size="icon" onClick={handlePause}>
+      <Button
+        className="hover:text-violet-400"
+        variant="outline"
+        size="icon"
+        onClick={onPause}
+        disabled={isRecording}
+      >
         <Pause strokeWidth={1.5} />
       </Button>
-      <Button variant="outline" size="icon" onClick={handlePlay}>
+
+      <Button
+        className={`hover:text-green-500 ${isPlaying?"bg-red-500 text-white":""}`}
+        variant="outline"
+        size="icon"
+        onClick={onPlay}
+        disabled={isRecording}
+      >
         <Play strokeWidth={1.5} />
       </Button>
-      <Button variant="outline" size="icon" onClick={handleStop}>
+
+      <Button
+        className="hover:text-yellow-500"
+        variant="outline"
+        size="icon"
+        onClick={onStop}
+      >
         <Square strokeWidth={1.5} />
       </Button>
-      <Button variant="outline" size="icon" onClick={handleRewind}>
+
+      <Button
+        className="hover:text-cyan-500"
+        variant="outline"
+        size="icon"
+        onClick={handleRewind}
+        disabled={isRecording}
+      >
         <Rewind strokeWidth={1.5} />
       </Button>
-      <Button variant="outline" size="icon" onClick={handleFastforward}>
+
+      <Button
+        className="hover:text-cyan-500"
+        variant="outline"
+        size="icon"
+        onClick={handleFastforward}
+        disabled={isRecording}
+      >
         <FastForward strokeWidth={1.5} />
       </Button>
+
       <Button
+        className="hover:text-rose-500"
         variant="outline"
         size="icon"
         id="record-Button"
-        onClick={handleRecord}
+        onClick={onRecord}
         disabled={isRecording}
       >
-        <Circle color="red" fill="red" />
+        <Circle fill=" rgb(239 68 68)" />
       </Button>
     </div>
   );

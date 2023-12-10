@@ -1,71 +1,20 @@
-// "use client"
-
-// import { useEffect, useState } from "react";
-// import { storage, getFirebaseStorageUrl } from "@/lib/firebase";
-
-// function UrlPage() {
-//   const [link, setLink] = useState("");
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const url = await getFirebaseStorageUrl("soundTracks/01.Drum.mp3");
-//       setLink(url);
-//     };
-//     fetchData();
-//   }, []);
-
-//   console.log(link);
-//   return <div>Link: {link}</div>;
-// }
-
-// export default UrlPage;
-
-// "use client";
-
-// import { Button } from "@/components/ui/button";
-// import { useToast } from "@/components/ui/use-toast";
-
-// export function ToastSimple() {
-//   const { toast } = useToast();
-
-//   return (
-//     <Button
-//       variant="outline"
-//       onClick={() => {
-//         toast({
-//           description: "Your message has been sent.",
-//         });
-//       }}
-//     >
-//       Show Toast
-//     </Button>
-//   );
-// }
-
-// export default ToastSimple;
-
 "use client";
 
-import { useEffect } from "react";
+import { Button } from "../../components/ui/button";
+import useButtonStore from "./btnStore";
 
-export default function MyPage() {
-  const handleOnBeforeunload = (event) => {
-    event.preventDefault();
-    return (event.returnValue = "");
-  };
+const ButtonComponent = () => {
+  const { isRecording, toggleRecording, toggleStop } = useButtonStore();
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", handleOnBeforeunload, {
-      capture: true,
-    });
+  return (
+    <div className="flex gap-1 m-2">
+      <Button onClick={toggleRecording} disabled={isRecording}></Button>
+      <Button onClick={toggleStop}>Stop</Button>
+      <Button disabled={isRecording}>Play</Button>
+      <Button disabled={isRecording}>Fast Forward</Button>
+      <Button disabled={isRecording}>Rewind</Button>
+    </div>
+  );
+};
 
-    return () => {
-      window.removeEventListener("beforeunload", handleOnBeforeunload, {
-        capture: true,
-      });
-    };
-  }, []);
-
-  return <>My Page</>;
-}
-
+export default ButtonComponent;
