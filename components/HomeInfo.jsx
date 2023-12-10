@@ -1,5 +1,6 @@
 "use client";
 
+import Sentence from "./Sentence";
 import boyYell from "../public/jason-rosewell-ASKeuOZqhYU-unsplash.jpg";
 import loadingImg from "../public/Pulse-1s-200px.svg";
 import { ChevronsRight } from "lucide-react";
@@ -14,7 +15,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-
 
 function HomeInfo() {
   return (
@@ -38,23 +38,13 @@ function HomeInfo() {
              text-white drop-shadow-md
              flex flex-col items-center gap-2 "
           >
-            <p className="text-5xl font-bold">
-              Unleash Your Creativity in Music Editing.
-            </p>
-
-            <p className="text-2xl">
-              Experience a powerful online Digital Audio Workstation (DAW) at
-              timelineβίος.
-              <br />
-              Elevate your music editing game with user-friendly tools designed
-              to inspire creativity.
-            </p>
-
+            <Sentence />
+           
             <div className="flex gap-3">
               <Link href="/demo">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button >
+                    <Button variant="secondary">
                       View Demo <ChevronsRight strokeWidth={1} />
                     </Button>
                   </DialogTrigger>
@@ -73,7 +63,7 @@ function HomeInfo() {
                 </Dialog>
               </Link>
 
-              {/* <Link href="/default">
+              <Link href="/default">
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button>
@@ -93,7 +83,7 @@ function HomeInfo() {
                     </DialogHeader>
                   </DialogContent>
                 </Dialog>
-              </Link> */}
+              </Link>
             </div>
           </div>
         </div>
