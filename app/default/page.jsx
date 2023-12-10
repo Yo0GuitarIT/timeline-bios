@@ -8,7 +8,6 @@ import { saveAs } from "file-saver";
 import MasterVolController from "../../components/MasterVolController";
 import ExportButton from "../../components/ExportButton";
 import PlayPannel from "../../components/pannels/PlayPannel";
-import ViewPannel from "../../components/pannels/ViewPannel";
 import EditPannel from "../../components/pannels/EditPannel";
 import ImportArea from "../../components/ImportArea";
 import InitialLoader from "../../components/InitialLoader";
@@ -16,7 +15,7 @@ import DisplayContainer from "../../components/DisplayContainer";
 import { useToast } from "../../components/ui/use-toast";
 import MainHeader from "../../components/MainHeader";
 
-function DefaultPage() {
+function DefautPage() {
   const [ee] = useState(new EventEmitter());
   const setUpChain = useRef();
   const [toneCtx, setToneCtx] = useState(null);
@@ -28,6 +27,12 @@ function DefaultPage() {
   const [uploadMessage, setUploadMessage] = useState(
     "Click or Drag Audio File Here"
   );
+
+  const [songName, setSongName] = useState("");
+
+  const handleSongNameChange = (e) => {
+    setSongName(e.target.value);
+  };
 
   useEffect(() => {
     setToneCtx(Tone.getContext());
@@ -244,79 +249,34 @@ function DefaultPage() {
           //restore original ctx for further use.
           Tone.setContext(toneCtx);
           if (type === "wav") {
-            saveAs(data, "test.wav");
+            saveAs(data, "My Song.wav");
           }
         });
 
-        playlist
-          .load([
-            // {
-            //   src: "soundTrack/01.Drum.mp3",
-            //   name: "Drum",
-            //   gain: 0.5,
-            //   waveOutlineColor: "rgb(254, 202, 202)",
-            // },
-            // {
-            //   src: "soundTrack/02.Bass.mp3",
-            //   name: "Bass",
-            //   gain: 0.6,
-            //   waveOutlineColor: "rgb(253, 230, 138)",
-            // },
-            // {
-            //   src: "soundTrack/03.EG01(Stereo).mp3",
-            //   name: "GT 1",
-            //   gain: 0.3,
-            //   waveOutlineColor: "rgb(167, 243, 208)",
-            // },
-            // {
-            //   src: "soundTrack/04.EG02(Stereo).mp3",
-            //   name: "GT 2",
-            //   gain: 0.3,
-            //   waveOutlineColor: "rgb(191, 219, 254)",
-            // },
-            // {
-            //   src: "soundTrack/05.EG(Solo).mp3",
-            //   name: "GT Solo",
-            //   gain: 0.4,
-            //   waveOutlineColor: "rgb(199, 210, 254)",
-            // },
-            // {
-            //   src: "soundTrack/06.Hammond.mp3",
-            //   name: "Hammond",
-            //   gain: 0.3,
-            //   waveOutlineColor: "rgb(221, 214, 254)",
-            // },
-            // {
-            //   src: "soundTrack/07.Vocal.mp3",
-            //   name: "Vocal",
-            //   gain: 0.5,
-            //   waveOutlineColor: "rgb(251, 207, 232)",
-            // },
-          ])
-          .then(function () {
-            ee.emit("loadprogress", 100, "all tracks ; )");
-            const loadData = document.getElementById("load-data");
-            const mainPlay = document.getElementById("main-play");
+        playlist.load([]).then(function () {
+          ee.emit("loadprogress", 100, "all tracks ; )");
+          const loadData = document.getElementById("load-data");
+          const mainPlay = document.getElementById("main-play");
 
-            loadData.classList.add(
-              "opacity-0",
+          loadData.classList.add(
+            "opacity-0",
+            "transition-opacity",
+            "ease-in",
+            "duration-1000"
+          );
+
+          mainPlay.classList.remove("hidden");
+
+          setTimeout(() => {
+            mainPlay.classList.add(
+              "opacity-100",
               "transition-opacity",
               "ease-in",
               "duration-1000"
             );
-
-            mainPlay.classList.remove("hidden");
-
-            setTimeout(() => {
-              mainPlay.classList.add(
-                "opacity-100",
-                "transition-opacity",
-                "ease-in",
-                "duration-1000"
-              );
-              loadData.classList.add("hidden");
-            }, 1000);
-          });
+            loadData.classList.add("hidden");
+          }, 1000);
+        });
         playlist.initExporter();
       }
     },
@@ -331,7 +291,12 @@ function DefaultPage() {
         id="main-play"
         className={"opacity-0 flex flex-col relative min-h-screen items-center"}
       >
-        <MainHeader handleZoomIn={handleZoomIn} handleZoomOut={handleZoomOut} />
+        <MainHeader
+          handleZoomIn={handleZoomIn}
+          handleZoomOut={handleZoomOut}
+          songName={songName}
+          handleSongNameChange={handleSongNameChange}
+        />
 
         <DisplayContainer container={container} />
 
@@ -378,4 +343,4 @@ function DefaultPage() {
   );
 }
 
-export default DefaultPage;
+export default DefautPage;

@@ -8,7 +8,6 @@ import { saveAs } from "file-saver";
 import MasterVolController from "../../components/MasterVolController";
 import ExportButton from "../../components/ExportButton";
 import PlayPannel from "../../components/pannels/PlayPannel";
-import ViewPannel from "../../components/pannels/ViewPannel";
 import EditPannel from "../../components/pannels/EditPannel";
 import ImportArea from "../../components/ImportArea";
 import InitialLoader from "../../components/InitialLoader";
@@ -16,18 +15,25 @@ import DisplayContainer from "../../components/DisplayContainer";
 import { useToast } from "../../components/ui/use-toast";
 import MainHeader from "../../components/MainHeader";
 
-function MainPage() {
+// import usePlaybackBtnStore from "../../stores/playbackButtonStrore";
+
+function DemoPage() {
   const [ee] = useState(new EventEmitter());
   const setUpChain = useRef();
   const [toneCtx, setToneCtx] = useState(null);
   const [masterVolume, setMasterVolume] = useState([95]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [loadInfo, setLoadInfo] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
   const [isUpload, setIsUpload] = useState(false);
   const [uploadMessage, setUploadMessage] = useState(
     "Click or Drag Audio File Here"
   );
+  const [songName, setSongName] = useState(
+    "Trafficker - My Father Never Loved me"
+  );
+
+  const { toast } = useToast();
+  // const { isRecording, toggleRecording, toggleStop } = usePlaybackBtnStore();
 
   useEffect(() => {
     setToneCtx(Tone.getContext());
@@ -120,7 +126,6 @@ function MainPage() {
     setIsUpload(true);
   };
 
-  const { toast } = useToast();
   const triggerToast = () => {
     toast({
       title: "Upload...",
@@ -129,7 +134,6 @@ function MainPage() {
   };
 
   const handleRecord = () => {
-    setIsRecording(true);
     ee.emit("record");
   };
 
@@ -137,21 +141,22 @@ function MainPage() {
   const handlePause = () => ee.emit("pause");
 
   const handleStop = () => {
-    setIsRecording(false);
     ee.emit("stop");
   };
+
+  const handleRewind = () => ee.emit("rewind");
+  const handleFastforward = () => ee.emit("fastforward");
 
   const handleTrim = () => ee.emit("trim");
   const handleZoomIn = () => ee.emit("zoomin");
   const handleZoomOut = () => ee.emit("zoomout");
-  const handleRewind = () => ee.emit("rewind");
-  const handleFastforward = () => ee.emit("fastforward");
   const stateCursor = () => ee.emit("statechange", "cursor");
   const stateSelect = () => ee.emit("statechange", "select");
   const stateFadeIn = () => ee.emit("statechange", "fadein");
   const stateFadeOut = () => ee.emit("statechange", "fadeout");
   const stateShift = () => ee.emit("statechange", "shift");
   const handleExport = () => ee.emit("startaudiorendering", "wav");
+  const handleSongNameChange = (e) => setSongName(e.target.value);
 
   const container = useCallback(
     (node) => {
@@ -244,7 +249,7 @@ function MainPage() {
           //restore original ctx for further use.
           Tone.setContext(toneCtx);
           if (type === "wav") {
-            saveAs(data, "test.wav");
+            saveAs(data, "My Father Never Loved Me.wav");
           }
         });
 
@@ -331,7 +336,12 @@ function MainPage() {
         id="main-play"
         className={"opacity-0 flex flex-col relative min-h-screen items-center"}
       >
-        <MainHeader handleZoomIn={handleZoomIn} handleZoomOut={handleZoomOut} />
+        <MainHeader
+          handleZoomIn={handleZoomIn}
+          handleZoomOut={handleZoomOut}
+          songName={songName}
+          handleSongNameChange={handleSongNameChange}
+        />
 
         <DisplayContainer container={container} />
 
@@ -355,7 +365,6 @@ function MainPage() {
             handleRewind={handleRewind}
             handleFastforward={handleFastforward}
             handleRecord={handleRecord}
-            isRecording={isRecording}
           />
 
           <EditPannel
@@ -378,4 +387,4 @@ function MainPage() {
   );
 }
 
-export default MainPage;
+export default DemoPage;

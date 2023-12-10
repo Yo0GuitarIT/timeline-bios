@@ -1,5 +1,7 @@
+"use client"
+
 import Link from "next/link";
-import { Github, Linkedin, AudioWaveform, MenuSquare } from "lucide-react";
+import { Github, Linkedin, MenuSquare } from "lucide-react";
 import { ModeToggle } from "../components/ModeToggle";
 import Timelinebios from "../components/TittleTimelinebios";
 import {
@@ -10,8 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
-
-import { Button } from "./ui/button";
 
 function HomePageNavbar() {
   return (
@@ -33,8 +33,8 @@ function HomePageNavbar() {
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <MenuSquare strokeWidth={1} />
+            <DropdownMenuTrigger>  
+                <MenuSquare strokeWidth={1} />            
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>
