@@ -1,6 +1,7 @@
 import Timelinebios from "./TittleTimelinebios";
 import MasterVolMonitor from "./MasterVolMonitor";
 import ViewPannel from "../components/pannels/ViewPannel";
+import UserGuide from "./UserGuide";
 import { ModeToggle } from "./ModeToggle";
 import { Input } from "../components/ui/input";
 
@@ -10,7 +11,6 @@ function MainHeader({
   songName,
   handleSongNameChange,
 }) {
-  
   return (
     <div className="w-full h-14 flex items-center sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex items-center justify-between gap-px">
@@ -30,6 +30,8 @@ function MainHeader({
 
         <ViewPannel handleZoomIn={handleZoomIn} handleZoomOut={handleZoomOut} />
 
+        <UserGuide />
+        
         <ModeToggle />
       </div>
     </div>

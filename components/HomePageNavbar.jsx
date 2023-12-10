@@ -22,46 +22,17 @@ function HomePageNavbar() {
       <div className="container h-14 flex items-center">
         <div className="mr-4 hidden md:flex">
           <Timelinebios />
-          {/* <nav className="flex items-center space-x-6 text-sm font-medium">
+          <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link
               className="hidden text-foreground/60 transition-colors hover:text-foreground/80 lg:block"
-              href="https://github.com/Yo0GuitarIT/waveform-playlist-test"
+              href="https://github.com/Yo0GuitarIT/timeline-bios"
             >
               GitHub
             </Link>
-          </nav> */}
+          </nav>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <DropdownMenu>
-            <DropdownMenuTrigger>  
-                <MenuSquare strokeWidth={1} />            
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Welcome</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link
-                  className="flex justify-around items-center "
-                  href="https://github.com/Yo0GuitarIT"
-                >
-                  <Github className="mr-2 h-4 w-4" />
-                  <span>Github</span>
-                </Link>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem>
-                <Link
-                  className="flex justify-around items-center "
-                  href="https://www.linkedin.com/in/yo036563/"
-                >
-                  <Linkedin className="mr-2 h-4 w-4" />
-                  <span>Linkedin</span>
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
+          
           <ModeToggle />
         </div>
       </div>
