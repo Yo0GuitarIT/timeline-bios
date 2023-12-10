@@ -25,10 +25,14 @@ function ExportButton({ handleExport }) {
   return (
     <HoverCard>
       <HoverCardTrigger>
-        <Button variant="outline" size="icon" onClick={AlertAndExport}>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={AlertAndExport}
+          className="hover:text-yellow-400"
+        >
           <Download />
         </Button>
-
       </HoverCardTrigger>
       <HoverCardContent className="w-60 whitespace-normal">
         <div className="space-y-1">

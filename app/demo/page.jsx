@@ -60,7 +60,7 @@ function DemoPage() {
     Tone.getDestination().connect(meter);
 
     const logMasterVolume = () => {
-      const lowerBound = -30;
+      const lowerBound = -40;
       const upperBound = 3;
       const dBFS = meter.getValue();
       const dBu = dBFS + 18;
@@ -133,28 +133,23 @@ function DemoPage() {
     });
   };
 
-  const handleRecord = () => {
-    ee.emit("record");
-  };
-
-  const handlePlay = () => ee.emit("play");
   const handlePause = () => ee.emit("pause");
-
-  const handleStop = () => {
-    ee.emit("stop");
-  };
-
+  const handlePlay = () => ee.emit("play");
+  const handleStop = () => ee.emit("stop");
   const handleRewind = () => ee.emit("rewind");
   const handleFastforward = () => ee.emit("fastforward");
+  const handleRecord = () => ee.emit("record");
 
   const handleTrim = () => ee.emit("trim");
   const handleZoomIn = () => ee.emit("zoomin");
   const handleZoomOut = () => ee.emit("zoomout");
+
   const stateCursor = () => ee.emit("statechange", "cursor");
   const stateSelect = () => ee.emit("statechange", "select");
   const stateFadeIn = () => ee.emit("statechange", "fadein");
   const stateFadeOut = () => ee.emit("statechange", "fadeout");
   const stateShift = () => ee.emit("statechange", "shift");
+  
   const handleExport = () => ee.emit("startaudiorendering", "wav");
   const handleSongNameChange = (e) => setSongName(e.target.value);
 

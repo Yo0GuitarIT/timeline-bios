@@ -25,53 +25,63 @@ function PlayPannel({
   return (
     <div className="flex gap-2 p-1">
       <Button
+        className="hover:text-violet-400"
         variant="outline"
         size="icon"
         onClick={handlePause}
         disabled={isRecording}
       >
-        <Pause strokeWidth={1.5} className="hover:text-violet-400" />
+        <Pause strokeWidth={1.5} />
       </Button>
 
       <Button
+        className="hover:text-green-500"
         variant="outline"
         size="icon"
         onClick={handlePlay}
         disabled={isRecording}
       >
-        <Play strokeWidth={1.5} className="hover:text-green-500" />
-      </Button>
-
-      <Button variant="outline" size="icon" onClick={onStop}>
-        <Square strokeWidth={1.5} className="hover:text-yellow-500" />
+        <Play strokeWidth={1.5} />
       </Button>
 
       <Button
+        className="hover:text-yellow-500"
+        variant="outline"
+        size="icon"
+        onClick={onStop}
+      >
+        <Square strokeWidth={1.5} />
+      </Button>
+
+      <Button
+        className="hover:text-cyan-500"
         variant="outline"
         size="icon"
         onClick={handleRewind}
         disabled={isRecording}
       >
-        <Rewind strokeWidth={1.5} className="hover:text-cyan-500" />
+        <Rewind strokeWidth={1.5} />
       </Button>
 
       <Button
+        className="hover:text-cyan-500"
         variant="outline"
         size="icon"
         onClick={handleFastforward}
         disabled={isRecording}
       >
-        <FastForward strokeWidth={1.5} className="hover:text-cyan-500" />
+        <FastForward strokeWidth={1.5} />
       </Button>
 
       <Button
+        className="hover:text-rose-500"
         variant="outline"
         size="icon"
         id="record-Button"
         onClick={onRecord}
         disabled={isRecording}
       >
-        <Circle fill=" rgb(239 68 68)" className="hover:text-rose-500" />
+        <Circle fill=" rgb(239 68 68)" />
       </Button>
     </div>
   );

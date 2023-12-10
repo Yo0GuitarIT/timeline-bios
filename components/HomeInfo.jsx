@@ -73,7 +73,7 @@ function HomeInfo() {
                 </Dialog>
               </Link>
 
-              <Link href="/default">
+              {/* <Link href="/default">
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button>
@@ -93,7 +93,7 @@ function HomeInfo() {
                     </DialogHeader>
                   </DialogContent>
                 </Dialog>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

@@ -11,7 +11,12 @@ function ViewPannel({ handleZoomIn, handleZoomOut }) {
     <div className="flex gap-2 p-1">
       <HoverCard>
         <HoverCardTrigger>
-          <Button variant="ghost" size="icon" onClick={() => handleZoomIn()}>
+          <Button
+            className="hover:text-yellow-400"
+            variant="ghost"
+            size="icon"
+            onClick={() => handleZoomIn()}
+          >
             <ZoomIn strokeWidth={1.5} size={20} />
           </Button>
         </HoverCardTrigger>
@@ -28,7 +33,12 @@ function ViewPannel({ handleZoomIn, handleZoomOut }) {
 
       <HoverCard>
         <HoverCardTrigger>
-          <Button variant="ghost" size="icon" onClick={() => handleZoomOut()}>
+          <Button
+            className="hover:text-yellow-400"
+            variant="ghost"
+            size="icon"
+            onClick={() => handleZoomOut()}
+          >
             <ZoomOut strokeWidth={1.5} size={20} />
           </Button>
         </HoverCardTrigger>
