@@ -54,7 +54,7 @@ function HomeInfo() {
               <Link href="/demo">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="secondary">
+                    <Button >
                       View Demo <ChevronsRight strokeWidth={1} />
                     </Button>
                   </DialogTrigger>

@@ -13,6 +13,8 @@ import {
   ScissorsSquare,
 } from "lucide-react";
 
+import useEditBtnStore from "../../stores/editButtonStore";
+
 function EditPannel({
   stateCursor,
   stateSelect,
@@ -21,20 +23,70 @@ function EditPannel({
   stateFadeOut,
   handleTrim,
 }) {
+
+ const {
+   cursor,
+   select,
+   shift,
+   fadeIn,
+   fadeOut,
+   setCursor,
+   setSelect,
+   setShift,
+   setFadeIn,
+   setFadeOut,
+ } = useEditBtnStore();
+
+  
+  const useCursor = () => {
+    setCursor();
+    stateCursor();
+  }
+
+  const useSelect = () => {
+    setSelect();
+    stateSelect();
+  }
+
+  const useShift = () => {
+    setShift();
+    stateShift();
+  };
+
+  const useFadeIn = () => {
+    setFadeIn();
+    stateFadeIn();
+  };
+
+  const useFadeOut = () => {
+    setFadeOut();
+    stateFadeOut();
+  };
+
   return (
     <div className="flex gap-2 p-1">
-      <Button variant="outline" size="icon" onClick={() => stateCursor()}>
+      <Button
+        className="hover:text-yellow-400"
+        variant={cursor ? "" : "outline"}
+        size="icon"
+        onClick={useCursor}
+      >
         <MousePointer2 />
       </Button>
 
-      <Button variant="outline" size="icon" onClick={() => stateSelect()}>
+      <Button
+        className="hover:text-yellow-400"
+        variant={select ? "" : "outline"}
+        size="icon"
+        onClick={useSelect}
+      >
         <Brackets />
       </Button>
 
       <div className="hidden">
         <HoverCard>
           <HoverCardTrigger>
-            <Button variant="outline" size="icon" onClick={() => handleTrim()}>
+            <Button variant={select ? "" : "outline"} size="icon" onClick={() => handleTrim()}>
               <ScissorsSquare strokeWidth={1.5} />
             </Button>
           </HoverCardTrigger>
@@ -48,16 +100,31 @@ function EditPannel({
           </HoverCardContent>
         </HoverCard>
       </div>
-      
-      <Button variant="outline" size="icon" onClick={() => stateShift()}>
+
+      <Button
+        className="hover:text-yellow-400"
+        variant={shift ? "" : "outline"}
+        size="icon"
+        onClick={useShift}
+      >
         <MoveHorizontal />
       </Button>
 
-      <Button variant="outline" size="icon" onClick={() => stateFadeIn()}>
+      <Button
+        className="hover:text-yellow-400"
+        variant={fadeIn ? "" : "outline"}
+        size="icon"
+        onClick={useFadeIn}
+      >
         <Spline />
       </Button>
 
-      <Button variant="outline" size="icon" onClick={() => stateFadeOut()}>
+      <Button
+        className="hover:text-yellow-400"
+        variant={fadeOut ? "" : "outline"}
+        size="icon"
+        onClick={useFadeOut}
+      >
         <Spline />
       </Button>
     </div>
