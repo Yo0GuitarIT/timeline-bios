@@ -15,8 +15,6 @@ import DisplayContainer from "../../components/DisplayContainer";
 import { useToast } from "../../components/ui/use-toast";
 import MainHeader from "../../components/MainHeader";
 
-// import usePlaybackBtnStore from "../../stores/playbackButtonStrore";
-
 function DemoPage() {
   const [ee] = useState(new EventEmitter());
   const setUpChain = useRef();
@@ -33,8 +31,7 @@ function DemoPage() {
   );
 
   const { toast } = useToast();
-  // const { isRecording, toggleRecording, toggleStop } = usePlaybackBtnStore();
-
+  
   useEffect(() => {
     setToneCtx(Tone.getContext());
     startVolumeMonitoring();

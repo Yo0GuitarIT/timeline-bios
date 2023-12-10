@@ -10,7 +10,7 @@ function PlayPannel({
   handleFastforward,
   handleRecord,
 }) {
-  const { isRecording, toggleRecording, toggleStop } = usePlaybackBtnStore();
+  const { isRecording,isPlaying, toggleRecording, toggleStop,togglePlay,togglePause } = usePlaybackBtnStore();
 
   const onRecord = () => {
     handleRecord();
@@ -22,23 +22,33 @@ function PlayPannel({
     toggleStop();
   };
 
+  const onPlay = () => {
+    handlePlay();
+    togglePlay();
+  }
+  
+  const onPause = () => {
+    handlePause();
+    togglePause();
+  }
+
   return (
     <div className="flex gap-2 p-1">
       <Button
         className="hover:text-violet-400"
         variant="outline"
         size="icon"
-        onClick={handlePause}
+        onClick={onPause}
         disabled={isRecording}
       >
         <Pause strokeWidth={1.5} />
       </Button>
 
       <Button
-        className="hover:text-green-500"
+        className={`hover:text-green-500 ${isPlaying?"bg-red-500 text-white":""}`}
         variant="outline"
         size="icon"
-        onClick={handlePlay}
+        onClick={onPlay}
         disabled={isRecording}
       >
         <Play strokeWidth={1.5} />
