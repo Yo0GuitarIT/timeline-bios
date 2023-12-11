@@ -1,17 +1,7 @@
-"use client"
-
 import Link from "next/link";
-import { Github, Linkedin, MenuSquare } from "lucide-react";
+
 import { ModeToggle } from "../components/ModeToggle";
 import Timelinebios from "../components/TittleTimelinebios";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
 
 function HomePageNavbar() {
   return (

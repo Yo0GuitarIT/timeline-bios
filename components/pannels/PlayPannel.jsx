@@ -84,7 +84,7 @@ function PlayPannel({
       </Button>
 
       <Button
-        className="hover:text-rose-500"
+        className= {`${isRecording? "bg-rose-500":""} hover:text-rose-500`}
         variant="outline"
         size="icon"
         id="record-Button"

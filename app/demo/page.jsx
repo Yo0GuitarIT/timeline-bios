@@ -334,7 +334,7 @@ function DemoPage() {
           songName={songName}
           handleSongNameChange={handleSongNameChange}
         />
-
+<div className="hidden">
         <DisplayContainer container={container} />
 
         <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -373,7 +373,8 @@ function DemoPage() {
             handleMasterVolChange={handleMasterVolChange}
           />
           <ExportButton handleExport={handleExport} />
-        </div>
+          </div>
+          </div>
       </main>
     </>
   );
