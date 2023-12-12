@@ -31,7 +31,7 @@ function DemoPage() {
   );
 
   const { toast } = useToast();
-  
+
   useEffect(() => {
     setToneCtx(Tone.getContext());
     startVolumeMonitoring();
@@ -146,7 +146,7 @@ function DemoPage() {
   const stateFadeIn = () => ee.emit("statechange", "fadein");
   const stateFadeOut = () => ee.emit("statechange", "fadeout");
   const stateShift = () => ee.emit("statechange", "shift");
-  
+
   const handleExport = () => ee.emit("startaudiorendering", "wav");
   const handleSongNameChange = (e) => setSongName(e.target.value);
 
@@ -334,47 +334,47 @@ function DemoPage() {
           songName={songName}
           handleSongNameChange={handleSongNameChange}
         />
-<div className="hidden">
-        <DisplayContainer container={container} />
+        
+          <DisplayContainer container={container} />
 
-        <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <ImportArea
-            handleUploadFile={(e) => handleUploadFile(e)}
-            handleDragEnter={handleDragEnter}
-            handleDragOver={handleDragOver}
-            handleDragLeave={handleDragLeave}
-            handleDrop={handleDrop}
-            loadProgress={loadProgress}
-            handleFileInputChange={handleFileInputChange}
-            uploadMessage={uploadMessage}
-            isUpload={isUpload}
-          />
+          <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <ImportArea
+              handleUploadFile={(e) => handleUploadFile(e)}
+              handleDragEnter={handleDragEnter}
+              handleDragOver={handleDragOver}
+              handleDragLeave={handleDragLeave}
+              handleDrop={handleDrop}
+              loadProgress={loadProgress}
+              handleFileInputChange={handleFileInputChange}
+              uploadMessage={uploadMessage}
+              isUpload={isUpload}
+            />
 
-          <PlayPannel
-            handlePause={handlePause}
-            handlePlay={handlePlay}
-            handleStop={handleStop}
-            handleRewind={handleRewind}
-            handleFastforward={handleFastforward}
-            handleRecord={handleRecord}
-          />
+            <PlayPannel
+              handlePause={handlePause}
+              handlePlay={handlePlay}
+              handleStop={handleStop}
+              handleRewind={handleRewind}
+              handleFastforward={handleFastforward}
+              handleRecord={handleRecord}
+            />
 
-          <EditPannel
-            stateCursor={stateCursor}
-            stateSelect={stateSelect}
-            stateShift={stateShift}
-            stateFadeIn={stateFadeIn}
-            stateFadeOut={stateFadeOut}
-            handleTrim={handleTrim}
-          />
+            <EditPannel
+              stateCursor={stateCursor}
+              stateSelect={stateSelect}
+              stateShift={stateShift}
+              stateFadeIn={stateFadeIn}
+              stateFadeOut={stateFadeOut}
+              handleTrim={handleTrim}
+            />
 
-          <MasterVolController
-            masterVolume={masterVolume}
-            handleMasterVolChange={handleMasterVolChange}
-          />
-          <ExportButton handleExport={handleExport} />
+            <MasterVolController
+              masterVolume={masterVolume}
+              handleMasterVolChange={handleMasterVolChange}
+            />
+            <ExportButton handleExport={handleExport} />
           </div>
-          </div>
+        
       </main>
     </>
   );
