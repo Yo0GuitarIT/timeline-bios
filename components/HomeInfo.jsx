@@ -24,7 +24,7 @@ function HomeInfo() {
             className="
             absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
              text-white drop-shadow-md
-             flex flex-col items-center gap-2 "
+             flex flex-col items-center gap-2 w-full container"
           >
             <Sentence />
             <div className="flex gap-3">

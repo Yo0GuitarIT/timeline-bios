@@ -23,11 +23,11 @@ function Sentence() {
 
   return (
     <>
-      <div className="lg:text-4xl md:text-2xl font-bold">
+      <div className="lg:text-5xl md:text-4xl text-3xl font-bold w-full text-center">
         <span ref={el} />
       </div>
 
-      <p className="md:text-base lg:text-2xl text-center ">
+      <p className="md:text-md lg:text-lg text-sm text-center w-full">
         Experience a powerful online Digital Audio Workstation (DAW) at
         timelineβίος.
         <br />
