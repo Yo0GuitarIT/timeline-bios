@@ -273,63 +273,64 @@ function DemoPage() {
     [ee, toneCtx]
   );
 
-  return (
-    <>
-      <InitialLoader loadProgress={loadProgress} loadInfo={loadInfo} />
+ return (
+   <>
+     <InitialLoader {...{ loadProgress, loadInfo }} />
 
-      <main
-        id="main-play"
-        className={"opacity-0 flex flex-col relative min-h-screen items-center"}
-      >
-        <MainHeader
-          handleZoomIn={handleZoomIn}
-          handleZoomOut={handleZoomOut}
-          songName={songName}
-          handleSongNameChange={handleSongNameChange}
-        />
+     <main
+       id="main-play"
+       className={"opacity-0 flex flex-col relative min-h-screen items-center"}
+     >
+       <MainHeader
+         handleZoomIn={handleZoomIn}
+         handleZoomOut={handleZoomOut}
+         songName={songName}
+         handleSongNameChange={handleSongNameChange}
+       />
 
-        <DisplayContainer container={container} />
+       <DisplayContainer container={container} />
 
-        <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <ImportArea
-            handleUploadFile={(e) => handleUploadFile(e)}
-            handleDragEnter={handleDragEnter}
-            handleDragOver={handleDragOver}
-            handleDragLeave={handleDragLeave}
-            handleDrop={handleDrop}
-            loadProgress={loadProgress}
-            handleFileInputChange={handleFileInputChange}
-            uploadMessage={uploadMessage}
-            isUpload={isUpload}
-          />
+       <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+         <ImportArea
+           handleUploadFile={(e) => handleUploadFile(e)}
+           handleDragEnter={handleDragEnter}
+           handleDragOver={handleDragOver}
+           handleDragLeave={handleDragLeave}
+           handleDrop={handleDrop}
+           loadProgress={loadProgress}
+           handleFileInputChange={handleFileInputChange}
+           uploadMessage={uploadMessage}
+           isUpload={isUpload}
+         />
 
-          <PlayPannel
-            handlePause={handlePause}
-            handlePlay={handlePlay}
-            handleStop={handleStop}
-            handleRewind={handleRewind}
-            handleFastforward={handleFastforward}
-            handleRecord={handleRecord}
-          />
+         <PlayPannel
+           {...{
+             handlePause,
+             handlePlay,
+             handleStop,
+             handleRewind,
+             handleFastforward,
+             handleRecord,
+           }}
+         />
 
-          <EditPannel
-            stateCursor={stateCursor}
-            stateSelect={stateSelect}
-            stateShift={stateShift}
-            stateFadeIn={stateFadeIn}
-            stateFadeOut={stateFadeOut}
-            handleTrim={handleTrim}
-          />
+         <EditPannel
+           {...{
+             stateCursor,
+             stateSelect,
+             stateShift,
+             stateFadeIn,
+             stateFadeOut,
+             handleTrim,
+           }}
+         />
 
-          <MasterVolController
-            masterVolume={masterVolume}
-            handleMasterVolChange={handleMasterVolChange}
-          />
-          <ExportButton handleExport={handleExport} />
-        </div>
-      </main>
-    </>
-  );
+         <MasterVolController {...{ masterVolume, handleMasterVolChange }} />
+         <ExportButton handleExport={handleExport} />
+       </div>
+     </main>
+   </>
+ );
 }
 
 export default DemoPage;

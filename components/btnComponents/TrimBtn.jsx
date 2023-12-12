@@ -6,7 +6,7 @@ import {
   HoverCardTrigger,
 } from "../ui/hover-card";
 
-function TrimButton({select,handleTrim}) {
+function TrimButton({ select, handleTrim }) {
   return (
     <div className={select ? "uploadButtonVisible" : "uploadButtonHidden"}>
       <HoverCard>

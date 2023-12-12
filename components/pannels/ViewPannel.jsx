@@ -4,9 +4,8 @@ import ZoomOutButton from "../btnComponents/ZoomOutBtn";
 function ViewPannel({ handleZoomIn, handleZoomOut }) {
   return (
     <div className="flex">
-      <ZoomInButton handleZoomIn={handleZoomIn} />
-
-      <ZoomOutButton handleZoomOut={handleZoomOut} />
+      <ZoomInButton {...{ handleZoomIn }} />
+      <ZoomOutButton {...{ handleZoomOut }} />
     </div>
   );
 }

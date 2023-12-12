@@ -54,12 +54,12 @@ function EditPannel({
 
   return (
     <div className="flex gap-2 p-1">
-      <DefaultButton cursor={cursor} useCursor={useCursor} />
-      <SelectButton select={select} useSelect={useSelect} />
-      <ShiftButton shift={shift} useShift={useShift} />
-      <FadeInButton fadeIn={fadeIn} useFadeIn={useFadeIn} />
-      <FadeOutButton fadeOut={fadeOut} useFadeOut={useFadeOut} />
-      <TrimButton select={select} handleTrim={handleTrim} />
+      <DefaultButton {...{ cursor, useCursor }} />
+      <SelectButton {...{ select, useSelect }} />
+      <ShiftButton {...{ shift, useShift }} />
+      <FadeInButton {...{ fadeIn, useFadeIn }} />
+      <FadeOutButton {...{ fadeOut, useFadeOut }} />
+      <TrimButton {...{ select, handleTrim }} />
     </div>
   );
 }

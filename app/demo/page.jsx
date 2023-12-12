@@ -137,7 +137,6 @@ function DemoPage() {
   const handleFastforward = () => ee.emit("fastforward");
   const handleRecord = () => ee.emit("record");
 
-  const handleTrim = () => ee.emit("trim");
   const handleZoomIn = () => ee.emit("zoomin");
   const handleZoomOut = () => ee.emit("zoomout");
 
@@ -146,6 +145,7 @@ function DemoPage() {
   const stateFadeIn = () => ee.emit("statechange", "fadein");
   const stateFadeOut = () => ee.emit("statechange", "fadeout");
   const stateShift = () => ee.emit("statechange", "shift");
+  const handleTrim = () => ee.emit("trim");
 
   const handleExport = () => ee.emit("startaudiorendering", "wav");
   const handleSongNameChange = (e) => setSongName(e.target.value);
@@ -322,7 +322,7 @@ function DemoPage() {
 
   return (
     <>
-      <InitialLoader loadProgress={loadProgress} loadInfo={loadInfo} />
+      <InitialLoader {...{ loadProgress, loadInfo }} />
 
       <main
         id="main-play"
@@ -334,47 +334,47 @@ function DemoPage() {
           songName={songName}
           handleSongNameChange={handleSongNameChange}
         />
-        
-          <DisplayContainer container={container} />
 
-          <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <ImportArea
-              handleUploadFile={(e) => handleUploadFile(e)}
-              handleDragEnter={handleDragEnter}
-              handleDragOver={handleDragOver}
-              handleDragLeave={handleDragLeave}
-              handleDrop={handleDrop}
-              loadProgress={loadProgress}
-              handleFileInputChange={handleFileInputChange}
-              uploadMessage={uploadMessage}
-              isUpload={isUpload}
-            />
+        <DisplayContainer container={container} />
 
-            <PlayPannel
-              handlePause={handlePause}
-              handlePlay={handlePlay}
-              handleStop={handleStop}
-              handleRewind={handleRewind}
-              handleFastforward={handleFastforward}
-              handleRecord={handleRecord}
-            />
+        <div className="w-full h-16 border-t flex justify-around items-center absolute bottom-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <ImportArea
+            handleUploadFile={(e) => handleUploadFile(e)}
+            handleDragEnter={handleDragEnter}
+            handleDragOver={handleDragOver}
+            handleDragLeave={handleDragLeave}
+            handleDrop={handleDrop}
+            loadProgress={loadProgress}
+            handleFileInputChange={handleFileInputChange}
+            uploadMessage={uploadMessage}
+            isUpload={isUpload}
+          />
 
-            <EditPannel
-              stateCursor={stateCursor}
-              stateSelect={stateSelect}
-              stateShift={stateShift}
-              stateFadeIn={stateFadeIn}
-              stateFadeOut={stateFadeOut}
-              handleTrim={handleTrim}
-            />
+          <PlayPannel
+            {...{
+              handlePause,
+              handlePlay,
+              handleStop,
+              handleRewind,
+              handleFastforward,
+              handleRecord,
+            }}
+          />
 
-            <MasterVolController
-              masterVolume={masterVolume}
-              handleMasterVolChange={handleMasterVolChange}
-            />
-            <ExportButton handleExport={handleExport} />
-          </div>
-        
+          <EditPannel
+            {...{
+              stateCursor,
+              stateSelect,
+              stateShift,
+              stateFadeIn,
+              stateFadeOut,
+              handleTrim,
+            }}
+          />
+
+          <MasterVolController {...{ masterVolume, handleMasterVolChange }} />
+          <ExportButton handleExport={handleExport} />
+        </div>
       </main>
     </>
   );

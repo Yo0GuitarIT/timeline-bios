@@ -45,12 +45,12 @@ function PlayPannel({
 
   return (
     <div className="flex gap-2 p-1">
-      <PauseButton onPause={onPause} isRecording={isRecording} />
-      <PlayButton onPlay={onPlay} isPlaying={isPlaying} isRecording={isRecording} />
-      <StopButton onStop={onStop} />   
-      <RewindButton handleRewind={handleRewind} isRecording={isRecording} />     
-      <FastForwardButton handleFastforward={handleFastforward} isRecording={isRecording} />
-      <RecordButton onRecord={onRecord} isRecording={isRecording} />
+      <PauseButton {...{ onPause, isRecording }} />
+      <PlayButton {...{ onPlay, isPlaying, isRecording }} />
+      <StopButton {...{ onStop }} />
+      <RewindButton {...{ handleRewind, isRecording }} />
+      <FastForwardButton {...{ handleFastforward, isRecording }} />
+      <RecordButton {...{ onRecord, isRecording }} />
     </div>
   );
 }
