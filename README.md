@@ -17,14 +17,17 @@ Real-time recording functionality with the ability to visualize audio waveforms.
   - Cut audio segments.
   - Drag and drop in the timeline.
   - Fade in & fade out. 
+![Recording 2023-12-14 at 00 13 24](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/20b01b5e-4a88-40ad-acdc-b0edc6695d4f)
 
 ### Track Playing
   - Support for single and multiple track playback.
   - Each audio track can be muted or soloed, and the volume can be adjusted.
+![Recording 2023-12-14 at 00 16 40](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/7cbc4929-8ae8-4ee6-8c2b-89b47ef4283b)
 
 ### Upload & Download File
   - Support for various audio formats input
   - Compile and export files in WAV format.
+![Recording 2023-12-14 at 00 19 01](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/93526fc1-3b39-424e-b2fc-517473627910)
 
 # FrontEnd Technique
 ### React Conponents & props
