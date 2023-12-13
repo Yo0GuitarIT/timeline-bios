@@ -85,7 +85,7 @@ Real-time recording functionality with the ability to visualize audio waveforms.
 - Zustand State Management
 - Hover Card
 - Loaing Progress
-![截圖 2023-12-13 下午11 40 04](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/df912a8a-db06-4114-8cc1-a6d9977ac0c4)
+![截圖 2023-12-14 上午12 37 26](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/0a4e1bdd-ea24-4558-b69b-c04b09bbf180)
 
 ### Folder Structure
 ```
