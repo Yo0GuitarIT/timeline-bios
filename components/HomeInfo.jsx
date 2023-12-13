@@ -1,20 +1,8 @@
-"use client";
-
+import Image from "next/image";
 import Sentence from "./Sentence";
 import boyYell from "../public/jason-rosewell-ASKeuOZqhYU-unsplash.jpg";
-import loadingImg from "../public/Pulse-1s-200px.svg";
-import { ChevronsRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "./ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
+import DemoButton from "./btnComponents/DemoBtn";
+import StartButton from "./btnComponents/StartBtn";
 
 function HomeInfo() {
   return (
@@ -34,56 +22,14 @@ function HomeInfo() {
 
           <div
             className="
-            absolute top-1/2 left-1/2 w-4/5 transform -translate-x-1/2 -translate-y-1/2
+            absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
              text-white drop-shadow-md
-             flex flex-col items-center gap-2 "
+             flex flex-col items-center gap-2 w-full container"
           >
             <Sentence />
-           
             <div className="flex gap-3">
-              <Link href="/demo">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="secondary">
-                      View Demo <ChevronsRight strokeWidth={1} />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle className="flex">
-                        <Image src={loadingImg} alt="loadingImg" height={20} />
-                        Project Building...
-                      </DialogTitle>
-                      <DialogDescription>
-                        Relevant discourse about the ongoing construction of the
-                        project.
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </Link>
-
-              <Link href="/default">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button>
-                      Get Started <ChevronsRight strokeWidth={1} />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle className="flex">
-                        <Image src={loadingImg} alt="loadingImg" height={20} />
-                        Project Building...
-                      </DialogTitle>
-                      <DialogDescription>
-                        Relevant discourse about the ongoing construction of the
-                        project.
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </Link>
+              <DemoButton />
+              <StartButton />
             </div>
           </div>
         </div>

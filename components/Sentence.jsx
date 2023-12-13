@@ -11,8 +11,6 @@ function Sentence() {
       strings: ["Unleash Your Creativity in Music Editing."],
       typeSpeed: 20,
       startDelay: 700,
-      //   backSpeed: 0,
-      //   smartBackspace: true,
       loop: false,
 
       cursorChar: "_",
@@ -25,11 +23,11 @@ function Sentence() {
 
   return (
     <>
-      <div className="h-12 text-5xl font-bold">
+      <div className="lg:text-5xl md:text-4xl text-3xl font-bold w-full text-center">
         <span ref={el} />
       </div>
 
-      <p className="text-2xl">
+      <p className="md:text-md lg:text-lg text-sm text-center w-full">
         Experience a powerful online Digital Audio Workstation (DAW) at
         timelineβίος.
         <br />
@@ -37,7 +35,6 @@ function Sentence() {
         inspire creativity.
       </p>
 
-     
     </>
   );
 }

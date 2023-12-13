@@ -31,7 +31,7 @@ function DemoPage() {
   );
 
   const { toast } = useToast();
-  
+
   useEffect(() => {
     setToneCtx(Tone.getContext());
     startVolumeMonitoring();
@@ -137,7 +137,6 @@ function DemoPage() {
   const handleFastforward = () => ee.emit("fastforward");
   const handleRecord = () => ee.emit("record");
 
-  const handleTrim = () => ee.emit("trim");
   const handleZoomIn = () => ee.emit("zoomin");
   const handleZoomOut = () => ee.emit("zoomout");
 
@@ -146,7 +145,8 @@ function DemoPage() {
   const stateFadeIn = () => ee.emit("statechange", "fadein");
   const stateFadeOut = () => ee.emit("statechange", "fadeout");
   const stateShift = () => ee.emit("statechange", "shift");
-  
+  const handleTrim = () => ee.emit("trim");
+
   const handleExport = () => ee.emit("startaudiorendering", "wav");
   const handleSongNameChange = (e) => setSongName(e.target.value);
 
@@ -322,7 +322,7 @@ function DemoPage() {
 
   return (
     <>
-      <InitialLoader loadProgress={loadProgress} loadInfo={loadInfo} />
+      <InitialLoader {...{ loadProgress, loadInfo }} />
 
       <main
         id="main-play"
@@ -351,27 +351,28 @@ function DemoPage() {
           />
 
           <PlayPannel
-            handlePause={handlePause}
-            handlePlay={handlePlay}
-            handleStop={handleStop}
-            handleRewind={handleRewind}
-            handleFastforward={handleFastforward}
-            handleRecord={handleRecord}
+            {...{
+              handlePause,
+              handlePlay,
+              handleStop,
+              handleRewind,
+              handleFastforward,
+              handleRecord,
+            }}
           />
 
           <EditPannel
-            stateCursor={stateCursor}
-            stateSelect={stateSelect}
-            stateShift={stateShift}
-            stateFadeIn={stateFadeIn}
-            stateFadeOut={stateFadeOut}
-            handleTrim={handleTrim}
+            {...{
+              stateCursor,
+              stateSelect,
+              stateShift,
+              stateFadeIn,
+              stateFadeOut,
+              handleTrim,
+            }}
           />
 
-          <MasterVolController
-            masterVolume={masterVolume}
-            handleMasterVolChange={handleMasterVolChange}
-          />
+          <MasterVolController {...{ masterVolume, handleMasterVolChange }} />
           <ExportButton handleExport={handleExport} />
         </div>
       </main>
