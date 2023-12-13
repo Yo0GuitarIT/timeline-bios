@@ -72,12 +72,14 @@ Real-time recording functionality with the ability to visualize audio waveforms.
 
 # Artictecture
 ### Main Features and Related Technical 
+![截圖 2023-12-13 下午11 34 37](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/a6ca2b32-c714-423f-ba3d-798164cf763c)
 
 
 ### User Experience
 - Zustand State Management
 - Hover Card
 - Loaing Progress
+![截圖 2023-12-13 下午11 40 04](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/df912a8a-db06-4114-8cc1-a6d9977ac0c4)
 
 ### Folder Structure
 ```
