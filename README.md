@@ -1,1 +1,172 @@
-Demo: https://timelinebios.vercel.app/
+# [timelineβίος](https://timelinebios.vercel.app/)
+
+Experience a powerful online Digital Audio Workstation (DAW) at timelineβίος.
+Elevate your music editing game with user-friendly tools designed to inspire creativity.
+
+### Demo: https://timelinebios.vercel.app/
+
+
+# Main Feature
+### Recording
+Real-time recording functionality with the ability to visualize audio waveforms.
+
+### Audio Editing
+  - Play selected range.
+  - Cut audio segments.
+  - Drag and drop in the timeline.
+  - Fade in & fade out. 
+
+### Track Playing
+  - Support for single and multiple track playback.
+  - Each audio track can be muted or soloed, and the volume can be adjusted.
+
+### Upload & Download File
+  - Support for various audio formats input
+  - Compile and export files in WAV format.
+
+# FrontEnd Technique
+### React Conponents & props
+### React Hooks
+### Nextjs 
+  - Link
+  - Image
+
+# Backend Technique
+### Vercel
+- Completed online deployment of the backend server.
+
+# Audio
+### Web Audio API
+- Handling web audio input processing.
+### Waveform-playlist
+- Integrating DAW conceptual functionalities and structure, utilizing its provided API for website development.
+### Tone.js
+- Managing audio effects.
+
+# Working process
+### event-emitter
+- Sending events for the Playlist, handling audio recording, editing, and file uploading.
+### File-saver
+- Downloading integrated audio to local storage.
+
+# UI/UX
+### Shadcn Radix
+- Unified web page style theme, supporting both light and dark themes.
+### Lucide Icon
+- High-quality, beautiful icons.
+### zustand
+- Managing button states, guiding users to operate functionalities correctly.
+
+
+# Git
+### Version control
+### Git flow
+### Git-cz
+
+# Other 
+### canvas
+- Drawing dynamic volume feedback.
+### typed.js
+- Presenting typewriter animation effect on the homepage.
+
+
+# Artictecture
+### Main Features and Related Technical 
+
+
+### User Experience
+- Zustand State Management
+- Hover Card
+- Loaing Progress
+
+### Folder Structure
+```
+project-root
+├── app
+│   ├── default
+│   │   └── page.jsx
+│   ├── demo
+│   │   └── page.jsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.js
+│   └── page.jsx
+├── components
+│   ├── DisplayContainer.jsx
+│   ├── ExportButton.jsx
+│   ├── Footer.jsx
+│   ├── HomeInfo.jsx
+│   ├── HomePageNavbar.jsx
+│   ├── ImportArea.jsx
+│   ├── InitialLoader.jsx
+│   ├── MainHeader.jsx
+│   ├── MasterVolController.jsx
+│   ├── MasterVolMonitor.jsx
+│   ├── ModeToggle.jsx
+│   ├── ProjectTittle.jsx
+│   ├── Sentence.jsx
+│   ├── TittleTimelinebios.jsx
+│   ├── UserGuide.jsx
+│   ├── btnComponents
+│   │   ├── DefaultBtn.jsx
+│   │   ├── DemoBtn.jsx
+│   │   ├── FadeInBtn.jsx
+│   │   ├── FadeOutBtn.jsx
+│   │   ├── FastforwardBtn.jsx
+│   │   ├── PauseBtn.jsx
+│   │   ├── PlayBtn.jsx
+│   │   ├── RecordBtn.jsx
+│   │   ├── RewindBtn.jsx
+│   │   ├── SelectBtn.jsx
+│   │   ├── ShiftBtn.jsx
+│   │   ├── StartBtn.jsx
+│   │   ├── StopBtn.jsx
+│   │   ├── TrimBtn.jsx
+│   │   ├── ZoomInBtn.jsx
+│   │   └── ZoomOutBtn.jsx
+│   ├── pannels
+│   │   ├── EditPannel.jsx
+│   │   ├── PlayPannel.jsx
+│   │   └── ViewPannel.jsx
+│   ├── theme-provider.tsx
+│   └── ui
+│       ├── button.jsx
+│       ├── dialog.jsx
+│       ├── dropdown-menu.jsx
+│       ├── hover-card.jsx
+│       ├── input.jsx
+│       ├── progress.jsx
+│       ├── scroll-area.jsx
+│       ├── separator.jsx
+│       ├── sheet.jsx
+│       ├── slider.jsx
+│       ├── toast.jsx
+│       ├── toaster.jsx
+│       ├── toggle-group.jsx
+│       ├── toggle.jsx
+│       └── use-toast.js
+├── lib
+│   └── utils.js
+├── public
+│   ├── Pulse-1s-200px.svg
+│   ├── jason-rosewell-ASKeuOZqhYU-unsplash.jpg
+│   ├── next.svg
+│   └── soundTrack
+│       ├── 01.Drum.mp3
+│       ├── 02.Bass.mp3
+│       ├── 03.EG01(Stereo).mp3
+│       ├── 04.EG02(Stereo).mp3
+│       ├── 05.EG(Solo).mp3
+│       ├── 06.Hammond.mp3
+│       └── 07.Vocal.mp3
+└── stores
+    ├── editButtonStore.js
+    └── playbackButtonStrore.js
+```
+
+# Audio Demo
+Trafficker -My father never loved me
+
+# Contact
+- 陳祐霖 Yu Ling Chen
+- Email: yo0.guitar.it@gmail.com
