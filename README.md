@@ -4,6 +4,8 @@ Experience a powerful online Digital Audio Workstation (DAW) at timelineβίος
 Elevate your music editing game with user-friendly tools designed to inspire creativity.
 
 ### Demo: https://timelinebios.vercel.app/
+![Recording 2023-12-13 at 15 48 43](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/05590245-eabe-461e-8c5f-67cd5dad65a8)
+
 
 
 # Main Feature
