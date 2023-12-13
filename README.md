@@ -11,6 +11,7 @@ Elevate your music editing game with user-friendly tools designed to inspire cre
 # Main Feature
 ### Recording
 Real-time recording functionality with the ability to visualize audio waveforms.
+![Recording 2023-12-14 at 00 29 50](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/88e066a0-64ab-46cd-a0e4-0a3f33ed8299)
 
 ### Audio Editing
   - Play selected range.
