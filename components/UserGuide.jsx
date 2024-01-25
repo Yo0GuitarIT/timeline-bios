@@ -15,6 +15,7 @@ import {
 
 import { GanttChartSquare } from "lucide-react";
 import { Separator } from "./ui/separator";
+import Link from "next/link";
 
 function UserGuide() {
   return (
@@ -72,7 +73,7 @@ function UserGuide() {
               <p>
                 <strong>4. Exporting</strong>
                 <br />
-                4.1 Export Music: Export in various formats.
+                4.1 Export Music: Export in WAV format.
               </p>
 
               <p>
@@ -90,12 +91,14 @@ function UserGuide() {
                 <br />
                 6.2 Track Controls: Adjust volume and effects.
                 <br />
-                6.4 Format Support: Export in multiple formats.
+                6.4 Format Support: Import in multiple formats.
               </p>
 
               <p>
-                Enjoy using my Online DAW! <br />
-                For questions or suggestions, reach out to me!
+                For any questions or suggestions, Please reach out to me.<br />
+                E-mail ={'>'} yo0.guitar.it@gmail.com <br />
+                <Link >GitHub</Link>
+                Enjoy using my Online DAW : {`)`}
               </p>
             </div>
           </SheetDescription>
