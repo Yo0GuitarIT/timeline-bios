@@ -6,8 +6,6 @@ Elevate your music editing game with user-friendly tools designed to inspire cre
 ### Demo: https://timelinebios.vercel.app/
 ![Recording 2023-12-13 at 15 48 43](https://github.com/Yo0GuitarIT/timeline-bios/assets/118150842/05590245-eabe-461e-8c5f-67cd5dad65a8)
 
-
-
 # Main Feature
 ### Recording
 Real-time recording functionality with the ability to visualize audio waveforms.
@@ -54,15 +52,14 @@ Real-time recording functionality with the ability to visualize audio waveforms.
 - Sending events for the Playlist, handling audio recording, editing, and file uploading.
 ### File-saver
 - Downloading integrated audio to local storage.
+### zustand
+- Managing button states, guiding users to operate functionalities correctly.
 
 # UI/UX
 ### Shadcn Radix
 - Unified web page style theme, supporting both light and dark themes.
 ### Lucide Icon
 - High-quality, beautiful icons.
-### zustand
-- Managing button states, guiding users to operate functionalities correctly.
-
 
 # Git
 ### Version control
